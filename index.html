@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<script>document.documentElement.classList.add('js');</script>
 <title>Medico — Your Pocket SR</title>
 <meta name="description" content="Medico gives Indian PG residents instant access to IAP protocols, weight-based dose calculators, rounds prep, and differential diagnosis — built for the ward, not the exam hall.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -30,6 +31,18 @@
   }
 
   html { scroll-behavior: smooth; }
+
+  @media (prefers-reduced-motion: reduce) {
+    html:focus-within { scroll-behavior: auto; }
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
 
   body {
     background: var(--bg);
@@ -656,6 +669,10 @@
     gap: 1rem;
   }
 
+  .source-card--dim {
+    opacity: 0.5;
+  }
+
   .source-logo {
     width: 40px;
     height: 40px;
@@ -969,12 +986,17 @@
   }
 
   .reveal {
+    opacity: 1;
+    transform: none;
+  }
+
+  html.js .reveal {
     opacity: 0;
     transform: translateY(24px);
     transition: opacity 0.65s ease, transform 0.65s ease;
   }
 
-  .reveal.visible {
+  html.js .reveal.visible {
     opacity: 1;
     transform: translateY(0);
   }
@@ -1317,7 +1339,7 @@
             </div>
             <span class="source-badge">ACTIVE</span>
           </div>
-          <div class="source-card" style="opacity:0.5;">
+          <div class="source-card source-card--dim">
             <div class="source-logo" style="background:rgba(255,255,255,0.05);color:var(--muted);">FOGSI</div>
             <div class="source-info">
               <h4>FOGSI Guidelines</h4>
@@ -1373,7 +1395,7 @@
     <h2>Be the first resident<br><em>to use Medico.</em></h2>
     <p class="section-intro">We're building this with residents, not for them. Tell us your branch, your role, and what you wish you had during your last duty. We're reading every response.</p>
 
-    <div class="waitlist-form" id="waitlistForm">
+    <form class="waitlist-form" id="waitlistForm">
 
       <div class="form-row">
         <div class="form-group">
@@ -1426,7 +1448,7 @@
         <textarea id="fsuggestion" placeholder="Be honest. What do you wish existed during your last duty?"></textarea>
       </div>
 
-      <button type="button" class="form-submit" onclick="handleSubmit()">
+      <button type="submit" class="form-submit">
         Join the Waitlist — It's Free →
       </button>
 
@@ -1440,7 +1462,7 @@
         <p>We'll reach out when your branch is ready. We've noted your suggestion — it goes straight to the team.</p>
       </div>
 
-    </div>
+    </form>
   </div>
 </div>
 
@@ -1457,28 +1479,30 @@
 </footer>
 
 <script>
+  const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
   // Hero form quick capture
   document.getElementById('heroForm').addEventListener('submit', function(e) {
     e.preventDefault();
     const email = document.getElementById('heroEmail').value;
     document.getElementById('femail').value = email;
-    document.getElementById('waitlist').scrollIntoView({ behavior: 'smooth' });
-    setTimeout(() => document.getElementById('fname').focus(), 700);
+    document.getElementById('waitlist').scrollIntoView({ behavior: reducedMotion ? 'auto' : 'smooth' });
+    setTimeout(() => document.getElementById('fname').focus(), reducedMotion ? 0 : 700);
   });
 
   // Waitlist submit
-  function handleSubmit() {
-    const name = document.getElementById('fname').value;
-    const email = document.getElementById('femail').value;
+  document.getElementById('waitlistForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    const name = document.getElementById('fname').value.trim();
+    const email = document.getElementById('femail').value.trim();
     if (!name || !email) {
       document.getElementById('fname').style.borderColor = !name ? '#E84545' : '';
       document.getElementById('femail').style.borderColor = !email ? '#E84545' : '';
       return;
     }
     // Here you'd POST to your form handler (Formspree, custom backend, etc.)
-    // fetch('https://formspree.io/f/YOUR_FORM_ID', { method:'POST', body: new FormData(...) })
+    // fetch('https://formspree.io/f/YOUR_FORM_ID', { method:'POST', body: new FormData(this) })
 
-    // Show success state
     const form = document.getElementById('waitlistForm');
     const successState = document.getElementById('successState');
     Array.from(form.children).forEach(el => {
@@ -1487,7 +1511,7 @@
       }
     });
     successState.style.display = 'block';
-  }
+  });
 
   // Counter animation
   function animateCounters() {
@@ -1546,7 +1570,8 @@
   const trustObserver = new IntersectionObserver((entries) => {
     if (entries[0].isIntersecting) {
       document.querySelectorAll('.source-card').forEach(el => {
-        el.style.opacity = el.closest('.trust-grid') ? '' : '0.5';
+        const dim = el.classList.contains('source-card--dim');
+        el.style.opacity = dim ? '0.5' : '1';
         el.style.transform = 'translateY(0)';
       });
       trustObserver.disconnect();
@@ -1554,16 +1579,6 @@
   }, { threshold: 0.2 });
   const trustSection = document.querySelector('.trust-section');
   if (trustSection) trustObserver.observe(trustSection);
-
-  // Fix source card opacity for last one
-  document.querySelectorAll('.source-card').forEach(el => {
-    const parentStyle = el.getAttribute('style') || '';
-    if (!parentStyle.includes('opacity:0.5')) {
-      el.addEventListener('transitionend', () => {
-        if (el.style.opacity !== '0.5') el.style.opacity = '';
-      });
-    }
-  });
 </script>
 
 </body>
