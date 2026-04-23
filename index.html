@@ -4,8 +4,8 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <script>document.documentElement.classList.add('js');</script>
-<title>Medico — Your Pocket SR</title>
-<meta name="description" content="Medico gives Indian PG residents instant access to IAP protocols, weight-based dose calculators, rounds prep, and differential diagnosis — built for the ward, not the exam hall.">
+<title>ResidencyBuddy — Your Pocket SR</title>
+<meta name="description" content="ResidencyBuddy is the unapologetic sidekick for Indian PG residents — IAP protocols, weight-based dose calcs, rounds prep, and differentials, zero PDF scavenger hunts. Built for the ward, not the exam hall.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=IBM+Plex+Mono:wght@400;500&family=Plus+Jakarta+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
@@ -816,6 +816,7 @@
   }
 
   .waitlist-inner h2 { margin-bottom: 0.75rem; }
+  .waitlist-inner h2 em .waitlist-rb-residency { color: var(--white); }
 
   .waitlist-inner .section-intro {
     max-width: 100%;
@@ -1004,6 +1005,7 @@
   /* ── MOBILE ── */
   @media (max-width: 768px) {
     nav { padding: 1rem 1.25rem; }
+    .logo-text { font-size: 1.05rem; letter-spacing: -0.02em; }
     .nav-links { display: none; }
     .hero { padding: 7rem 1.25rem 4rem; }
     .hero-form { flex-direction: column; }
@@ -1031,7 +1033,7 @@
       <rect x="12" y="4" width="8" height="24" rx="2" fill="#00C2A0"/>
       <rect x="22" y="14" width="8" height="4" rx="2" fill="#00C2A0" opacity="0.7"/>
     </svg>
-    <span class="logo-text">medi<span>co</span></span>
+    <span class="logo-text">Residency<span>Buddy</span></span>
   </a>
   <ul class="nav-links">
     <li><a href="#problem">The Problem</a></li>
@@ -1063,7 +1065,7 @@
   <h1>You know the answer.<br><em>You just can't find it</em><br>fast enough.</h1>
 
   <p class="hero-sub">
-    Medico gives Indian PG residents <strong>instant protocol access, weight-based dose calculators, and rounds prep</strong> — built for the ward, not the exam hall.
+    ResidencyBuddy is for Indian PG residents who are done tab-hopping at 2 AM — <strong>instant protocol access, weight-based dose calculators, and rounds prep</strong> — built for the ward, not the exam hall.
   </p>
 
   <form class="hero-form" id="heroForm">
@@ -1071,7 +1073,7 @@
     <input type="email" placeholder="Enter your email" required id="heroEmail" autocomplete="email">
     <button type="submit" class="btn-primary">Get Early Access</button>
   </form>
-  <p class="hero-note">FREE · No spam · Be among the first residents to use Medico</p>
+  <p class="hero-note">FREE · No spam · Be among the first residents to break in ResidencyBuddy</p>
 </div>
 
 <!-- STATS BAR -->
@@ -1157,7 +1159,7 @@
 
 <!-- FEATURES -->
 <section id="features">
-  <div class="section-tag">What Medico does</div>
+  <div class="section-tag">What ResidencyBuddy does</div>
   <h2>Everything you need.<br><em>In under 10 seconds.</em></h2>
   <p class="section-intro">Four tools that replace a Google search, a PDF hunt, a calculator, and a nervous guess.</p>
 
@@ -1279,7 +1281,7 @@
     <div class="trust-grid">
       <div class="trust-text">
         <p>The IAP Standard Treatment Guidelines, AIIMS PICU protocols, and WHO guidelines are already the gold standard — they just live inside PDF files nobody has time to read in full during a duty shift.</p>
-        <p>Medico doesn't rewrite them. We <strong>make them findable in 2 taps</strong>, show you what's clinically relevant for your patient's exact scenario, and keep the source attribution visible on every screen.</p>
+        <p>ResidencyBuddy doesn't rewrite them. We <strong>make them findable in 2 taps</strong>, show you what's clinically relevant for your patient's exact scenario, and keep the source attribution visible on every screen — so nobody can accuse you of winging it.</p>
         <p>When a consultant asks how you know something, you can say <strong>"IAP STG 2022, Chapter 138."</strong> Not "I saw it on an app."</p>
 
         <div class="doc-preview" style="margin-top: 1.5rem;">
@@ -1392,7 +1394,7 @@
 <div class="waitlist-section" id="waitlist">
   <div class="waitlist-inner">
     <div class="section-tag" style="justify-content:center;">Join the waitlist</div>
-    <h2>Be the first resident<br><em>to use Medico.</em></h2>
+    <h2>Be the first resident<br><em>to run <span class="waitlist-rb-residency">Residency</span>Buddy.</em></h2>
     <p class="section-intro">We're building this with residents, not for them. Tell us your branch, your role, and what you wish you had during your last duty. We're reading every response.</p>
 
     <form class="waitlist-form" id="waitlistForm">
@@ -1468,14 +1470,14 @@
 
 <!-- FOOTER -->
 <footer>
-  <div class="footer-logo">medi<span>co</span></div>
+  <div class="footer-logo">Residency<span>Buddy</span></div>
   <p>Built by doctors who know what it's like to blank during rounds. Grounded in IAP, AIIMS, and WHO protocols. Made for Indian PG residents.</p>
   <ul class="footer-links">
     <li><a href="#problem">The Problem</a></li>
     <li><a href="#features">Features</a></li>
     <li><a href="#waitlist">Join Waitlist</a></li>
   </ul>
-  <p class="footer-mono">© 2026 Medico · Building the pocket SR · India</p>
+  <p class="footer-mono">© 2026 ResidencyBuddy · Building the pocket SR · India</p>
 </footer>
 
 <script>
