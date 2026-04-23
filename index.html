@@ -1484,16 +1484,36 @@
   const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
   // Hero form quick capture
-  document.getElementById('heroForm').addEventListener('submit', function(e) {
+  document.getElementById('heroForm').addEventListener('submit', async function(e) {
     e.preventDefault();
-    const email = document.getElementById('heroEmail').value;
+    const email = document.getElementById('heroEmail').value.trim();
+    const heroBtn = e.currentTarget.querySelector('button[type="submit"]');
+    try {
+      const res = await fetch('https://formspree.io/f/xpqkkppe', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email })
+      });
+      if (!res.ok) throw new Error();
+    } catch {
+      let heroErr = document.getElementById('heroFormError');
+      if (!heroErr) {
+        heroErr = document.createElement('p');
+        heroErr.id = 'heroFormError';
+        heroErr.setAttribute('role', 'alert');
+        heroBtn.insertAdjacentElement('afterend', heroErr);
+      }
+      heroErr.textContent = 'Something went wrong — please try again.';
+      return;
+    }
+    const oldHeroErr = document.getElementById('heroFormError');
+    if (oldHeroErr) oldHeroErr.remove();
     document.getElementById('femail').value = email;
     document.getElementById('waitlist').scrollIntoView({ behavior: reducedMotion ? 'auto' : 'smooth' });
     setTimeout(() => document.getElementById('fname').focus(), reducedMotion ? 0 : 700);
   });
 
-  // Waitlist submit
-  document.getElementById('waitlistForm').addEventListener('submit', function(e) {
+  async function handleSubmit(e) {
     e.preventDefault();
     const name = document.getElementById('fname').value.trim();
     const email = document.getElementById('femail').value.trim();
@@ -1502,9 +1522,30 @@
       document.getElementById('femail').style.borderColor = !email ? '#E84545' : '';
       return;
     }
-    // Here you'd POST to your form handler (Formspree, custom backend, etc.)
-    // fetch('https://formspree.io/f/YOUR_FORM_ID', { method:'POST', body: new FormData(this) })
-
+    document.getElementById('fname').style.borderColor = '';
+    document.getElementById('femail').style.borderColor = '';
+    const existingErr = document.getElementById('waitlistFormError');
+    if (existingErr) existingErr.remove();
+    const role = document.getElementById('frole').value;
+    const branch = document.getElementById('fbranch').value;
+    const hospital = document.getElementById('fhospital').value.trim();
+    const suggestion = document.getElementById('fsuggestion').value.trim();
+    const submitBtn = document.getElementById('waitlistForm').querySelector('.form-submit');
+    try {
+      const res = await fetch('https://formspree.io/f/xpqkkppe', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name, email, role, branch, hospital, suggestion })
+      });
+      if (!res.ok) throw new Error();
+    } catch {
+      const errEl = document.createElement('p');
+      errEl.id = 'waitlistFormError';
+      errEl.setAttribute('role', 'alert');
+      errEl.textContent = 'Something went wrong — please try again.';
+      submitBtn.insertAdjacentElement('afterend', errEl);
+      return;
+    }
     const form = document.getElementById('waitlistForm');
     const successState = document.getElementById('successState');
     Array.from(form.children).forEach(el => {
@@ -1513,7 +1554,10 @@
       }
     });
     successState.style.display = 'block';
-  });
+  }
+
+  // Waitlist submit
+  document.getElementById('waitlistForm').addEventListener('submit', handleSubmit);
 
   // Counter animation
   function animateCounters() {
