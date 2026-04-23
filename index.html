@@ -1479,9 +1479,13 @@
 
     // Show success state
     const form = document.getElementById('waitlistForm');
-    const inputs = form.querySelectorAll('input, select, textarea, button');
-    inputs.forEach(el => el.style.display = 'none');
-    document.getElementById('successState').style.display = 'block';
+    const successState = document.getElementById('successState');
+    Array.from(form.children).forEach(el => {
+      if (el !== successState) {
+        el.style.display = 'none';
+      }
+    });
+    successState.style.display = 'block';
   }
 
   // Counter animation
