@@ -1,2 +1,1 @@
-# medico_app
-#
+# ResidencyBuddy
