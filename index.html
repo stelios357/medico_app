@@ -1487,7 +1487,7 @@
   // Counter animation
   function animateCounters() {
     document.querySelectorAll('[data-target]').forEach(el => {
-      const target = parseInt(el.dataset.target);
+      const target = parseInt(el.dataset.target, 10);
       const suffix = el.dataset.suffix || '%';
       const prefix = el.dataset.prefix || '';
       if (target === 0) {
