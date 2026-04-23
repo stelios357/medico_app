@@ -1,0 +1,1565 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Medico — Your Pocket SR</title>
+<meta name="description" content="Medico gives Indian PG residents instant access to IAP protocols, weight-based dose calculators, rounds prep, and differential diagnosis — built for the ward, not the exam hall.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=IBM+Plex+Mono:wght@400;500&family=Plus+Jakarta+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  
+  :root {
+    --bg: #080c10;
+    --bg2: #0d1218;
+    --bg3: #111820;
+    --teal: #00C2A0;
+    --teal-dim: rgba(0,194,160,0.12);
+    --teal-mid: rgba(0,194,160,0.3);
+    --red: #E84545;
+    --amber: #F5A623;
+    --white: #F0F4F8;
+    --muted: #5A6A7A;
+    --subtle: #1E2A38;
+    --border: rgba(255,255,255,0.07);
+    --serif: 'DM Serif Display', serif;
+    --mono: 'IBM Plex Mono', monospace;
+    --sans: 'Plus Jakarta Sans', sans-serif;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--white);
+    font-family: var(--sans);
+    font-size: 16px;
+    line-height: 1.6;
+    overflow-x: hidden;
+  }
+
+  /* ── NOISE OVERLAY ── */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 0;
+    opacity: 0.6;
+  }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 100;
+    padding: 1.1rem 2.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: rgba(8,12,16,0.85);
+    backdrop-filter: blur(16px);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .logo {
+    display: flex;
+    align-items: center;
+    gap: 0.65rem;
+    text-decoration: none;
+  }
+
+  .logo-mark {
+    width: 32px;
+    height: 32px;
+    position: relative;
+  }
+
+  .logo-text {
+    font-family: var(--serif);
+    font-size: 1.4rem;
+    color: var(--white);
+    letter-spacing: -0.01em;
+  }
+
+  .logo-text span { color: var(--teal); }
+
+  .nav-links {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+    list-style: none;
+  }
+
+  .nav-links a {
+    color: var(--muted);
+    text-decoration: none;
+    font-size: 0.875rem;
+    font-weight: 500;
+    letter-spacing: 0.02em;
+    transition: color 0.2s;
+  }
+
+  .nav-links a:hover { color: var(--white); }
+
+  .nav-cta {
+    background: var(--teal);
+    color: #080c10 !important;
+    padding: 0.5rem 1.25rem;
+    border-radius: 6px;
+    font-weight: 600 !important;
+    transition: opacity 0.2s !important;
+  }
+
+  .nav-cta:hover { opacity: 0.88; }
+
+  /* ── HERO ── */
+  .hero {
+    position: relative;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 8rem 2rem 5rem;
+    overflow: hidden;
+  }
+
+  /* ECG SVG background */
+  .ecg-bg {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+    opacity: 0.18;
+  }
+
+  .ecg-line {
+    stroke: var(--teal);
+    stroke-width: 1.5;
+    fill: none;
+    stroke-dasharray: 2000;
+    stroke-dashoffset: 2000;
+    animation: drawECG 3s ease forwards 0.5s;
+  }
+
+  @keyframes drawECG {
+    to { stroke-dashoffset: 0; }
+  }
+
+  /* Radial glow */
+  .hero::after {
+    content: '';
+    position: absolute;
+    top: 40%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 700px;
+    height: 700px;
+    background: radial-gradient(circle, rgba(0,194,160,0.07) 0%, transparent 70%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .hero-badge {
+    position: relative;
+    z-index: 1;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: var(--teal-dim);
+    border: 1px solid var(--teal-mid);
+    border-radius: 100px;
+    padding: 0.35rem 1rem;
+    font-family: var(--mono);
+    font-size: 0.75rem;
+    color: var(--teal);
+    letter-spacing: 0.06em;
+    margin-bottom: 2rem;
+    opacity: 0;
+    animation: fadeUp 0.6s ease forwards 0.2s;
+  }
+
+  .badge-dot {
+    width: 6px;
+    height: 6px;
+    background: var(--teal);
+    border-radius: 50%;
+    animation: pulse 1.5s ease-in-out infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.4; transform: scale(0.85); }
+  }
+
+  .hero h1 {
+    position: relative;
+    z-index: 1;
+    font-family: var(--serif);
+    font-size: clamp(2.6rem, 6vw, 5rem);
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+    max-width: 820px;
+    margin-bottom: 1.5rem;
+    opacity: 0;
+    animation: fadeUp 0.7s ease forwards 0.4s;
+  }
+
+  .hero h1 em {
+    font-style: italic;
+    color: var(--teal);
+  }
+
+  .hero-sub {
+    position: relative;
+    z-index: 1;
+    font-size: 1.15rem;
+    color: rgba(240,244,248,0.65);
+    max-width: 560px;
+    font-weight: 300;
+    line-height: 1.75;
+    margin-bottom: 3rem;
+    opacity: 0;
+    animation: fadeUp 0.7s ease forwards 0.6s;
+  }
+
+  .hero-sub strong {
+    color: var(--white);
+    font-weight: 500;
+  }
+
+  .hero-form {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    gap: 0.75rem;
+    width: 100%;
+    max-width: 460px;
+    margin-bottom: 1.25rem;
+    opacity: 0;
+    animation: fadeUp 0.7s ease forwards 0.8s;
+  }
+
+  .hero-form input {
+    flex: 1;
+    background: rgba(255,255,255,0.06);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 0.85rem 1.1rem;
+    color: var(--white);
+    font-family: var(--sans);
+    font-size: 0.9rem;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+
+  .hero-form input::placeholder { color: var(--muted); }
+  .hero-form input:focus { border-color: var(--teal-mid); }
+
+  .btn-primary {
+    background: var(--teal);
+    color: #080c10;
+    border: none;
+    border-radius: 8px;
+    padding: 0.85rem 1.5rem;
+    font-family: var(--sans);
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: opacity 0.2s, transform 0.15s;
+  }
+
+  .btn-primary:hover { opacity: 0.88; transform: translateY(-1px); }
+  .btn-primary:active { transform: translateY(0); }
+
+  .hero-note {
+    position: relative;
+    z-index: 1;
+    font-family: var(--mono);
+    font-size: 0.72rem;
+    color: var(--muted);
+    letter-spacing: 0.03em;
+    opacity: 0;
+    animation: fadeUp 0.6s ease forwards 1s;
+  }
+
+  /* ── STATS BAR ── */
+  .stats-bar {
+    position: relative;
+    z-index: 1;
+    background: var(--bg2);
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    padding: 2.5rem 2rem;
+  }
+
+  .stats-inner {
+    max-width: 900px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1rem;
+    text-align: center;
+  }
+
+  .stat-item {
+    padding: 0 1rem;
+    border-right: 1px solid var(--border);
+  }
+
+  .stat-item:last-child { border-right: none; }
+
+  .stat-num {
+    font-family: var(--serif);
+    font-size: 2.4rem;
+    color: var(--teal);
+    display: block;
+    line-height: 1;
+    margin-bottom: 0.35rem;
+  }
+
+  .stat-label {
+    font-size: 0.8rem;
+    color: var(--muted);
+    letter-spacing: 0.03em;
+    line-height: 1.4;
+  }
+
+  /* ── SECTION LAYOUT ── */
+  section {
+    position: relative;
+    z-index: 1;
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 6rem 2rem;
+  }
+
+  .section-tag {
+    font-family: var(--mono);
+    font-size: 0.72rem;
+    color: var(--teal);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .section-tag::before {
+    content: '';
+    display: inline-block;
+    width: 24px;
+    height: 1px;
+    background: var(--teal);
+  }
+
+  h2 {
+    font-family: var(--serif);
+    font-size: clamp(2rem, 4vw, 3rem);
+    line-height: 1.15;
+    letter-spacing: -0.02em;
+    margin-bottom: 1.25rem;
+  }
+
+  h2 em { font-style: italic; color: var(--teal); }
+
+  .section-intro {
+    color: rgba(240,244,248,0.6);
+    font-size: 1.05rem;
+    max-width: 540px;
+    font-weight: 300;
+    line-height: 1.8;
+  }
+
+  /* ── PROBLEM SECTION ── */
+  .problem-section {
+    background: var(--bg2);
+    padding: 0;
+  }
+
+  .problem-inner {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 6rem 2rem;
+  }
+
+  .problem-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+    align-items: center;
+    margin-top: 3.5rem;
+  }
+
+  .problem-text p {
+    color: rgba(240,244,248,0.65);
+    line-height: 1.9;
+    font-weight: 300;
+    margin-bottom: 1.25rem;
+  }
+
+  .problem-text p strong {
+    color: var(--white);
+    font-weight: 500;
+  }
+
+  .rounds-timeline {
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 2rem;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .rounds-timeline::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 3px;
+    background: linear-gradient(to bottom, transparent, var(--teal), transparent);
+    opacity: 0.4;
+  }
+
+  .tl-header {
+    font-family: var(--mono);
+    font-size: 0.7rem;
+    color: var(--muted);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: 1.5rem;
+  }
+
+  .tl-item {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 1.1rem;
+    align-items: flex-start;
+  }
+
+  .tl-time {
+    font-family: var(--mono);
+    font-size: 0.72rem;
+    color: var(--teal);
+    white-space: nowrap;
+    padding-top: 0.15rem;
+    min-width: 52px;
+  }
+
+  .tl-content {
+    font-size: 0.88rem;
+    line-height: 1.5;
+  }
+
+  .tl-name {
+    color: var(--white);
+    font-weight: 500;
+  }
+
+  .tl-q {
+    color: var(--muted);
+    font-size: 0.82rem;
+    margin-top: 0.15rem;
+  }
+
+  .tl-stress {
+    display: inline-block;
+    margin-top: 0.3rem;
+    background: rgba(232,69,69,0.12);
+    border: 1px solid rgba(232,69,69,0.25);
+    color: #E84545;
+    font-family: var(--mono);
+    font-size: 0.65rem;
+    padding: 0.2rem 0.5rem;
+    border-radius: 4px;
+    letter-spacing: 0.06em;
+  }
+
+  /* ── FEATURES ── */
+  .features-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.25rem;
+    margin-top: 3.5rem;
+  }
+
+  .feat-card {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 2rem;
+    transition: border-color 0.3s, transform 0.2s;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .feat-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, var(--teal-dim) 0%, transparent 60%);
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+
+  .feat-card:hover {
+    border-color: rgba(0,194,160,0.3);
+    transform: translateY(-2px);
+  }
+
+  .feat-card:hover::before { opacity: 1; }
+
+  .feat-card.featured {
+    grid-column: span 2;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+    align-items: center;
+    background: var(--bg3);
+    border-color: rgba(0,194,160,0.2);
+  }
+
+  .feat-icon {
+    width: 44px;
+    height: 44px;
+    background: var(--teal-dim);
+    border: 1px solid var(--teal-mid);
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 1.25rem;
+  }
+
+  .feat-icon svg { width: 20px; height: 20px; stroke: var(--teal); }
+
+  .feat-num {
+    font-family: var(--mono);
+    font-size: 0.68rem;
+    color: var(--teal);
+    letter-spacing: 0.1em;
+    margin-bottom: 0.5rem;
+  }
+
+  .feat-card h3 {
+    font-family: var(--serif);
+    font-size: 1.35rem;
+    margin-bottom: 0.75rem;
+    line-height: 1.3;
+  }
+
+  .feat-card p {
+    color: rgba(240,244,248,0.55);
+    font-size: 0.9rem;
+    line-height: 1.75;
+    font-weight: 300;
+  }
+
+  .feat-card p strong {
+    color: rgba(240,244,248,0.85);
+    font-weight: 500;
+  }
+
+  .feat-preview {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 1.25rem;
+    font-family: var(--mono);
+    font-size: 0.78rem;
+  }
+
+  .fp-label {
+    color: var(--muted);
+    font-size: 0.65rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: 0.75rem;
+  }
+
+  .fp-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.5rem 0;
+    border-bottom: 1px solid var(--border);
+    font-size: 0.78rem;
+  }
+
+  .fp-row:last-child { border-bottom: none; }
+
+  .fp-question { color: rgba(240,244,248,0.7); }
+  .fp-answer { color: var(--teal); font-weight: 500; }
+
+  .feat-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-top: 1.25rem;
+  }
+
+  .tag {
+    font-family: var(--mono);
+    font-size: 0.68rem;
+    background: rgba(255,255,255,0.05);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 0.25rem 0.6rem;
+    color: var(--muted);
+    letter-spacing: 0.04em;
+  }
+
+  /* ── TRUST SECTION ── */
+  .trust-section {
+    background: var(--bg2);
+    padding: 0;
+  }
+
+  .trust-inner {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 6rem 2rem;
+  }
+
+  .trust-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+    align-items: center;
+    margin-top: 3.5rem;
+  }
+
+  .source-cards {
+    display: flex;
+    flex-direction: column;
+    gap: 0.85rem;
+  }
+
+  .source-card {
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 1rem 1.25rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .source-logo {
+    width: 40px;
+    height: 40px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--mono);
+    font-size: 0.65rem;
+    font-weight: 500;
+    flex-shrink: 0;
+    letter-spacing: 0.03em;
+  }
+
+  .source-logo.iap { background: rgba(0,194,160,0.15); color: var(--teal); }
+  .source-logo.aiims { background: rgba(245,166,35,0.15); color: var(--amber); }
+  .source-logo.who { background: rgba(74,144,226,0.15); color: #4A90E2; }
+
+  .source-info h4 { font-size: 0.88rem; font-weight: 500; margin-bottom: 0.15rem; }
+  .source-info p { font-size: 0.78rem; color: var(--muted); }
+
+  .source-badge {
+    margin-left: auto;
+    font-family: var(--mono);
+    font-size: 0.62rem;
+    background: rgba(0,194,160,0.1);
+    color: var(--teal);
+    border: 1px solid rgba(0,194,160,0.2);
+    border-radius: 4px;
+    padding: 0.2rem 0.5rem;
+    letter-spacing: 0.04em;
+  }
+
+  .trust-text p {
+    color: rgba(240,244,248,0.6);
+    font-weight: 300;
+    line-height: 1.9;
+    margin-bottom: 1.25rem;
+    font-size: 1.05rem;
+  }
+
+  .trust-text p strong {
+    color: var(--white);
+    font-weight: 500;
+  }
+
+  .doc-preview {
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+  }
+
+  .doc-topbar {
+    background: var(--bg2);
+    border-bottom: 1px solid var(--border);
+    padding: 0.75rem 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-family: var(--mono);
+    font-size: 0.7rem;
+    color: var(--muted);
+  }
+
+  .doc-topbar-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--teal); flex-shrink: 0; }
+
+  .doc-content {
+    padding: 1.25rem;
+  }
+
+  .doc-row {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.8rem;
+    padding: 0.45rem 0;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .doc-row:last-child { border-bottom: none; }
+  .doc-key { color: var(--muted); }
+  .doc-val { color: var(--white); font-weight: 500; }
+  .doc-val.warn { color: var(--red); }
+  .doc-val.ok { color: var(--teal); }
+  .doc-val.caution { color: var(--amber); }
+
+  /* ── BRANCHES ── */
+  .branches-row {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 1rem;
+    margin-top: 3rem;
+  }
+
+  .branch-card {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 1.5rem 1rem;
+    text-align: center;
+  }
+
+  .branch-card.active {
+    border-color: rgba(0,194,160,0.35);
+    background: var(--bg3);
+  }
+
+  .branch-icon {
+    font-size: 1.6rem;
+    margin-bottom: 0.6rem;
+    display: block;
+  }
+
+  .branch-name {
+    font-size: 0.82rem;
+    font-weight: 500;
+    color: var(--white);
+    margin-bottom: 0.25rem;
+  }
+
+  .branch-status {
+    font-family: var(--mono);
+    font-size: 0.62rem;
+    letter-spacing: 0.06em;
+  }
+
+  .branch-status.launching { color: var(--teal); }
+  .branch-status.soon { color: var(--muted); }
+
+  /* ── WAITLIST SECTION ── */
+  .waitlist-section {
+    background: var(--bg);
+    padding: 0;
+  }
+
+  .waitlist-inner {
+    max-width: 680px;
+    margin: 0 auto;
+    padding: 7rem 2rem;
+    text-align: center;
+  }
+
+  .waitlist-inner h2 { margin-bottom: 0.75rem; }
+
+  .waitlist-inner .section-intro {
+    max-width: 100%;
+    margin: 0 auto 3rem;
+    text-align: center;
+  }
+
+  .waitlist-form {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 2.5rem;
+    text-align: left;
+  }
+
+  .form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    margin-bottom: 1rem;
+  }
+
+  .form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+    margin-bottom: 1rem;
+  }
+
+  .form-group label {
+    font-size: 0.78rem;
+    font-weight: 500;
+    color: rgba(240,244,248,0.7);
+    letter-spacing: 0.02em;
+  }
+
+  .form-group input,
+  .form-group select,
+  .form-group textarea {
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 0.75rem 1rem;
+    color: var(--white);
+    font-family: var(--sans);
+    font-size: 0.9rem;
+    outline: none;
+    transition: border-color 0.2s;
+    width: 100%;
+  }
+
+  .form-group input::placeholder,
+  .form-group textarea::placeholder { color: var(--muted); }
+
+  .form-group input:focus,
+  .form-group select:focus,
+  .form-group textarea:focus { border-color: var(--teal-mid); }
+
+  .form-group select option { background: var(--bg3); }
+
+  .form-group textarea {
+    resize: vertical;
+    min-height: 110px;
+    line-height: 1.6;
+  }
+
+  .form-submit {
+    width: 100%;
+    background: var(--teal);
+    color: #080c10;
+    border: none;
+    border-radius: 10px;
+    padding: 1rem;
+    font-family: var(--sans);
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    margin-top: 0.5rem;
+    transition: opacity 0.2s, transform 0.15s;
+    letter-spacing: 0.01em;
+  }
+
+  .form-submit:hover { opacity: 0.88; transform: translateY(-1px); }
+  .form-submit:active { transform: translateY(0); }
+
+  .success-state {
+    display: none;
+    text-align: center;
+    padding: 2rem 0;
+  }
+
+  .success-icon {
+    width: 56px;
+    height: 56px;
+    background: var(--teal-dim);
+    border: 1px solid var(--teal-mid);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 1.25rem;
+  }
+
+  .success-icon svg { width: 24px; height: 24px; stroke: var(--teal); }
+
+  .success-state h3 {
+    font-family: var(--serif);
+    font-size: 1.5rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .success-state p { color: var(--muted); font-size: 0.9rem; }
+
+  /* ── FOOTER ── */
+  footer {
+    background: var(--bg2);
+    border-top: 1px solid var(--border);
+    padding: 3rem 2.5rem;
+    text-align: center;
+  }
+
+  .footer-logo {
+    font-family: var(--serif);
+    font-size: 1.3rem;
+    margin-bottom: 0.75rem;
+    color: var(--white);
+  }
+
+  .footer-logo span { color: var(--teal); }
+
+  footer p {
+    color: var(--muted);
+    font-size: 0.82rem;
+    line-height: 1.7;
+    max-width: 480px;
+    margin: 0 auto;
+  }
+
+  .footer-links {
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+    margin-top: 1.5rem;
+    list-style: none;
+  }
+
+  .footer-links a {
+    font-size: 0.8rem;
+    color: var(--muted);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+
+  .footer-links a:hover { color: var(--teal); }
+
+  .footer-mono {
+    font-family: var(--mono);
+    font-size: 0.68rem;
+    color: rgba(90,106,122,0.5);
+    margin-top: 2rem;
+    letter-spacing: 0.05em;
+  }
+
+  /* ── ANIMATIONS ── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(18px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .reveal {
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity 0.65s ease, transform 0.65s ease;
+  }
+
+  .reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* ── MOBILE ── */
+  @media (max-width: 768px) {
+    nav { padding: 1rem 1.25rem; }
+    .nav-links { display: none; }
+    .hero { padding: 7rem 1.25rem 4rem; }
+    .hero-form { flex-direction: column; }
+    .stats-inner { grid-template-columns: repeat(2, 1fr); }
+    .stat-item { border-right: none; padding: 0.5rem; }
+    .problem-grid, .trust-grid { grid-template-columns: 1fr; gap: 2rem; }
+    .features-grid { grid-template-columns: 1fr; }
+    .feat-card.featured { grid-column: 1; display: block; }
+    .branches-row { grid-template-columns: repeat(3, 1fr); }
+    .form-row { grid-template-columns: 1fr; }
+    section { padding: 4rem 1.25rem; }
+    .waitlist-form { padding: 1.75rem 1.25rem; }
+    .problem-inner, .trust-inner { padding: 4rem 1.25rem; }
+  }
+</style>
+</head>
+
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="logo">
+    <svg class="logo-mark" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <rect x="2" y="12" width="8" height="8" rx="2" fill="#00C2A0" opacity="0.7"/>
+      <rect x="12" y="4" width="8" height="24" rx="2" fill="#00C2A0"/>
+      <rect x="22" y="14" width="8" height="4" rx="2" fill="#00C2A0" opacity="0.7"/>
+    </svg>
+    <span class="logo-text">medi<span>co</span></span>
+  </a>
+  <ul class="nav-links">
+    <li><a href="#problem">The Problem</a></li>
+    <li><a href="#features">Features</a></li>
+    <li><a href="#guidelines">Guidelines</a></li>
+    <li><a href="#waitlist" class="nav-cta">Join Waitlist</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <svg class="ecg-bg" viewBox="0 0 1440 400" preserveAspectRatio="none">
+    <path class="ecg-line" d="
+      M0,200 L80,200 L100,200 L115,100 L130,300 L145,200 L200,200
+      L280,200 L300,200 L315,100 L330,300 L345,200 L400,200
+      L480,200 L500,200 L515,100 L530,300 L545,200 L600,200
+      L680,200 L700,200 L715,100 L730,300 L745,200 L800,200
+      L880,200 L900,200 L915,100 L930,300 L945,200 L1000,200
+      L1080,200 L1100,200 L1115,100 L1130,300 L1145,200 L1200,200
+      L1280,200 L1300,200 L1315,100 L1330,300 L1345,200 L1440,200
+    "/>
+  </svg>
+
+  <div class="hero-badge">
+    <span class="badge-dot"></span>
+    LAUNCHING SOON — PEDIATRICS FIRST
+  </div>
+
+  <h1>You know the answer.<br><em>You just can't find it</em><br>fast enough.</h1>
+
+  <p class="hero-sub">
+    Medico gives Indian PG residents <strong>instant protocol access, weight-based dose calculators, and rounds prep</strong> — built for the ward, not the exam hall.
+  </p>
+
+  <form class="hero-form" id="heroForm">
+    <input type="email" placeholder="Enter your email" required id="heroEmail">
+    <button type="submit" class="btn-primary">Get Early Access</button>
+  </form>
+  <p class="hero-note">FREE · No spam · Be among the first residents to use Medico</p>
+</div>
+
+<!-- STATS BAR -->
+<div class="stats-bar">
+  <div class="stats-inner">
+    <div class="stat-item">
+      <span class="stat-num" data-target="90">0</span>
+      <span class="stat-label">% of residents feel anxious<br>before rounds</span>
+    </div>
+    <div class="stat-item">
+      <span class="stat-num" data-target="7" data-suffix="–8">0</span>
+      <span class="stat-label">Google searches per duty<br>just to find protocols</span>
+    </div>
+    <div class="stat-item">
+      <span class="stat-num" data-target="100">0</span>
+      <span class="stat-label">% have been embarrassed<br>or stuck during rounds</span>
+    </div>
+    <div class="stat-item">
+      <span class="stat-num" data-target="0" data-prefix="₹" data-suffix="good protocol app">0</span>
+      <span class="stat-label">India-specific resident<br>apps that actually help</span>
+    </div>
+  </div>
+</div>
+
+<!-- PROBLEM -->
+<div class="problem-section" id="problem">
+  <div class="problem-inner">
+    <div class="section-tag">The reality</div>
+    <h2>Every morning is<br><em>a gauntlet.</em></h2>
+
+    <div class="problem-grid">
+      <div class="problem-text">
+        <p>You're a PG1. It's 7 AM. Before you've had tea, your JR2 arrives, then the SR, then two consultants — one of them very awake, very particular. Each one asks what you did for your patient and why.</p>
+        <p>The knowledge is there. The protocol is somewhere in a 40-page IAP PDF you opened on Google three nights ago. <strong>The dose is different for every child's weight.</strong> You do this math multiple times a shift.</p>
+        <p>No one taught you the steps. Your seniors teach experience. <strong>The bookish language is yours to figure out.</strong> You're in a new hospital, clueless about the PICU protocols. You manage 7–8 dengue cases, 3 pneumonias, a febrile seizure, and a neonatal jaundice — all in one duty.</p>
+        <p>And when rounds are over, there's no place to decompress. No one to tell. You carry it home.</p>
+      </div>
+
+      <div class="rounds-timeline">
+        <div class="tl-header">⚡ Morning Rounds — Ward 4, Pediatrics</div>
+        <div class="tl-item">
+          <span class="tl-time">07:05</span>
+          <div class="tl-content">
+            <div class="tl-name">JR2 arrives</div>
+            <div class="tl-q">"What's the HCT trend on Bed 6?"</div>
+          </div>
+        </div>
+        <div class="tl-item">
+          <span class="tl-time">07:45</span>
+          <div class="tl-content">
+            <div class="tl-name">SR on round</div>
+            <div class="tl-q">"Which group is this dengue? What fluid rate did you start?"</div>
+            <span class="tl-stress">HIGH STRESS</span>
+          </div>
+        </div>
+        <div class="tl-item">
+          <span class="tl-time">08:30</span>
+          <div class="tl-content">
+            <div class="tl-name">Consultant A arrives</div>
+            <div class="tl-q">"What are the discharge criteria you're tracking?"</div>
+            <span class="tl-stress">VERY HIGH STRESS</span>
+          </div>
+        </div>
+        <div class="tl-item">
+          <span class="tl-time">09:15</span>
+          <div class="tl-content">
+            <div class="tl-name">Attending consultant</div>
+            <div class="tl-q">"Why this antibiotic? Walk me through your reasoning."</div>
+            <span class="tl-stress">MAXIMUM STRESS</span>
+          </div>
+        </div>
+        <div class="tl-item">
+          <span class="tl-time">10:30</span>
+          <div class="tl-content">
+            <div class="tl-name">Rounds end</div>
+            <div class="tl-q">Duty continues. No break. No debrief.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- FEATURES -->
+<section id="features">
+  <div class="section-tag">What Medico does</div>
+  <h2>Everything you need.<br><em>In under 10 seconds.</em></h2>
+  <p class="section-intro">Four tools that replace a Google search, a PDF hunt, a calculator, and a nervous guess.</p>
+
+  <div class="features-grid">
+
+    <!-- Featured: Rounds Prep -->
+    <div class="feat-card featured reveal">
+      <div>
+        <div class="feat-num">01 · HIGHEST REQUESTED FEATURE</div>
+        <div class="feat-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2"/>
+            <rect x="9" y="3" width="6" height="4" rx="1"/>
+            <path d="M9 12h6M9 16h4"/>
+          </svg>
+        </div>
+        <h3>Rounds Prep Mode</h3>
+        <p>Enter your patient's details — chief complaint, day of illness, current labs — and get <strong>the exact questions your consultant will ask, with the answers</strong>. Sourced from IAP and AIIMS protocols, not guesswork.</p>
+        <div class="feat-tags">
+          <span class="tag">AI-powered</span>
+          <span class="tag">IAP grounded</span>
+          <span class="tag">Pediatrics</span>
+          <span class="tag">Common mistakes</span>
+        </div>
+      </div>
+      <div class="feat-preview">
+        <div class="fp-label">Dengue · Day 4 · 7kg child · Platelets 60k ↓</div>
+        <div class="fp-row">
+          <span class="fp-question">Which group?</span>
+          <span class="fp-answer">Group B — warning signs</span>
+        </div>
+        <div class="fp-row">
+          <span class="fp-question">IV fluid rate to start?</span>
+          <span class="fp-answer">5–7 mL/kg/hr × 1–2 h</span>
+        </div>
+        <div class="fp-row">
+          <span class="fp-question">Next HCT check?</span>
+          <span class="fp-answer">2–4 hours post-fluid</span>
+        </div>
+        <div class="fp-row">
+          <span class="fp-question">Avoid saying?</span>
+          <span class="fp-answer" style="color:#F5A623">"Fluids as needed"</span>
+        </div>
+        <div class="fp-row">
+          <span class="fp-question">Discharge platelet threshold?</span>
+          <span class="fp-answer">&gt; 50,000 /mm³</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Protocol Cards -->
+    <div class="feat-card reveal">
+      <div class="feat-num">02</div>
+      <div class="feat-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+          <path d="M14 2v6h6M16 13H8M16 17H8M10 9H8"/>
+        </svg>
+      </div>
+      <h3>Protocol Cards</h3>
+      <p>IAP and AIIMS guidelines, transformed from 40-page PDFs into <strong>4-screen decision flows</strong>. Classify → Manage → Calculate → Discharge. 15 high-prevalence diseases to start.</p>
+      <div class="feat-tags">
+        <span class="tag">IAP STG 2022</span>
+        <span class="tag">AIIMS PICU</span>
+        <span class="tag">Offline access</span>
+        <span class="tag">Source linked</span>
+      </div>
+    </div>
+
+    <!-- Dose Calculator -->
+    <div class="feat-card reveal">
+      <div class="feat-num">03</div>
+      <div class="feat-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="4" y="2" width="16" height="20" rx="2"/>
+          <path d="M8 6h8M8 10h8M8 14h4"/>
+          <path d="M16 16l2 2 4-4" stroke-width="1.5"/>
+        </svg>
+      </div>
+      <h3>Weight-Based Dose & Fluid Calculator</h3>
+      <p>Enter weight → get <strong>real numbers, not tables</strong>. Drug doses, IV maintenance, dengue critical phase fluid rates, shock bolus volumes. Rounding guidance included.</p>
+      <div class="feat-tags">
+        <span class="tag">Holliday-Segar</span>
+        <span class="tag">Critical phase</span>
+        <span class="tag">Shock resus</span>
+        <span class="tag">Drug dosing</span>
+      </div>
+    </div>
+
+    <!-- Differential -->
+    <div class="feat-card reveal">
+      <div class="feat-num">04</div>
+      <div class="feat-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="11" cy="11" r="8"/>
+          <path d="m21 21-4.35-4.35"/>
+          <path d="M11 8v3l2 2"/>
+        </svg>
+      </div>
+      <h3>Symptom → Differential Engine</h3>
+      <p>Enter age + 3 symptoms. Get <strong>4–5 ranked differentials</strong>, rule-in/rule-out points for each, and a direct link to the protocol card. Built for real presentations, not textbook lists.</p>
+      <div class="feat-tags">
+        <span class="tag">Prevalence-ranked</span>
+        <span class="tag">Rule-out points</span>
+        <span class="tag">Protocol linked</span>
+        <span class="tag">Age-adjusted</span>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- GUIDELINES TRUST -->
+<div class="trust-section" id="guidelines">
+  <div class="trust-inner">
+    <div class="section-tag">Built on trust</div>
+    <h2>Your consultants trust<br><em>the source.</em> So do we.</h2>
+
+    <div class="trust-grid">
+      <div class="trust-text">
+        <p>The IAP Standard Treatment Guidelines, AIIMS PICU protocols, and WHO guidelines are already the gold standard — they just live inside PDF files nobody has time to read in full during a duty shift.</p>
+        <p>Medico doesn't rewrite them. We <strong>make them findable in 2 taps</strong>, show you what's clinically relevant for your patient's exact scenario, and keep the source attribution visible on every screen.</p>
+        <p>When a consultant asks how you know something, you can say <strong>"IAP STG 2022, Chapter 138."</strong> Not "I saw it on an app."</p>
+
+        <div class="doc-preview" style="margin-top: 1.5rem;">
+          <div class="doc-topbar">
+            <span class="doc-topbar-dot"></span>
+            Dengue in Children · IAP STG 2022 · Ch.138 · Group B
+          </div>
+          <div class="doc-content">
+            <div class="doc-row">
+              <span class="doc-key">HCT rise from baseline</span>
+              <span class="doc-val warn">≥20% — clinically significant</span>
+            </div>
+            <div class="doc-row">
+              <span class="doc-key">Platelet trend</span>
+              <span class="doc-val warn">Rapid decline — critical phase</span>
+            </div>
+            <div class="doc-row">
+              <span class="doc-key">IV fluid start</span>
+              <span class="doc-val ok">5–7 mL/kg/hr isotonic crystalloid</span>
+            </div>
+            <div class="doc-row">
+              <span class="doc-key">Reassess at</span>
+              <span class="doc-val caution">2–4 hours — recheck HCT</span>
+            </div>
+            <div class="doc-row">
+              <span class="doc-key">Discharge HCT target</span>
+              <span class="doc-val ok">38–40% or baseline</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <p style="font-size:0.82rem;color:var(--muted);margin-bottom:1rem;font-family:var(--mono);letter-spacing:0.05em;">CONTENT SOURCED FROM</p>
+        <div class="source-cards">
+          <div class="source-card">
+            <div class="source-logo iap">IAP</div>
+            <div class="source-info">
+              <h4>Indian Academy of Pediatrics</h4>
+              <p>Standard Treatment Guidelines 2022 · 150+ diseases</p>
+            </div>
+            <span class="source-badge">ACTIVE</span>
+          </div>
+          <div class="source-card">
+            <div class="source-logo aiims">AIIMS</div>
+            <div class="source-info">
+              <h4>AIIMS PICU / NICU Protocols</h4>
+              <p>Critical care, neonatal, and emergency protocols</p>
+            </div>
+            <span class="source-badge">ACTIVE</span>
+          </div>
+          <div class="source-card">
+            <div class="source-logo who">WHO</div>
+            <div class="source-info">
+              <h4>WHO / CDC Guidelines</h4>
+              <p>Dengue, fever management, tropical diseases</p>
+            </div>
+            <span class="source-badge">ACTIVE</span>
+          </div>
+          <div class="source-card" style="opacity:0.5;">
+            <div class="source-logo" style="background:rgba(255,255,255,0.05);color:var(--muted);">FOGSI</div>
+            <div class="source-info">
+              <h4>FOGSI Guidelines</h4>
+              <p>OBGYN branch — coming in Phase 2</p>
+            </div>
+            <span class="source-badge" style="color:var(--muted);border-color:var(--border);background:transparent;">SOON</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- BRANCHES -->
+<section>
+  <div class="section-tag reveal">Roadmap</div>
+  <h2 class="reveal">Starting with <em>Pediatrics.</em><br>Built for every branch.</h2>
+  <p class="section-intro reveal">We're building branch by branch, with residents from each specialty shaping the content. Pediatrics launches first.</p>
+
+  <div class="branches-row">
+    <div class="branch-card active reveal">
+      <span class="branch-icon">🩺</span>
+      <div class="branch-name">Pediatrics</div>
+      <div class="branch-status launching">Launching</div>
+    </div>
+    <div class="branch-card reveal">
+      <span class="branch-icon">🤱</span>
+      <div class="branch-name">OBGYN</div>
+      <div class="branch-status soon">Phase 2</div>
+    </div>
+    <div class="branch-card reveal">
+      <span class="branch-icon">💊</span>
+      <div class="branch-name">Medicine</div>
+      <div class="branch-status soon">Phase 3</div>
+    </div>
+    <div class="branch-card reveal">
+      <span class="branch-icon">🔪</span>
+      <div class="branch-name">Surgery</div>
+      <div class="branch-status soon">Phase 3</div>
+    </div>
+    <div class="branch-card reveal">
+      <span class="branch-icon">🦴</span>
+      <div class="branch-name">Ortho & More</div>
+      <div class="branch-status soon">Coming</div>
+    </div>
+  </div>
+</section>
+
+<!-- WAITLIST -->
+<div class="waitlist-section" id="waitlist">
+  <div class="waitlist-inner">
+    <div class="section-tag" style="justify-content:center;">Join the waitlist</div>
+    <h2>Be the first resident<br><em>to use Medico.</em></h2>
+    <p class="section-intro">We're building this with residents, not for them. Tell us your branch, your role, and what you wish you had during your last duty. We're reading every response.</p>
+
+    <div class="waitlist-form" id="waitlistForm">
+
+      <div class="form-row">
+        <div class="form-group">
+          <label for="fname">Full name</label>
+          <input type="text" id="fname" placeholder="Dr. Your Name" required>
+        </div>
+        <div class="form-group">
+          <label for="femail">Email address</label>
+          <input type="email" id="femail" placeholder="you@hospital.com" required>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label for="frole">Your role</label>
+          <select id="frole">
+            <option value="">Select your year</option>
+            <option>Intern / House Officer</option>
+            <option>JR1 (PGY-1)</option>
+            <option>JR2 (PGY-2)</option>
+            <option>JR3 (PGY-3)</option>
+            <option>Senior Resident</option>
+            <option>Consultant / Attending</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="fbranch">Branch / Specialty</label>
+          <select id="fbranch">
+            <option value="">Select your branch</option>
+            <option>Pediatrics</option>
+            <option>Medicine</option>
+            <option>Surgery</option>
+            <option>OBGYN</option>
+            <option>Orthopedics</option>
+            <option>Anesthesia</option>
+            <option>Dermatology</option>
+            <option>Emergency Medicine</option>
+            <option>Other</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="fhospital">Hospital / Institution <span style="color:var(--muted);font-weight:400;">(optional)</span></label>
+        <input type="text" id="fhospital" placeholder="AIIMS, PGIMER, Your Govt. Hospital...">
+      </div>
+
+      <div class="form-group">
+        <label for="fsuggestion">What ONE feature would make you say "I need this app right now"?</label>
+        <textarea id="fsuggestion" placeholder="Be honest. What do you wish existed during your last duty?"></textarea>
+      </div>
+
+      <button type="button" class="form-submit" onclick="handleSubmit()">
+        Join the Waitlist — It's Free →
+      </button>
+
+      <div class="success-state" id="successState">
+        <div class="success-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M20 6L9 17l-5-5"/>
+          </svg>
+        </div>
+        <h3>You're on the list.</h3>
+        <p>We'll reach out when your branch is ready. We've noted your suggestion — it goes straight to the team.</p>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">medi<span>co</span></div>
+  <p>Built by doctors who know what it's like to blank during rounds. Grounded in IAP, AIIMS, and WHO protocols. Made for Indian PG residents.</p>
+  <ul class="footer-links">
+    <li><a href="#problem">The Problem</a></li>
+    <li><a href="#features">Features</a></li>
+    <li><a href="#waitlist">Join Waitlist</a></li>
+  </ul>
+  <p class="footer-mono">© 2026 Medico · Building the pocket SR · India</p>
+</footer>
+
+<script>
+  // Hero form quick capture
+  document.getElementById('heroForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    const email = document.getElementById('heroEmail').value;
+    document.getElementById('femail').value = email;
+    document.getElementById('waitlist').scrollIntoView({ behavior: 'smooth' });
+    setTimeout(() => document.getElementById('fname').focus(), 700);
+  });
+
+  // Waitlist submit
+  function handleSubmit() {
+    const name = document.getElementById('fname').value;
+    const email = document.getElementById('femail').value;
+    if (!name || !email) {
+      document.getElementById('fname').style.borderColor = !name ? '#E84545' : '';
+      document.getElementById('femail').style.borderColor = !email ? '#E84545' : '';
+      return;
+    }
+    // Here you'd POST to your form handler (Formspree, custom backend, etc.)
+    // fetch('https://formspree.io/f/YOUR_FORM_ID', { method:'POST', body: new FormData(...) })
+
+    // Show success state
+    const form = document.getElementById('waitlistForm');
+    const inputs = form.querySelectorAll('input, select, textarea, button');
+    inputs.forEach(el => el.style.display = 'none');
+    document.getElementById('successState').style.display = 'block';
+  }
+
+  // Counter animation
+  function animateCounters() {
+    document.querySelectorAll('[data-target]').forEach(el => {
+      const target = parseInt(el.dataset.target);
+      const suffix = el.dataset.suffix || '%';
+      const prefix = el.dataset.prefix || '';
+      if (target === 0) {
+        el.textContent = prefix + '0' + ' ' + suffix;
+        return;
+      }
+      let count = 0;
+      const step = Math.ceil(target / 40);
+      const timer = setInterval(() => {
+        count = Math.min(count + step, target);
+        el.textContent = prefix + count + (suffix.length < 3 ? suffix : '');
+        if (count >= target) clearInterval(timer);
+      }, 35);
+    });
+  }
+
+  // Intersection Observer for reveals + counter trigger
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+  const statsBar = document.querySelector('.stats-bar');
+  const statsObserver = new IntersectionObserver((entries) => {
+    if (entries[0].isIntersecting) {
+      animateCounters();
+      statsObserver.unobserve(statsBar);
+    }
+  }, { threshold: 0.4 });
+  statsObserver.observe(statsBar);
+
+  // Stagger reveal delays
+  document.querySelectorAll('.feat-card.reveal').forEach((el, i) => {
+    el.style.transitionDelay = (i * 0.08) + 's';
+  });
+  document.querySelectorAll('.branch-card.reveal').forEach((el, i) => {
+    el.style.transitionDelay = (i * 0.06) + 's';
+  });
+  document.querySelectorAll('.source-card').forEach((el, i) => {
+    el.style.opacity = '0';
+    el.style.transform = 'translateY(16px)';
+    el.style.transition = `opacity 0.5s ease ${i * 0.1}s, transform 0.5s ease ${i * 0.1}s`;
+  });
+
+  const trustObserver = new IntersectionObserver((entries) => {
+    if (entries[0].isIntersecting) {
+      document.querySelectorAll('.source-card').forEach(el => {
+        el.style.opacity = el.closest('.trust-grid') ? '' : '0.5';
+        el.style.transform = 'translateY(0)';
+      });
+      trustObserver.disconnect();
+    }
+  }, { threshold: 0.2 });
+  const trustSection = document.querySelector('.trust-section');
+  if (trustSection) trustObserver.observe(trustSection);
+
+  // Fix source card opacity for last one
+  document.querySelectorAll('.source-card').forEach(el => {
+    const parentStyle = el.getAttribute('style') || '';
+    if (!parentStyle.includes('opacity:0.5')) {
+      el.addEventListener('transitionend', () => {
+        if (el.style.opacity !== '0.5') el.style.opacity = '';
+      });
+    }
+  });
+</script>
+
+</body>
+</html>
