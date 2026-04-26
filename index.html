@@ -4,8 +4,8 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <script>document.documentElement.classList.add('js');</script>
-<title>ResidencyBuddy — Your Pocket SR</title>
-<meta name="description" content="ResidencyBuddy is the unapologetic sidekick for Indian PG residents — IAP protocols, weight-based dose calcs, rounds prep, and differentials, zero PDF scavenger hunts. Built for the ward, not the exam hall.">
+<title>PauseMD — Your Pocket SR</title>
+<meta name="description" content="PauseMD is the unapologetic sidekick for Indian PG residents — IAP protocols, weight-based dose calcs, rounds prep, and differentials, zero PDF scavenger hunts. Built for the ward, not the exam hall.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=IBM+Plex+Mono:wght@400;500&family=Plus+Jakarta+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
@@ -13,18 +13,19 @@
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
   
   :root {
-    --bg: #080c10;
-    --bg2: #0d1218;
-    --bg3: #111820;
-    --teal: #00C2A0;
-    --teal-dim: rgba(0,194,160,0.12);
-    --teal-mid: rgba(0,194,160,0.3);
-    --red: #E84545;
-    --amber: #F5A623;
-    --white: #F0F4F8;
-    --muted: #5A6A7A;
-    --subtle: #1E2A38;
-    --border: rgba(255,255,255,0.07);
+    --bg: #F7F4FF;
+    --bg2: #FFFFFF;
+    --bg3: #EEF6F4;
+    --teal: #0A9E88;
+    --teal-dim: rgba(10,158,136,0.10);
+    --teal-mid: rgba(10,158,136,0.28);
+    --red: #D94F4F;
+    --amber: #E8900A;
+    --text: #1A1F2E;
+    --white: #FFFFFF;
+    --muted: #6B7A8D;
+    --subtle: #E2EAF4;
+    --border: rgba(0,0,0,0.09);
     --serif: 'DM Serif Display', serif;
     --mono: 'IBM Plex Mono', monospace;
     --sans: 'Plus Jakarta Sans', sans-serif;
@@ -46,7 +47,7 @@
 
   body {
     background: var(--bg);
-    color: var(--white);
+    color: var(--text);
     font-family: var(--sans);
     font-size: 16px;
     line-height: 1.6;
@@ -61,7 +62,7 @@
     background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
     pointer-events: none;
     z-index: 0;
-    opacity: 0.6;
+    opacity: 0.25;
   }
 
   /* ── NAV ── */
@@ -75,7 +76,7 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    background: rgba(8,12,16,0.85);
+    background: rgba(247,244,255,0.90);
     backdrop-filter: blur(16px);
     border-bottom: 1px solid var(--border);
   }
@@ -96,7 +97,7 @@
   .logo-text {
     font-family: var(--serif);
     font-size: 1.4rem;
-    color: var(--white);
+    color: var(--text);
     letter-spacing: -0.01em;
   }
 
@@ -118,11 +119,11 @@
     transition: color 0.2s;
   }
 
-  .nav-links a:hover { color: var(--white); }
+  .nav-links a:hover { color: var(--text); }
 
   .nav-cta {
     background: var(--teal);
-    color: #080c10 !important;
+    color: var(--white) !important;
     padding: 0.5rem 1.25rem;
     border-radius: 6px;
     font-weight: 600 !important;
@@ -175,7 +176,7 @@
     transform: translate(-50%, -50%);
     width: 700px;
     height: 700px;
-    background: radial-gradient(circle, rgba(0,194,160,0.07) 0%, transparent 70%);
+    background: radial-gradient(circle, rgba(10,158,136,0.10) 0%, transparent 70%);
     pointer-events: none;
     z-index: 0;
   }
@@ -234,7 +235,7 @@
     position: relative;
     z-index: 1;
     font-size: 1.15rem;
-    color: rgba(240,244,248,0.65);
+    color: rgba(26,31,46,0.60);
     max-width: 560px;
     font-weight: 300;
     line-height: 1.75;
@@ -244,7 +245,7 @@
   }
 
   .hero-sub strong {
-    color: var(--white);
+    color: var(--text);
     font-weight: 500;
   }
 
@@ -262,23 +263,23 @@
 
   .hero-form input {
     flex: 1;
-    background: rgba(255,255,255,0.06);
+    background: rgba(255,255,255,0.85);
     border: 1px solid var(--border);
     border-radius: 8px;
     padding: 0.85rem 1.1rem;
-    color: var(--white);
+    color: var(--text);
     font-family: var(--sans);
     font-size: 0.9rem;
     outline: none;
     transition: border-color 0.2s;
   }
 
-  .hero-form input::placeholder { color: var(--muted); }
+  .hero-form input::placeholder { color: #8A9BB0; }
   .hero-form input:focus { border-color: var(--teal-mid); }
 
   .btn-primary {
     background: var(--teal);
-    color: #080c10;
+    color: var(--white);
     border: none;
     border-radius: 8px;
     padding: 0.85rem 1.5rem;
@@ -386,7 +387,7 @@
   h2 em { font-style: italic; color: var(--teal); }
 
   .section-intro {
-    color: rgba(240,244,248,0.6);
+    color: rgba(26,31,46,0.60);
     font-size: 1.05rem;
     max-width: 540px;
     font-weight: 300;
@@ -414,14 +415,14 @@
   }
 
   .problem-text p {
-    color: rgba(240,244,248,0.65);
+    color: rgba(26,31,46,0.65);
     line-height: 1.9;
     font-weight: 300;
     margin-bottom: 1.25rem;
   }
 
   .problem-text p strong {
-    color: var(--white);
+    color: var(--text);
     font-weight: 500;
   }
 
@@ -476,7 +477,7 @@
   }
 
   .tl-name {
-    color: var(--white);
+    color: var(--text);
     font-weight: 500;
   }
 
@@ -489,9 +490,9 @@
   .tl-stress {
     display: inline-block;
     margin-top: 0.3rem;
-    background: rgba(232,69,69,0.12);
-    border: 1px solid rgba(232,69,69,0.25);
-    color: #E84545;
+    background: rgba(217,79,79,0.10);
+    border: 1px solid rgba(217,79,79,0.22);
+    color: var(--red);
     font-family: var(--mono);
     font-size: 0.65rem;
     padding: 0.2rem 0.5rem;
@@ -527,7 +528,7 @@
   }
 
   .feat-card:hover {
-    border-color: rgba(0,194,160,0.3);
+    border-color: rgba(10,158,136,0.28);
     transform: translateY(-2px);
   }
 
@@ -540,7 +541,7 @@
     gap: 2rem;
     align-items: center;
     background: var(--bg3);
-    border-color: rgba(0,194,160,0.2);
+    border-color: rgba(10,158,136,0.20);
   }
 
   .feat-icon {
@@ -573,19 +574,19 @@
   }
 
   .feat-card p {
-    color: rgba(240,244,248,0.55);
+    color: rgba(26,31,46,0.60);
     font-size: 0.9rem;
     line-height: 1.75;
     font-weight: 300;
   }
 
   .feat-card p strong {
-    color: rgba(240,244,248,0.85);
+    color: rgba(26,31,46,0.85);
     font-weight: 500;
   }
 
   .feat-preview {
-    background: var(--bg);
+    background: #F0F9F7;
     border: 1px solid var(--border);
     border-radius: 12px;
     padding: 1.25rem;
@@ -612,7 +613,7 @@
 
   .fp-row:last-child { border-bottom: none; }
 
-  .fp-question { color: rgba(240,244,248,0.7); }
+  .fp-question { color: rgba(26,31,46,0.65); }
   .fp-answer { color: var(--teal); font-weight: 500; }
 
   .feat-tags {
@@ -625,7 +626,7 @@
   .tag {
     font-family: var(--mono);
     font-size: 0.68rem;
-    background: rgba(255,255,255,0.05);
+    background: rgba(0,0,0,0.04);
     border: 1px solid var(--border);
     border-radius: 4px;
     padding: 0.25rem 0.6rem;
@@ -660,7 +661,7 @@
   }
 
   .source-card {
-    background: var(--bg3);
+    background: var(--bg2);
     border: 1px solid var(--border);
     border-radius: 12px;
     padding: 1rem 1.25rem;
@@ -687,8 +688,8 @@
     letter-spacing: 0.03em;
   }
 
-  .source-logo.iap { background: rgba(0,194,160,0.15); color: var(--teal); }
-  .source-logo.aiims { background: rgba(245,166,35,0.15); color: var(--amber); }
+  .source-logo.iap { background: rgba(10,158,136,0.15); color: var(--teal); }
+  .source-logo.aiims { background: rgba(232,144,10,0.15); color: var(--amber); }
   .source-logo.who { background: rgba(74,144,226,0.15); color: #4A90E2; }
 
   .source-info h4 { font-size: 0.88rem; font-weight: 500; margin-bottom: 0.15rem; }
@@ -698,16 +699,16 @@
     margin-left: auto;
     font-family: var(--mono);
     font-size: 0.62rem;
-    background: rgba(0,194,160,0.1);
+    background: rgba(10,158,136,0.10);
     color: var(--teal);
-    border: 1px solid rgba(0,194,160,0.2);
+    border: 1px solid rgba(10,158,136,0.20);
     border-radius: 4px;
     padding: 0.2rem 0.5rem;
     letter-spacing: 0.04em;
   }
 
   .trust-text p {
-    color: rgba(240,244,248,0.6);
+    color: rgba(26,31,46,0.60);
     font-weight: 300;
     line-height: 1.9;
     margin-bottom: 1.25rem;
@@ -715,7 +716,7 @@
   }
 
   .trust-text p strong {
-    color: var(--white);
+    color: var(--text);
     font-weight: 500;
   }
 
@@ -754,7 +755,7 @@
 
   .doc-row:last-child { border-bottom: none; }
   .doc-key { color: var(--muted); }
-  .doc-val { color: var(--white); font-weight: 500; }
+  .doc-val { color: var(--text); font-weight: 500; }
   .doc-val.warn { color: var(--red); }
   .doc-val.ok { color: var(--teal); }
   .doc-val.caution { color: var(--amber); }
@@ -776,7 +777,7 @@
   }
 
   .branch-card.active {
-    border-color: rgba(0,194,160,0.35);
+    border-color: rgba(10,158,136,0.35);
     background: var(--bg3);
   }
 
@@ -789,7 +790,7 @@
   .branch-name {
     font-size: 0.82rem;
     font-weight: 500;
-    color: var(--white);
+    color: var(--text);
     margin-bottom: 0.25rem;
   }
 
@@ -804,7 +805,7 @@
 
   /* ── WAITLIST SECTION ── */
   .waitlist-section {
-    background: var(--bg);
+    background: var(--bg2);
     padding: 0;
   }
 
@@ -816,7 +817,7 @@
   }
 
   .waitlist-inner h2 { margin-bottom: 0.75rem; }
-  .waitlist-inner h2 em .waitlist-rb-residency { color: var(--white); }
+  .waitlist-inner h2 em .waitlist-brand { color: var(--text); }
 
   .waitlist-inner .section-intro {
     max-width: 100%;
@@ -849,18 +850,18 @@
   .form-group label {
     font-size: 0.78rem;
     font-weight: 500;
-    color: rgba(240,244,248,0.7);
+    color: rgba(26,31,46,0.70);
     letter-spacing: 0.02em;
   }
 
   .form-group input,
   .form-group select,
   .form-group textarea {
-    background: var(--bg3);
+    background: var(--bg2);
     border: 1px solid var(--border);
     border-radius: 8px;
     padding: 0.75rem 1rem;
-    color: var(--white);
+    color: var(--text);
     font-family: var(--sans);
     font-size: 0.9rem;
     outline: none;
@@ -875,7 +876,7 @@
   .form-group select:focus,
   .form-group textarea:focus { border-color: var(--teal-mid); }
 
-  .form-group select option { background: var(--bg3); }
+  .form-group select option { background: var(--bg2); }
 
   .form-group textarea {
     resize: vertical;
@@ -886,7 +887,7 @@
   .form-submit {
     width: 100%;
     background: var(--teal);
-    color: #080c10;
+    color: var(--white);
     border: none;
     border-radius: 10px;
     padding: 1rem;
@@ -932,7 +933,7 @@
 
   /* ── FOOTER ── */
   footer {
-    background: var(--bg2);
+    background: #1A1F2E;
     border-top: 1px solid var(--border);
     padding: 3rem 2.5rem;
     text-align: center;
@@ -948,7 +949,7 @@
   .footer-logo span { color: var(--teal); }
 
   footer p {
-    color: var(--muted);
+    color: #F0F4F8;
     font-size: 0.82rem;
     line-height: 1.7;
     max-width: 480px;
@@ -965,7 +966,7 @@
 
   .footer-links a {
     font-size: 0.8rem;
-    color: var(--muted);
+    color: #F0F4F8;
     text-decoration: none;
     transition: color 0.2s;
   }
@@ -975,7 +976,7 @@
   .footer-mono {
     font-family: var(--mono);
     font-size: 0.68rem;
-    color: rgba(90,106,122,0.5);
+    color: rgba(240,244,248,0.65);
     margin-top: 2rem;
     letter-spacing: 0.05em;
   }
@@ -1029,11 +1030,11 @@
 <nav>
   <a href="#" class="logo">
     <svg class="logo-mark" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <rect x="2" y="12" width="8" height="8" rx="2" fill="#00C2A0" opacity="0.7"/>
-      <rect x="12" y="4" width="8" height="24" rx="2" fill="#00C2A0"/>
-      <rect x="22" y="14" width="8" height="4" rx="2" fill="#00C2A0" opacity="0.7"/>
+      <rect x="2" y="12" width="8" height="8" rx="2" fill="#D94F4F" opacity="0.7"/>
+      <rect x="12" y="4" width="8" height="24" rx="2" fill="#D94F4F"/>
+      <rect x="22" y="14" width="8" height="4" rx="2" fill="#D94F4F" opacity="0.7"/>
     </svg>
-    <span class="logo-text">Residency<span>Buddy</span></span>
+    <span class="logo-text">Pause<span>MD</span></span>
   </a>
   <ul class="nav-links">
     <li><a href="#problem">The Problem</a></li>
@@ -1065,7 +1066,7 @@
   <h1>You know the answer.<br><em>You just can't find it</em><br>fast enough.</h1>
 
   <p class="hero-sub">
-    ResidencyBuddy is for Indian PG residents who are done tab-hopping at 2 AM — <strong>instant protocol access, weight-based dose calculators, and rounds prep</strong> — built for the ward, not the exam hall.
+    PauseMD is for Indian PG residents who are done tab-hopping at 2 AM — <strong>instant protocol access, weight-based dose calculators, and rounds prep</strong> — built for the ward, not the exam hall.
   </p>
 
   <form class="hero-form" id="heroForm">
@@ -1073,7 +1074,7 @@
     <input type="email" placeholder="Enter your email" required id="heroEmail" autocomplete="email">
     <button type="submit" class="btn-primary">Get Early Access</button>
   </form>
-  <p class="hero-note">FREE · No spam · Be among the first residents to break in ResidencyBuddy</p>
+  <p class="hero-note">FREE · No spam · Be among the first residents to break in PauseMD</p>
 </div>
 
 <!-- STATS BAR -->
@@ -1159,7 +1160,7 @@
 
 <!-- FEATURES -->
 <section id="features">
-  <div class="section-tag">What ResidencyBuddy does</div>
+  <div class="section-tag">What PauseMD does</div>
   <h2>Everything you need.<br><em>In under 10 seconds.</em></h2>
   <p class="section-intro">Four tools that replace a Google search, a PDF hunt, a calculator, and a nervous guess.</p>
 
@@ -1201,7 +1202,7 @@
         </div>
         <div class="fp-row">
           <span class="fp-question">Avoid saying?</span>
-          <span class="fp-answer" style="color:#F5A623">"Fluids as needed"</span>
+          <span class="fp-answer" style="color:#E8900A">"Fluids as needed"</span>
         </div>
         <div class="fp-row">
           <span class="fp-question">Discharge platelet threshold?</span>
@@ -1281,7 +1282,7 @@
     <div class="trust-grid">
       <div class="trust-text">
         <p>The IAP Standard Treatment Guidelines, AIIMS PICU protocols, and WHO guidelines are already the gold standard — they just live inside PDF files nobody has time to read in full during a duty shift.</p>
-        <p>ResidencyBuddy doesn't rewrite them. We <strong>make them findable in 2 taps</strong>, show you what's clinically relevant for your patient's exact scenario, and keep the source attribution visible on every screen — so nobody can accuse you of winging it.</p>
+        <p>PauseMD doesn't rewrite them. We <strong>make them findable in 2 taps</strong>, show you what's clinically relevant for your patient's exact scenario, and keep the source attribution visible on every screen — so nobody can accuse you of winging it.</p>
         <p>When a consultant asks how you know something, you can say <strong>"IAP STG 2022, Chapter 138."</strong> Not "I saw it on an app."</p>
 
         <div class="doc-preview" style="margin-top: 1.5rem;">
@@ -1342,7 +1343,7 @@
             <span class="source-badge">ACTIVE</span>
           </div>
           <div class="source-card source-card--dim">
-            <div class="source-logo" style="background:rgba(255,255,255,0.05);color:var(--muted);">FOGSI</div>
+            <div class="source-logo" style="background:rgba(0,0,0,0.04);color:var(--muted);">FOGSI</div>
             <div class="source-info">
               <h4>FOGSI Guidelines</h4>
               <p>OBGYN branch — coming in Phase 2</p>
@@ -1394,7 +1395,7 @@
 <div class="waitlist-section" id="waitlist">
   <div class="waitlist-inner">
     <div class="section-tag" style="justify-content:center;">Join the waitlist</div>
-    <h2>Be the first resident<br><em>to run <span class="waitlist-rb-residency">Residency</span>Buddy.</em></h2>
+    <h2>Be the first resident<br><em>to run <span class="waitlist-brand">Pause</span>MD.</em></h2>
     <p class="section-intro">We're building this with residents, not for them. Tell us your branch, your role, and what you wish you had during your last duty. We're reading every response.</p>
 
     <form class="waitlist-form" id="waitlistForm">
@@ -1470,14 +1471,14 @@
 
 <!-- FOOTER -->
 <footer>
-  <div class="footer-logo">Residency<span>Buddy</span></div>
+  <div class="footer-logo">Pause<span>MD</span></div>
   <p>Built by doctors who know what it's like to blank during rounds. Grounded in IAP, AIIMS, and WHO protocols. Made for Indian PG residents.</p>
   <ul class="footer-links">
     <li><a href="#problem">The Problem</a></li>
     <li><a href="#features">Features</a></li>
     <li><a href="#waitlist">Join Waitlist</a></li>
   </ul>
-  <p class="footer-mono">© 2026 ResidencyBuddy · Building the pocket SR · India</p>
+  <p class="footer-mono">© 2026 PauseMD · Building the pocket SR · India</p>
 </footer>
 
 <script>
