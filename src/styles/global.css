@@ -1587,7 +1587,7 @@ footer p { color: #F0F4F8; font-size: 0.82rem; line-height: 1.7; max-width: 480p
   .calc-teaser-widget { padding: 1.25rem; border-radius: 14px; }
   .teaser-cards { grid-template-columns: 1fr; }
   .teaser-cta { margin-top: 1rem; gap: 0.5rem; width: 100%; }
-  .teaser-cta .btn-primary { max-width: 100%; min-width: 0; box-sizing: border-box; }
+  .teaser-cta .btn-primary { max-width: 100%; min-width: 0; }
 
   /* Storyboard */
   .storyboard { grid-template-columns: 1fr; }
