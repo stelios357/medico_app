@@ -218,26 +218,39 @@ export default function Landing() {
   const featuresRef = useRef(null);
   const waitlistRef = useRef(null);
 
-  // GA4: fire "section_view" once per section when it scrolls into view
+  // GA4: fire "section_view" once per section when it scrolls into view.
+  // Observers are registered only after the first scroll so the Hero section
+  // (which is immediately visible on page load) does not fire without interaction.
   useEffect(() => {
-    const sections = [
-      { ref: heroRef, name: 'Hero' },
-      { ref: featuresRef, name: 'Features' },
-      { ref: waitlistRef, name: 'Waitlist' },
-    ];
-    const observers = sections.map(({ ref, name }) => {
-      const el = ref.current;
-      if (!el) return null;
-      const obs = new IntersectionObserver((entries) => {
-        if (entries[0].isIntersecting) {
-          trackEvent('section_view', { section_name: name });
-          obs.disconnect();
-        }
-      }, { threshold: 0.2 });
-      obs.observe(el);
-      return obs;
-    });
-    return () => observers.forEach(obs => obs?.disconnect());
+    let observers = [];
+
+    const registerObservers = () => {
+      const sections = [
+        { ref: heroRef, name: 'Hero' },
+        { ref: featuresRef, name: 'Features' },
+        { ref: waitlistRef, name: 'Waitlist' },
+      ];
+      observers = sections.map(({ ref, name }) => {
+        const el = ref.current;
+        if (!el) return null;
+        const obs = new IntersectionObserver((entries) => {
+          if (entries[0].isIntersecting) {
+            trackEvent('section_view', { section_name: name });
+            obs.disconnect();
+          }
+        }, { threshold: 0.2 });
+        obs.observe(el);
+        return obs;
+      });
+    };
+
+    // { once: true } auto-removes the listener after first scroll
+    window.addEventListener('scroll', registerObservers, { once: true, passive: true });
+
+    return () => {
+      window.removeEventListener('scroll', registerObservers);
+      observers.forEach(obs => obs?.disconnect());
+    };
   }, []);
 
   // Source card animation
