@@ -1839,6 +1839,8 @@ const IAP_COUNT = IAP_GUIDELINES.length;
 document.querySelectorAll('.iap-protocol-count').forEach(el => { el.textContent = IAP_COUNT; });
 const _statCountEl = document.getElementById('stat-iap-count');
 if (_statCountEl) _statCountEl.dataset.target = IAP_COUNT;
+const _metaDesc = document.querySelector('meta[name="description"]');
+if (_metaDesc) _metaDesc.setAttribute('content', _metaDesc.getAttribute('content').replace(/\d+ IAP Standard Treatment Guidelines/, IAP_COUNT + ' IAP Standard Treatment Guidelines'));
 
 // ─────────────────────────────────────────────────────────────────────────────
 // FUZZY SEARCH ENGINE
