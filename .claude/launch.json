@@ -5,8 +5,7 @@
       "name": "pausemd",
       "runtimeExecutable": "npm",
       "runtimeArgs": ["run", "dev"],
-      "port": 3131,
-      "autoPort": true
+      "port": 3131
     }
   ]
 }
