@@ -611,7 +611,7 @@ export default function Landing() {
               ))}
             </div>
             <div className="teaser-cta">
-              <Link to="/calc" className="btn-primary" onClick={() => navigate('/calc')} style={{ position: 'relative', zIndex: 1 }}>
+              <Link to="/calc" className="btn-primary" style={{ position: 'relative', zIndex: 1 }}>
                 Open Full Calculator — All 30+ Drugs
               </Link>
               <span className="teaser-note">Free · No login · Works offline</span>
