@@ -6,6 +6,7 @@ import WeightInput from '../components/DoseCalc/WeightInput.jsx';
 import DrugCard from '../components/DoseCalc/DrugCard.jsx';
 import { DRUGS } from '../components/DoseCalc/drugsData.js';
 import { IAP_GUIDELINES, IAP_COUNT, POPULAR_SEARCHES } from '../data/iapGuidelines.js';
+import { trackEvent } from '../analytics.js';
 
 // ── Fuzzy search engine ──────────────────────────────────────────────────────
 function editDist(a, b) {
@@ -212,6 +213,33 @@ export default function Landing() {
   const c2 = useCounter(90, statsVisible);
   const c3 = useCounter(7, statsVisible);
 
+  // Refs for section_view GA4 tracking
+  const heroRef = useRef(null);
+  const featuresRef = useRef(null);
+  const waitlistRef = useRef(null);
+
+  // GA4: fire "section_view" once per section when it scrolls into view
+  useEffect(() => {
+    const sections = [
+      { ref: heroRef, name: 'Hero' },
+      { ref: featuresRef, name: 'Features' },
+      { ref: waitlistRef, name: 'Waitlist' },
+    ];
+    const observers = sections.map(({ ref, name }) => {
+      const el = ref.current;
+      if (!el) return null;
+      const obs = new IntersectionObserver((entries) => {
+        if (entries[0].isIntersecting) {
+          trackEvent('section_view', { section_name: name });
+          obs.disconnect();
+        }
+      }, { threshold: 0.2 });
+      obs.observe(el);
+      return obs;
+    });
+    return () => observers.forEach(obs => obs?.disconnect());
+  }, []);
+
   // Source card animation
   const sourceRef = useRef(null);
   useEffect(() => {
@@ -248,6 +276,8 @@ export default function Landing() {
         body: JSON.stringify(payload),
       });
       if (!res.ok) throw new Error();
+      // GA4: user successfully joined the waitlist
+      trackEvent('waitlist_signup');
       setSubmitted(true);
     } catch {
       // ignore — form still shows
@@ -262,7 +292,7 @@ export default function Landing() {
       <Nav />
 
       {/* ── HERO ── */}
-      <div className="hero">
+      <div className="hero" ref={heroRef}>
         <svg className="ecg-bg" viewBox="0 0 1440 400" preserveAspectRatio="none">
           <path className="ecg-line" d="M0,200 L80,200 L100,200 L115,100 L130,300 L145,200 L200,200 L280,200 L300,200 L315,100 L330,300 L345,200 L400,200 L480,200 L500,200 L515,100 L530,300 L545,200 L600,200 L680,200 L700,200 L715,100 L730,300 L745,200 L800,200 L880,200 L900,200 L915,100 L930,300 L945,200 L1000,200 L1080,200 L1100,200 L1115,100 L1130,300 L1145,200 L1200,200 L1280,200 L1300,200 L1315,100 L1330,300 L1345,200 L1440,200" />
         </svg>
@@ -279,14 +309,17 @@ export default function Landing() {
         </p>
 
         <div className="hero-actions">
-          <a href="#protocols" className="btn-primary" onClick={e => { e.preventDefault(); document.getElementById('protocols')?.scrollIntoView({ behavior: 'smooth' }); }}>
+          {/* GA4: cta_click — search protocols button */}
+          <a href="#protocols" className="btn-primary" onClick={e => { e.preventDefault(); trackEvent('cta_click', { label: 'search_protocols' }); document.getElementById('protocols')?.scrollIntoView({ behavior: 'smooth' }); }}>
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
             Search {IAP_COUNT} IAP Protocols
           </a>
-          <Link to="/calc" className="btn-primary" style={{ background: 'transparent', border: '1.5px solid var(--teal)', color: 'var(--teal)' }}>
+          {/* GA4: cta_click — emergency dose calc hero button */}
+          <Link to="/calc" className="btn-primary" style={{ background: 'transparent', border: '1.5px solid var(--teal)', color: 'var(--teal)' }} onClick={() => trackEvent('cta_click', { label: 'emergency_dose_calc' })}>
             ⚡ Emergency Dose Calc
           </Link>
-          <a href="#waitlist" className="btn-secondary" onClick={e => { e.preventDefault(); document.getElementById('waitlist')?.scrollIntoView({ behavior: 'smooth' }); }}>
+          {/* GA4: cta_click — get notified / scroll to waitlist */}
+          <a href="#waitlist" className="btn-secondary" onClick={e => { e.preventDefault(); trackEvent('cta_click', { label: 'get_notified' }); document.getElementById('waitlist')?.scrollIntoView({ behavior: 'smooth' }); }}>
             Get notified when the app launches →
           </a>
         </div>
@@ -497,7 +530,7 @@ export default function Landing() {
       </div>
 
       {/* ── FEATURES ── */}
-      <section id="features">
+      <section id="features" ref={featuresRef}>
         <div className="section-tag reveal" ref={r[6]}>What PauseMD does</div>
         <h2 className="reveal" ref={r[7]}>Everything you need.<br /><em>In under 10 seconds.</em></h2>
         <p className="section-intro reveal" ref={r[8]}>Four tools. Zero PDF hunts.</p>
@@ -555,7 +588,8 @@ export default function Landing() {
               <span className="tag">Max doses enforced</span>
               <span className="tag">Offline</span>
             </div>
-            <Link to="/calc" className="btn-primary" style={{ marginTop: '1.25rem', display: 'inline-flex', padding: '0.65rem 1.25rem', fontSize: '0.88rem', position: 'relative', zIndex: 1 }}>
+            {/* GA4: cta_click — try dose calc inside features card */}
+            <Link to="/calc" className="btn-primary" style={{ marginTop: '1.25rem', display: 'inline-flex', padding: '0.65rem 1.25rem', fontSize: '0.88rem', position: 'relative', zIndex: 1 }} onClick={() => trackEvent('cta_click', { label: 'try_dose_calc' })}>
               Try Dose Calc →
             </Link>
           </div>
@@ -611,7 +645,8 @@ export default function Landing() {
               ))}
             </div>
             <div className="teaser-cta">
-              <Link to="/calc" className="btn-primary" style={{ position: 'relative', zIndex: 1 }}>
+              {/* GA4: cta_click — open full calculator from teaser widget */}
+              <Link to="/calc" className="btn-primary" style={{ position: 'relative', zIndex: 1 }} onClick={() => trackEvent('cta_click', { label: 'open_full_calculator' })}>
                 Open Full Calculator — All 30+ Drugs
               </Link>
               <span className="teaser-note">Free · No login · Works offline</span>
@@ -676,7 +711,7 @@ export default function Landing() {
       </section>
 
       {/* ── WAITLIST ── */}
-      <div className="waitlist-section" id="waitlist">
+      <div className="waitlist-section" id="waitlist" ref={waitlistRef}>
         <div className="waitlist-inner">
           <div className="section-tag" style={{ justifyContent: 'center' }}>Join the waitlist</div>
           <h2>Be the first resident<br /><em>to run <span style={{ color: 'var(--text)' }}>Pause</span>MD.</em></h2>
