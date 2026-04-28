@@ -5,13 +5,13 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <script>document.documentElement.classList.add('js');</script>
 <title>PauseMD — Your Pocket SR</title>
-<meta name="description" content="PauseMD is the unapologetic sidekick for Indian PG residents — IAP protocols, weight-based dose calcs, rounds prep, and differentials, zero PDF scavenger hunts. Built for the ward, not the exam hall.">
+<meta name="description" content="Search 150 IAP Standard Treatment Guidelines instantly. PauseMD is the clinical sidekick for Indian PG residents — protocols, dose calculators, rounds prep. No login. No PDF hunting.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=IBM+Plex+Mono:wght@400;500&family=Plus+Jakarta+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-  
+
   :root {
     --bg: #F7F4FF;
     --bg2: #FFFFFF;
@@ -35,9 +35,7 @@
 
   @media (prefers-reduced-motion: reduce) {
     html:focus-within { scroll-behavior: auto; }
-    *,
-    *::before,
-    *::after {
+    *, *::before, *::after {
       animation-duration: 0.01ms !important;
       animation-iteration-count: 1 !important;
       transition-duration: 0.01ms !important;
@@ -68,9 +66,7 @@
   /* ── NAV ── */
   nav {
     position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
+    top: 0; left: 0; right: 0;
     z-index: 100;
     padding: 1.1rem 2.5rem;
     display: flex;
@@ -88,11 +84,7 @@
     text-decoration: none;
   }
 
-  .logo-mark {
-    width: 32px;
-    height: 32px;
-    position: relative;
-  }
+  .logo-mark { width: 32px; height: 32px; position: relative; }
 
   .logo-text {
     font-family: var(--serif);
@@ -121,6 +113,21 @@
 
   .nav-links a:hover { color: var(--text); }
 
+  .nav-live {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    color: var(--teal) !important;
+    font-weight: 600 !important;
+  }
+
+  .nav-live-dot {
+    width: 6px; height: 6px;
+    background: var(--teal);
+    border-radius: 50%;
+    animation: pulse 1.5s ease-in-out infinite;
+  }
+
   .nav-cta {
     background: var(--teal);
     color: var(--white) !important;
@@ -145,7 +152,6 @@
     overflow: hidden;
   }
 
-  /* ECG SVG background */
   .ecg-bg {
     position: absolute;
     inset: 0;
@@ -163,19 +169,14 @@
     animation: drawECG 3s ease forwards 0.5s;
   }
 
-  @keyframes drawECG {
-    to { stroke-dashoffset: 0; }
-  }
+  @keyframes drawECG { to { stroke-dashoffset: 0; } }
 
-  /* Radial glow */
   .hero::after {
     content: '';
     position: absolute;
-    top: 40%;
-    left: 50%;
+    top: 40%; left: 50%;
     transform: translate(-50%, -50%);
-    width: 700px;
-    height: 700px;
+    width: 700px; height: 700px;
     background: radial-gradient(circle, rgba(10,158,136,0.10) 0%, transparent 70%);
     pointer-events: none;
     z-index: 0;
@@ -201,8 +202,7 @@
   }
 
   .badge-dot {
-    width: 6px;
-    height: 6px;
+    width: 6px; height: 6px;
     background: var(--teal);
     border-radius: 50%;
     animation: pulse 1.5s ease-in-out infinite;
@@ -226,10 +226,7 @@
     animation: fadeUp 0.7s ease forwards 0.4s;
   }
 
-  .hero h1 em {
-    font-style: italic;
-    color: var(--teal);
-  }
+  .hero h1 em { font-style: italic; color: var(--teal); }
 
   .hero-sub {
     position: relative;
@@ -239,60 +236,59 @@
     max-width: 560px;
     font-weight: 300;
     line-height: 1.75;
-    margin-bottom: 3rem;
+    margin-bottom: 2.5rem;
     opacity: 0;
     animation: fadeUp 0.7s ease forwards 0.6s;
   }
 
-  .hero-sub strong {
-    color: var(--text);
-    font-weight: 500;
-  }
+  .hero-sub strong { color: var(--text); font-weight: 500; }
 
-  .hero-form {
+  .hero-actions {
     position: relative;
     z-index: 1;
     display: flex;
-    gap: 0.75rem;
-    width: 100%;
-    max-width: 460px;
-    margin-bottom: 1.25rem;
+    align-items: center;
+    gap: 1.25rem;
+    margin-bottom: 1.5rem;
     opacity: 0;
     animation: fadeUp 0.7s ease forwards 0.8s;
+    flex-wrap: wrap;
+    justify-content: center;
   }
-
-  .hero-form input {
-    flex: 1;
-    background: rgba(255,255,255,0.85);
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    padding: 0.85rem 1.1rem;
-    color: var(--text);
-    font-family: var(--sans);
-    font-size: 0.9rem;
-    outline: none;
-    transition: border-color 0.2s;
-  }
-
-  .hero-form input::placeholder { color: #8A9BB0; }
-  .hero-form input:focus { border-color: var(--teal-mid); }
 
   .btn-primary {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
     background: var(--teal);
     color: var(--white);
     border: none;
-    border-radius: 8px;
-    padding: 0.85rem 1.5rem;
+    border-radius: 10px;
+    padding: 0.95rem 1.75rem;
     font-family: var(--sans);
-    font-size: 0.9rem;
+    font-size: 1rem;
     font-weight: 600;
     cursor: pointer;
+    text-decoration: none;
     white-space: nowrap;
     transition: opacity 0.2s, transform 0.15s;
+    letter-spacing: -0.01em;
   }
 
   .btn-primary:hover { opacity: 0.88; transform: translateY(-1px); }
   .btn-primary:active { transform: translateY(0); }
+
+  .btn-secondary {
+    color: var(--muted);
+    font-size: 0.88rem;
+    font-weight: 500;
+    text-decoration: none;
+    padding-bottom: 1px;
+    border-bottom: 1px solid transparent;
+    transition: color 0.2s, border-color 0.2s;
+  }
+
+  .btn-secondary:hover { color: var(--text); border-bottom-color: var(--text); }
 
   .hero-note {
     position: relative;
@@ -304,6 +300,226 @@
     opacity: 0;
     animation: fadeUp 0.6s ease forwards 1s;
   }
+
+  /* ── SEARCH SECTION ── */
+  .search-section {
+    background: var(--bg2);
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    position: relative;
+    z-index: 1;
+  }
+
+  .search-inner {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 5rem 2rem;
+  }
+
+  .search-header {
+    text-align: center;
+    margin-bottom: 2.5rem;
+  }
+
+  .search-meta {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    margin-top: 1rem;
+    font-family: var(--mono);
+    font-size: 0.68rem;
+    color: var(--muted);
+    letter-spacing: 0.06em;
+    flex-wrap: wrap;
+  }
+
+  .search-meta-dot {
+    width: 5px; height: 5px;
+    background: var(--teal);
+    border-radius: 50%;
+    display: inline-block;
+    margin-right: 0.35rem;
+    animation: pulse 2s ease-in-out infinite;
+  }
+
+  .search-box {
+    position: relative;
+    margin-bottom: 0.75rem;
+  }
+
+  .search-box-icon {
+    position: absolute;
+    left: 1.1rem;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 20px; height: 20px;
+    stroke: var(--teal);
+    opacity: 0.65;
+    pointer-events: none;
+    flex-shrink: 0;
+  }
+
+  .search-input {
+    width: 100%;
+    background: #fff;
+    border: 2px solid var(--teal-mid);
+    border-radius: 12px;
+    padding: 1.1rem 1.25rem 1.1rem 3.25rem;
+    font-size: 1.05rem;
+    font-family: var(--sans);
+    color: var(--text);
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+    box-shadow: 0 4px 20px rgba(10,158,136,0.08);
+  }
+
+  .search-input::placeholder { color: #8A9BB0; }
+
+  .search-input:focus {
+    border-color: var(--teal);
+    box-shadow: 0 4px 32px rgba(10,158,136,0.16);
+  }
+
+  .search-results {
+    background: #fff;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.07);
+  }
+
+  .search-result-item {
+    display: flex;
+    align-items: center;
+    padding: 0.9rem 1.25rem;
+    border-bottom: 1px solid var(--border);
+    gap: 1rem;
+    text-decoration: none;
+    color: var(--text);
+    transition: background 0.15s;
+  }
+
+  .search-result-item:last-child { border-bottom: none; }
+  .search-result-item:hover { background: rgba(10,158,136,0.05); }
+
+  .result-ch {
+    font-family: var(--mono);
+    font-size: 0.63rem;
+    color: var(--teal);
+    min-width: 52px;
+    letter-spacing: 0.05em;
+    background: var(--teal-dim);
+    border: 1px solid var(--teal-mid);
+    border-radius: 4px;
+    padding: 0.2rem 0.5rem;
+    text-align: center;
+    flex-shrink: 0;
+  }
+
+  .result-name {
+    flex: 1;
+    font-size: 0.9rem;
+    font-weight: 500;
+    line-height: 1.4;
+  }
+
+  .result-name mark {
+    background: rgba(10,158,136,0.15);
+    color: var(--teal);
+    border-radius: 2px;
+    padding: 0 1px;
+  }
+
+  .result-open {
+    font-family: var(--mono);
+    font-size: 0.63rem;
+    color: var(--teal);
+    letter-spacing: 0.05em;
+    border: 1px solid var(--teal-mid);
+    padding: 0.28rem 0.6rem;
+    border-radius: 4px;
+    background: var(--teal-dim);
+    flex-shrink: 0;
+    white-space: nowrap;
+    transition: background 0.15s, color 0.15s, border-color 0.15s;
+  }
+
+  .search-result-item:hover .result-open {
+    background: var(--teal);
+    color: #fff;
+    border-color: var(--teal);
+  }
+
+  .search-popular-label {
+    font-family: var(--mono);
+    font-size: 0.65rem;
+    color: var(--muted);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: 0.85rem;
+    text-align: center;
+  }
+
+  .search-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    justify-content: center;
+    padding: 1.75rem 1.5rem;
+  }
+
+  .search-chip {
+    font-size: 0.82rem;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 100px;
+    padding: 0.35rem 0.9rem;
+    color: var(--text);
+    cursor: pointer;
+    transition: background 0.15s, border-color 0.15s, color 0.15s;
+    font-family: var(--sans);
+    font-weight: 500;
+  }
+
+  .search-chip:hover {
+    background: var(--teal-dim);
+    border-color: var(--teal-mid);
+    color: var(--teal);
+  }
+
+  .search-no-results {
+    padding: 2.25rem 1.5rem;
+    text-align: center;
+  }
+
+  .search-no-results p {
+    color: var(--muted);
+    font-size: 0.88rem;
+    line-height: 1.8;
+  }
+
+  .search-no-results strong {
+    color: var(--text);
+    font-family: var(--mono);
+    font-size: 0.82rem;
+  }
+
+  .search-source-note {
+    text-align: center;
+    margin-top: 1rem;
+    font-family: var(--mono);
+    font-size: 0.65rem;
+    color: var(--muted);
+    letter-spacing: 0.05em;
+  }
+
+  .search-source-note a {
+    color: var(--teal);
+    text-decoration: none;
+  }
+
+  .search-source-note a:hover { text-decoration: underline; }
 
   /* ── STATS BAR ── */
   .stats-bar {
@@ -371,10 +587,11 @@
   .section-tag::before {
     content: '';
     display: inline-block;
-    width: 24px;
-    height: 1px;
+    width: 24px; height: 1px;
     background: var(--teal);
   }
+
+  .section-tag.no-line::before { display: none; }
 
   h2 {
     font-family: var(--serif);
@@ -395,10 +612,7 @@
   }
 
   /* ── PROBLEM SECTION ── */
-  .problem-section {
-    background: var(--bg2);
-    padding: 0;
-  }
+  .problem-section { background: var(--bg2); padding: 0; }
 
   .problem-inner {
     max-width: 1100px;
@@ -421,10 +635,7 @@
     margin-bottom: 1.25rem;
   }
 
-  .problem-text p strong {
-    color: var(--text);
-    font-weight: 500;
-  }
+  .problem-text p strong { color: var(--text); font-weight: 500; }
 
   .rounds-timeline {
     background: var(--bg3);
@@ -438,9 +649,7 @@
   .rounds-timeline::before {
     content: '';
     position: absolute;
-    left: 0;
-    top: 0;
-    bottom: 0;
+    left: 0; top: 0; bottom: 0;
     width: 3px;
     background: linear-gradient(to bottom, transparent, var(--teal), transparent);
     opacity: 0.4;
@@ -471,21 +680,9 @@
     min-width: 52px;
   }
 
-  .tl-content {
-    font-size: 0.88rem;
-    line-height: 1.5;
-  }
-
-  .tl-name {
-    color: var(--text);
-    font-weight: 500;
-  }
-
-  .tl-q {
-    color: var(--muted);
-    font-size: 0.82rem;
-    margin-top: 0.15rem;
-  }
+  .tl-content { font-size: 0.88rem; line-height: 1.5; }
+  .tl-name { color: var(--text); font-weight: 500; }
+  .tl-q { color: var(--muted); font-size: 0.82rem; margin-top: 0.15rem; }
 
   .tl-stress {
     display: inline-block;
@@ -527,11 +724,7 @@
     transition: opacity 0.3s;
   }
 
-  .feat-card:hover {
-    border-color: rgba(10,158,136,0.28);
-    transform: translateY(-2px);
-  }
-
+  .feat-card:hover { border-color: rgba(10,158,136,0.28); transform: translateY(-2px); }
   .feat-card:hover::before { opacity: 1; }
 
   .feat-card.featured {
@@ -545,8 +738,7 @@
   }
 
   .feat-icon {
-    width: 44px;
-    height: 44px;
+    width: 44px; height: 44px;
     background: var(--teal-dim);
     border: 1px solid var(--teal-mid);
     border-radius: 10px;
@@ -566,6 +758,29 @@
     margin-bottom: 0.5rem;
   }
 
+  .feat-live-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    background: rgba(10,158,136,0.12);
+    border: 1px solid var(--teal-mid);
+    border-radius: 4px;
+    padding: 0.18rem 0.55rem;
+    font-family: var(--mono);
+    font-size: 0.6rem;
+    color: var(--teal);
+    letter-spacing: 0.08em;
+    margin-left: 0.6rem;
+    vertical-align: middle;
+  }
+
+  .feat-live-badge-dot {
+    width: 5px; height: 5px;
+    background: var(--teal);
+    border-radius: 50%;
+    animation: pulse 1.5s ease-in-out infinite;
+  }
+
   .feat-card h3 {
     font-family: var(--serif);
     font-size: 1.35rem;
@@ -580,10 +795,7 @@
     font-weight: 300;
   }
 
-  .feat-card p strong {
-    color: rgba(26,31,46,0.85);
-    font-weight: 500;
-  }
+  .feat-card p strong { color: rgba(26,31,46,0.85); font-weight: 500; }
 
   .feat-preview {
     background: #F0F9F7;
@@ -612,7 +824,6 @@
   }
 
   .fp-row:last-child { border-bottom: none; }
-
   .fp-question { color: rgba(26,31,46,0.65); }
   .fp-answer { color: var(--teal); font-weight: 500; }
 
@@ -635,10 +846,7 @@
   }
 
   /* ── TRUST SECTION ── */
-  .trust-section {
-    background: var(--bg2);
-    padding: 0;
-  }
+  .trust-section { background: var(--bg2); padding: 0; }
 
   .trust-inner {
     max-width: 1100px;
@@ -654,11 +862,7 @@
     margin-top: 3.5rem;
   }
 
-  .source-cards {
-    display: flex;
-    flex-direction: column;
-    gap: 0.85rem;
-  }
+  .source-cards { display: flex; flex-direction: column; gap: 0.85rem; }
 
   .source-card {
     background: var(--bg2);
@@ -670,13 +874,10 @@
     gap: 1rem;
   }
 
-  .source-card--dim {
-    opacity: 0.5;
-  }
+  .source-card--dim { opacity: 0.5; }
 
   .source-logo {
-    width: 40px;
-    height: 40px;
+    width: 40px; height: 40px;
     border-radius: 8px;
     display: flex;
     align-items: center;
@@ -715,10 +916,7 @@
     font-size: 1.05rem;
   }
 
-  .trust-text p strong {
-    color: var(--text);
-    font-weight: 500;
-  }
+  .trust-text p strong { color: var(--text); font-weight: 500; }
 
   .doc-preview {
     background: var(--bg3);
@@ -741,9 +939,7 @@
 
   .doc-topbar-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--teal); flex-shrink: 0; }
 
-  .doc-content {
-    padding: 1.25rem;
-  }
+  .doc-content { padding: 1.25rem; }
 
   .doc-row {
     display: flex;
@@ -776,38 +972,17 @@
     text-align: center;
   }
 
-  .branch-card.active {
-    border-color: rgba(10,158,136,0.35);
-    background: var(--bg3);
-  }
+  .branch-card.active { border-color: rgba(10,158,136,0.35); background: var(--bg3); }
 
-  .branch-icon {
-    font-size: 1.6rem;
-    margin-bottom: 0.6rem;
-    display: block;
-  }
+  .branch-icon { font-size: 1.6rem; margin-bottom: 0.6rem; display: block; }
+  .branch-name { font-size: 0.82rem; font-weight: 500; color: var(--text); margin-bottom: 0.25rem; }
 
-  .branch-name {
-    font-size: 0.82rem;
-    font-weight: 500;
-    color: var(--text);
-    margin-bottom: 0.25rem;
-  }
-
-  .branch-status {
-    font-family: var(--mono);
-    font-size: 0.62rem;
-    letter-spacing: 0.06em;
-  }
-
+  .branch-status { font-family: var(--mono); font-size: 0.62rem; letter-spacing: 0.06em; }
   .branch-status.launching { color: var(--teal); }
   .branch-status.soon { color: var(--muted); }
 
   /* ── WAITLIST SECTION ── */
-  .waitlist-section {
-    background: var(--bg2);
-    padding: 0;
-  }
+  .waitlist-section { background: var(--bg2); padding: 0; }
 
   .waitlist-inner {
     max-width: 680px;
@@ -817,7 +992,6 @@
   }
 
   .waitlist-inner h2 { margin-bottom: 0.75rem; }
-  .waitlist-inner h2 em .waitlist-brand { color: var(--text); }
 
   .waitlist-inner .section-intro {
     max-width: 100%;
@@ -878,11 +1052,7 @@
 
   .form-group select option { background: var(--bg2); }
 
-  .form-group textarea {
-    resize: vertical;
-    min-height: 110px;
-    line-height: 1.6;
-  }
+  .form-group textarea { resize: vertical; min-height: 110px; line-height: 1.6; }
 
   .form-submit {
     width: 100%;
@@ -903,15 +1073,10 @@
   .form-submit:hover { opacity: 0.88; transform: translateY(-1px); }
   .form-submit:active { transform: translateY(0); }
 
-  .success-state {
-    display: none;
-    text-align: center;
-    padding: 2rem 0;
-  }
+  .success-state { display: none; text-align: center; padding: 2rem 0; }
 
   .success-icon {
-    width: 56px;
-    height: 56px;
+    width: 56px; height: 56px;
     background: var(--teal-dim);
     border: 1px solid var(--teal-mid);
     border-radius: 50%;
@@ -923,12 +1088,7 @@
 
   .success-icon svg { width: 24px; height: 24px; stroke: var(--teal); }
 
-  .success-state h3 {
-    font-family: var(--serif);
-    font-size: 1.5rem;
-    margin-bottom: 0.5rem;
-  }
-
+  .success-state h3 { font-family: var(--serif); font-size: 1.5rem; margin-bottom: 0.5rem; }
   .success-state p { color: var(--muted); font-size: 0.9rem; }
 
   /* ── FOOTER ── */
@@ -939,22 +1099,10 @@
     text-align: center;
   }
 
-  .footer-logo {
-    font-family: var(--serif);
-    font-size: 1.3rem;
-    margin-bottom: 0.75rem;
-    color: var(--white);
-  }
-
+  .footer-logo { font-family: var(--serif); font-size: 1.3rem; margin-bottom: 0.75rem; color: var(--white); }
   .footer-logo span { color: var(--teal); }
 
-  footer p {
-    color: #F0F4F8;
-    font-size: 0.82rem;
-    line-height: 1.7;
-    max-width: 480px;
-    margin: 0 auto;
-  }
+  footer p { color: #F0F4F8; font-size: 0.82rem; line-height: 1.7; max-width: 480px; margin: 0 auto; }
 
   .footer-links {
     display: flex;
@@ -964,13 +1112,7 @@
     list-style: none;
   }
 
-  .footer-links a {
-    font-size: 0.8rem;
-    color: #F0F4F8;
-    text-decoration: none;
-    transition: color 0.2s;
-  }
-
+  .footer-links a { font-size: 0.8rem; color: #F0F4F8; text-decoration: none; transition: color 0.2s; }
   .footer-links a:hover { color: var(--teal); }
 
   .footer-mono {
@@ -987,10 +1129,7 @@
     to { opacity: 1; transform: translateY(0); }
   }
 
-  .reveal {
-    opacity: 1;
-    transform: none;
-  }
+  .reveal { opacity: 1; transform: none; }
 
   html.js .reveal {
     opacity: 0;
@@ -998,28 +1137,33 @@
     transition: opacity 0.65s ease, transform 0.65s ease;
   }
 
-  html.js .reveal.visible {
-    opacity: 1;
-    transform: translateY(0);
-  }
+  html.js .reveal.visible { opacity: 1; transform: translateY(0); }
 
   /* ── MOBILE ── */
   @media (max-width: 768px) {
     nav { padding: 1rem 1.25rem; }
-    .logo-text { font-size: 1.05rem; letter-spacing: -0.02em; }
+    .logo-text { font-size: 1.05rem; }
     .nav-links { display: none; }
     .hero { padding: 7rem 1.25rem 4rem; }
-    .hero-form { flex-direction: column; }
+    .hero-actions { flex-direction: column; gap: 0.85rem; }
+    .btn-primary { width: 100%; justify-content: center; }
     .stats-inner { grid-template-columns: repeat(2, 1fr); }
     .stat-item { border-right: none; padding: 0.5rem; }
     .problem-grid, .trust-grid { grid-template-columns: 1fr; gap: 2rem; }
     .features-grid { grid-template-columns: 1fr; }
     .feat-card.featured { grid-column: 1; display: block; }
+    .feat-preview { margin-top: 1.25rem; }
     .branches-row { grid-template-columns: repeat(3, 1fr); }
     .form-row { grid-template-columns: 1fr; }
     section { padding: 4rem 1.25rem; }
     .waitlist-form { padding: 1.75rem 1.25rem; }
     .problem-inner, .trust-inner { padding: 4rem 1.25rem; }
+    .search-inner { padding: 3.5rem 1.25rem; }
+    .search-input { font-size: 0.95rem; padding: 0.95rem 1rem 0.95rem 3rem; }
+    .search-chips { gap: 0.4rem; padding: 1.5rem 1rem; }
+    .search-chip { font-size: 0.78rem; }
+    .result-name { font-size: 0.85rem; }
+    .result-ch { min-width: 44px; font-size: 0.6rem; }
   }
 </style>
 </head>
@@ -1037,9 +1181,13 @@
     <span class="logo-text">Pause<span>MD</span></span>
   </a>
   <ul class="nav-links">
+    <li>
+      <a href="#protocols" class="nav-live">
+        <span class="nav-live-dot"></span>Protocols
+      </a>
+    </li>
     <li><a href="#problem">The Problem</a></li>
     <li><a href="#features">Features</a></li>
-    <li><a href="#guidelines">Guidelines</a></li>
     <li><a href="#waitlist" class="nav-cta">Join Waitlist</a></li>
   </ul>
 </nav>
@@ -1060,37 +1208,88 @@
 
   <div class="hero-badge">
     <span class="badge-dot"></span>
-    LAUNCHING SOON — PEDIATRICS FIRST
+    LIVE — 150 IAP PROTOCOLS SEARCHABLE RIGHT NOW
   </div>
 
-  <h1>You know the answer.<br><em>You just can't find it</em><br>fast enough.</h1>
+  <h1>The protocol is<br><em>already in your pocket.</em></h1>
 
   <p class="hero-sub">
-    PauseMD is for Indian PG residents who are done tab-hopping at 2 AM — <strong>instant protocol access, weight-based dose calculators, and rounds prep</strong> — built for the ward, not the exam hall.
+    Type any disease, symptom, or keyword. Get the IAP Standard Treatment Guideline — <strong>instantly. No login. No PDF scavenger hunt.</strong> Built for Indian PG residents doing their 9th Google search of the shift.
   </p>
 
-  <form class="hero-form" id="heroForm">
-    <label for="heroEmail" style="position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0;">Email address</label>
-    <input type="email" placeholder="Enter your email" required id="heroEmail" autocomplete="email">
-    <button type="submit" class="btn-primary">Get Early Access</button>
-  </form>
-  <p class="hero-note">FREE · No spam · Be among the first residents to break in PauseMD</p>
+  <div class="hero-actions">
+    <a href="#protocols" class="btn-primary">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+      Search 150 IAP Protocols
+    </a>
+    <a href="#waitlist" class="btn-secondary">Get notified when the app launches →</a>
+  </div>
+
+  <p class="hero-note">FREE · No signup · IAP STG 2022 · Pediatrics · 150 guidelines</p>
+</div>
+
+<!-- IAP PROTOCOL SEARCH -->
+<div class="search-section" id="protocols">
+  <div class="search-inner">
+
+    <div class="search-header reveal">
+      <div class="section-tag no-line" style="justify-content:center;">
+        <span style="width:6px;height:6px;background:var(--teal);border-radius:50%;display:inline-block;animation:pulse 1.5s ease-in-out infinite;"></span>
+        Live · Working now
+      </div>
+      <h2>150 IAP guidelines.<br><em>Zero PDF hunting.</em></h2>
+      <div class="search-meta">
+        <span><span class="search-meta-dot"></span>150 STGs indexed</span>
+        <span>·</span>
+        <span>Fuzzy search — handles typos</span>
+        <span>·</span>
+        <span>Direct PDF access</span>
+        <span>·</span>
+        <span>IAP 2022</span>
+      </div>
+    </div>
+
+    <div class="search-box reveal">
+      <svg class="search-box-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
+      </svg>
+      <input
+        type="search"
+        id="stgSearch"
+        class="search-input"
+        placeholder="Type a disease, symptom, or keyword — e.g. cough, dengue, febrile seizure…"
+        autocomplete="off"
+        spellcheck="false"
+        aria-label="Search IAP Standard Treatment Guidelines"
+      >
+    </div>
+
+    <div class="search-results reveal" id="stgResults">
+      <!-- populated by JS -->
+    </div>
+
+    <p class="search-source-note">
+      Source: Indian Academy of Pediatrics · Standard Treatment Guidelines 2022 ·
+      <a href="https://iapindia.org/standard-treatment-guidelines/" target="_blank" rel="noopener">iapindia.org</a>
+    </p>
+
+  </div>
 </div>
 
 <!-- STATS BAR -->
 <div class="stats-bar">
   <div class="stats-inner">
     <div class="stat-item">
-      <span class="stat-num" data-target="90">0</span>
+      <span class="stat-num" data-target="150" data-suffix="">0</span>
+      <span class="stat-label">IAP protocols<br>searchable right now</span>
+    </div>
+    <div class="stat-item">
+      <span class="stat-num" data-target="90" data-suffix="%">0</span>
       <span class="stat-label">% of residents feel anxious<br>before rounds</span>
     </div>
     <div class="stat-item">
       <span class="stat-num" data-target="7" data-suffix="–8">0</span>
       <span class="stat-label">Google searches per duty<br>just to find protocols</span>
-    </div>
-    <div class="stat-item">
-      <span class="stat-num" data-target="100">0</span>
-      <span class="stat-label">% have been embarrassed<br>or stuck during rounds</span>
     </div>
     <div class="stat-item">
       <span class="stat-num" data-target="0" data-prefix="₹" data-suffix="good protocol app">0</span>
@@ -1166,67 +1365,69 @@
 
   <div class="features-grid">
 
-    <!-- Featured: Rounds Prep -->
+    <!-- Featured: STG Search (LIVE) -->
     <div class="feat-card featured reveal">
       <div>
-        <div class="feat-num">01 · HIGHEST REQUESTED FEATURE</div>
+        <div class="feat-num">
+          01 · IAP PROTOCOL SEARCH
+          <span class="feat-live-badge"><span class="feat-live-badge-dot"></span>LIVE NOW</span>
+        </div>
         <div class="feat-icon">
           <svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2"/>
-            <rect x="9" y="3" width="6" height="4" rx="1"/>
-            <path d="M9 12h6M9 16h4"/>
+            <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
           </svg>
         </div>
-        <h3>Rounds Prep Mode</h3>
-        <p>Enter your patient's details — chief complaint, day of illness, current labs — and get <strong>the exact questions your consultant will ask, with the answers</strong>. Sourced from IAP and AIIMS protocols, not guesswork.</p>
+        <h3>IAP Guidelines Search</h3>
+        <p>All 150 IAP Standard Treatment Guidelines, searchable by disease, symptom, or keyword. <strong>Handles typos and partial names</strong> — type "cogh" and you'll find Cough. Type "fits" and you'll find Febrile Seizures. No PDF hunting. Direct link to the source.</p>
         <div class="feat-tags">
-          <span class="tag">AI-powered</span>
-          <span class="tag">IAP grounded</span>
-          <span class="tag">Pediatrics</span>
-          <span class="tag">Common mistakes</span>
+          <span class="tag">Fuzzy search</span>
+          <span class="tag">IAP STG 2022</span>
+          <span class="tag">150 guidelines</span>
+          <span class="tag">No login</span>
         </div>
       </div>
       <div class="feat-preview">
-        <div class="fp-label">Dengue · Day 4 · 7kg child · Platelets 60k ↓</div>
+        <div class="fp-label">Try: "denge" → finds Dengue</div>
         <div class="fp-row">
-          <span class="fp-question">Which group?</span>
-          <span class="fp-answer">Group B — warning signs</span>
+          <span class="fp-question">Ch.138</span>
+          <span class="fp-answer">Dengue in Children ↗</span>
         </div>
         <div class="fp-row">
-          <span class="fp-question">IV fluid rate to start?</span>
-          <span class="fp-answer">5–7 mL/kg/hr × 1–2 h</span>
+          <span class="fp-question">Ch.048</span>
+          <span class="fp-answer">Febrile Seizures ↗</span>
         </div>
         <div class="fp-row">
-          <span class="fp-question">Next HCT check?</span>
-          <span class="fp-answer">2–4 hours post-fluid</span>
+          <span class="fp-question">Ch.011</span>
+          <span class="fp-answer">Community Acquired Pneumonia ↗</span>
         </div>
         <div class="fp-row">
-          <span class="fp-question">Avoid saying?</span>
-          <span class="fp-answer" style="color:#E8900A">"Fluids as needed"</span>
+          <span class="fp-question">Ch.079</span>
+          <span class="fp-answer">Neonatal Jaundice ↗</span>
         </div>
         <div class="fp-row">
-          <span class="fp-question">Discharge platelet threshold?</span>
-          <span class="fp-answer">&gt; 50,000 /mm³</span>
+          <span class="fp-question">Ch.149</span>
+          <span class="fp-answer">Childhood Tuberculosis ↗</span>
         </div>
       </div>
     </div>
 
-    <!-- Protocol Cards -->
+    <!-- Rounds Prep -->
     <div class="feat-card reveal">
-      <div class="feat-num">02</div>
+      <div class="feat-num">02 · HIGHEST REQUESTED FEATURE</div>
       <div class="feat-icon">
         <svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
-          <path d="M14 2v6h6M16 13H8M16 17H8M10 9H8"/>
+          <path d="M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2"/>
+          <rect x="9" y="3" width="6" height="4" rx="1"/>
+          <path d="M9 12h6M9 16h4"/>
         </svg>
       </div>
-      <h3>Protocol Cards</h3>
-      <p>IAP and AIIMS guidelines, transformed from 40-page PDFs into <strong>4-screen decision flows</strong>. Classify → Manage → Calculate → Discharge. 15 high-prevalence diseases to start.</p>
+      <h3>Rounds Prep Mode</h3>
+      <p>Enter your patient's details — chief complaint, day of illness, current labs — and get <strong>the exact questions your consultant will ask, with the answers</strong>. Sourced from IAP and AIIMS protocols, not guesswork.</p>
       <div class="feat-tags">
-        <span class="tag">IAP STG 2022</span>
-        <span class="tag">AIIMS PICU</span>
-        <span class="tag">Offline access</span>
-        <span class="tag">Source linked</span>
+        <span class="tag">AI-powered</span>
+        <span class="tag">IAP grounded</span>
+        <span class="tag">Pediatrics</span>
+        <span class="tag">Common mistakes</span>
       </div>
     </div>
 
@@ -1256,8 +1457,7 @@
       <div class="feat-icon">
         <svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
           <circle cx="11" cy="11" r="8"/>
-          <path d="m21 21-4.35-4.35"/>
-          <path d="M11 8v3l2 2"/>
+          <path d="m21 21-4.35-4.35M11 8v3l2 2"/>
         </svg>
       </div>
       <h3>Symptom → Differential Engine</h3>
@@ -1395,11 +1595,10 @@
 <div class="waitlist-section" id="waitlist">
   <div class="waitlist-inner">
     <div class="section-tag" style="justify-content:center;">Join the waitlist</div>
-    <h2>Be the first resident<br><em>to run <span class="waitlist-brand">Pause</span>MD.</em></h2>
+    <h2>Be the first resident<br><em>to run <span style="color:var(--text)">Pause</span>MD.</em></h2>
     <p class="section-intro">We're building this with residents, not for them. Tell us your branch, your role, and what you wish you had during your last duty. We're reading every response.</p>
 
     <form class="waitlist-form" id="waitlistForm">
-
       <div class="form-row">
         <div class="form-group">
           <label for="fname">Full name</label>
@@ -1443,7 +1642,7 @@
 
       <div class="form-group">
         <label for="fhospital">Hospital / Institution <span style="color:var(--muted);font-weight:400;">(optional)</span></label>
-        <input type="text" id="fhospital" placeholder="AIIMS, PGIMER, Your Govt. Hospital...">
+        <input type="text" id="fhospital" placeholder="AIIMS, PGIMER, Your Govt. Hospital…">
       </div>
 
       <div class="form-group">
@@ -1451,20 +1650,17 @@
         <textarea id="fsuggestion" placeholder="Be honest. What do you wish existed during your last duty?"></textarea>
       </div>
 
-      <button type="submit" class="form-submit">
-        Join the Waitlist — It's Free →
-      </button>
+      <button type="submit" class="form-submit">Join the Waitlist — It's Free →</button>
 
       <div class="success-state" id="successState">
         <div class="success-icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <path d="M20 6L9 17l-5-5"/>
           </svg>
         </div>
         <h3>You're on the list.</h3>
         <p>We'll reach out when your branch is ready. We've noted your suggestion — it goes straight to the team.</p>
       </div>
-
     </form>
   </div>
 </div>
@@ -1474,6 +1670,7 @@
   <div class="footer-logo">Pause<span>MD</span></div>
   <p>Built by doctors who know what it's like to blank during rounds. Grounded in IAP, AIIMS, and WHO protocols. Made for Indian PG residents.</p>
   <ul class="footer-links">
+    <li><a href="#protocols">Protocol Search</a></li>
     <li><a href="#problem">The Problem</a></li>
     <li><a href="#features">Features</a></li>
     <li><a href="#waitlist">Join Waitlist</a></li>
@@ -1482,150 +1679,448 @@
 </footer>
 
 <script>
-  const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+// ─────────────────────────────────────────────────────────────────────────────
+// IAP STANDARD TREATMENT GUIDELINES — Full Index
+// Format: [chapter, display_name, keyword_string, pdf_url]
+// ─────────────────────────────────────────────────────────────────────────────
+const IAP_GUIDELINES = [
+  ["001","Neonatal Hypoglycemia","neonate newborn glucose sugar hypoglycemia nicu low blood sugar","https://iapindia.org/pdf/X9ceMoHV2pAF6UR_STG-NEONATAL-HYPOGLYCEMIA.pdf"],
+  ["002","Atopic Dermatitis","eczema skin rash itching atopy allergy dermatitis dry skin","https://iapindia.org/pdf/pg8MfbIR_qPWGKE_Atopic-Dermatitis-04012022.pdf"],
+  ["003","Anaphylaxis","allergic reaction shock adrenaline epinephrine severe allergy anaphylactic","https://iapindia.org/pdf/gepAz6wsH5c3B2r_Standard-Treatment-Guidelines-Anaphylaxis.pdf"],
+  ["004","Difficulties in Breastfeeding","breastfeed lactation nipple breast milk feeding latch","https://iapindia.org/pdf/DpBXM1w8ykdasce_Difficulties-in-Breastfeeding-stg.pdf"],
+  ["005","Neonatal Sepsis","neonate newborn infection septicemia nicu sepsis early onset late onset","https://iapindia.org/pdf/STG-Neonatal-Sepsis-005.pdf"],
+  ["006","Urinary Tract Infection in Children","uti urine dysuria frequency kidney bladder culture pyuria","https://iapindia.org/pdf/STG-06-Urinary-Tract-Infection-in-Children.pdf"],
+  ["007","Food Allergy","allergy food hypersensitivity peanut milk egg intolerance","https://iapindia.org/pdf/STG-007-Food-Allergy.pdf"],
+  ["008","Enteric Fever","typhoid salmonella fever typhi typhoid fever paratyphoid","https://iapindia.org/pdf/Ch-008-Enteric-Fever.pdf"],
+  ["009","Menstrual Irregularities","menstruation periods irregular adolescent puberty bleeding dysmenorrhea","https://iapindia.org/pdf/Ch-009-Menstrual-Irregularities.pdf"],
+  ["010","Croup in Children","stridor barking cough laryngotracheobronchitis LTB upper airway croup seal bark","https://iapindia.org/pdf/Ch-010-croup-in-children.pdf"],
+  ["011","Community Acquired Pneumonia","cap pneumonia lung respiratory infection chest consolidation CAP breathing","https://iapindia.org/pdf/Ch-011-Community-Acquired-Pneumonia.pdf"],
+  ["012","Hypothyroidism","thyroid TSH T4 hormone growth hypothyroid underactive congenital","https://iapindia.org/pdf/Ch-012-Hypothyroidism.pdf"],
+  ["013","Rickets","vitamin D calcium bone deformity growth deficiency rickets nutritional","https://iapindia.org/pdf/Ch-013-Rickets.pdf"],
+  ["014","Allergic Rhinitis","allergy nose sneezing rhinorrhea nasal hay fever watery eyes","https://iapindia.org/pdf/Ch-014-Allergic-Rhinitis.pdf"],
+  ["015","Viral Hepatitis","jaundice liver hepatitis HBV HAV HCV yellow hepatitis A B C","https://iapindia.org/pdf/Ch-015-Viral-Hepatitis.pdf"],
+  ["016","Enuresis","bedwetting urinary nocturnal wetting toilet training bladder night","https://iapindia.org/pdf/Ch-016-stg-Enuresis.pdf"],
+  ["017","Sinusitis","sinus nose facial pain headache nasal congestion sinusitis","https://iapindia.org/pdf/Ch-017-stg-Sinusitis.pdf"],
+  ["018","Acute Pharyngitis and Tonsillopharyngitis","sore throat tonsil pharynx strep throat tonsillitis pharyngitis","https://iapindia.org/pdf/Ch-018-Acute-Tonsillopharyngitis.pdf"],
+  ["019","Post-COVID Lung Disease in Children","covid post covid long covid lung respiratory SARS-CoV-2","https://iapindia.org/pdf/Ch-019-STG-Post-Covid-Lung-Disease.pdf"],
+  ["020","Acute Watery Diarrhea","diarrhea diarrhoea gastroenteritis dehydration ORS loose stools GI","https://iapindia.org/pdf/Ch-020-STG-Acute-Watery-Diarrhea.pdf"],
+  ["021","Leptospirosis","leptospira weil syndrome rat fever jaundice renal leptospirosis","https://iapindia.org/pdf/Ch-021-STG-leptospirosis.pdf"],
+  ["022","Diabetes Mellitus","diabetes DM glucose insulin hyperglycemia T1DM T2DM DKA ketoacidosis","https://iapindia.org/pdf/Ch-022-STG-Diabetes-Mellitus.pdf"],
+  ["023","Urticaria","hives rash itch allergy wheals urticaria angioedema","https://iapindia.org/pdf/Ch-023-STG-Diabetes-Urticaria.pdf"],
+  ["024","Acute Otitis Media","ear AOM otitis earache ear infection middle ear pain","https://iapindia.org/pdf/Ch-023-STG-Acute-Otitis-Media.pdf"],
+  ["025","Acute Rheumatic Fever","ARF rheumatic heart jones criteria strep mitral carditis chorea","https://iapindia.org/pdf/Ch-025-Acute-Rheumatic-Fever.pdf"],
+  ["026","Childhood Obesity","obesity weight BMI overweight fat diet metabolic","https://iapindia.org/pdf/Ch-026-Childhood-Obesity.pdf"],
+  ["027","Bronchiolitis","RSV wheeze infant respiratory breathing viral under 2 young baby","https://iapindia.org/pdf/Ch-027-STG-Bronchiolitis.pdf"],
+  ["028","Febrile Neutropenia","neutropenia fever cancer oncology immunocompromised chemo ANC","https://iapindia.org/pdf/Ch-028-STG-febrile-neutropenia.pdf"],
+  ["029","Empyema","pleural effusion pus lung chest fluid empyema drainage","https://iapindia.org/pdf/Ch-029-STG-Empyema.pdf"],
+  ["030","Persistent Diarrhea","chronic diarrhea diarrhoea malabsorption GI persistent loose stools","https://iapindia.org/pdf/Ch-030-STG-persistent-diarrhea.pdf"],
+  ["031","Childhood Systemic Lupus Erythematosus","SLE lupus autoimmune butterfly rash ANA connective tissue","https://iapindia.org/pdf/Ch-031-STG-childhood-systemic-lupus-erythematosus.pdf"],
+  ["032","Henoch-Schönlein Purpura","HSP IgA vasculitis purpura rash arthritis kidney palpable","https://iapindia.org/pdf/Ch-032-STG-henoch-schonlein-purpura.pdf"],
+  ["033","Growing Pains","leg pain limb night pain bones growth nocturnal","https://iapindia.org/pdf/Ch-033-STG-growing-pains.pdf"],
+  ["034","Heart Failure","cardiac failure CCF dyspnoea edema fluid overload cardiology", "https://iapindia.org/pdf/Ch-034-STG-heart-failure.pdf"],
+  ["035","Bronchial Asthma","asthma wheeze bronchospasm inhaler salbutamol respiratory breathing SABA","https://iapindia.org/pdf/Ch-035-STG-bronchial-asthma.pdf"],
+  ["036","Supraventricular Tachycardia","SVT tachycardia arrhythmia heart rate ECG palpitation rapid heart","https://iapindia.org/pdf/Ch-036-STG-supraventricular-tachycardia.pdf"],
+  ["037","Herpes Simplex","herpes HSV cold sore encephalitis vesicle blister acyclovir","https://iapindia.org/pdf/Ch-037-STG-herpes-simplex.pdf"],
+  ["038","Congenital Heart Disease Surgery Indications","CHD congenital heart surgery VSD ASD TOF cardiac repair timing","https://iapindia.org/pdf/Ch-038-STG-indications-n-timing-of-surgeries-in-CHD.pdf"],
+  ["039","Rickettsial Disease","rickettsia scrub typhus spotted fever tick eschar fever lymph","https://iapindia.org/pdf/Ch-039-STG-rickettsial-disease.pdf"],
+  ["040","Status Epilepticus","seizure epilepsy convulsion status diazepam phenobarbitone fits status epilepticus","https://iapindia.org/pdf/Ch-040-evaluation-and-management-of-status-epilepticus-in-children.pdf"],
+  ["041","Protracted Bacterial Bronchitis","PBB cough bronchitis chronic cough lung antibiotic protracted","https://iapindia.org/pdf/Ch-041-protracted-bacterial-bronchitis.pdf"],
+  ["042","Kawasaki Disease","kawasaki fever coronary rash lymph node IVIG mucocutaneous aneurysm","https://iapindia.org/pdf/Ch-042-kawasaki-disease.pdf"],
+  ["043","G6PD Deficiency","G6PD hemolysis anemia jaundice glucose 6 phosphate neonatal favism","https://iapindia.org/pdf/Ch-043-G6PD-deficiency.pdf"],
+  ["044","Megaloblastic Anemia","anemia B12 folate macrocytic megaloblastic vitamin deficiency","https://iapindia.org/pdf/Ch-044-Megaloblastic-Anemia.pdf"],
+  ["045","Under 5 Wheeze","wheeze young child infant bronchiolitis asthma recurrent under five wheezing","https://iapindia.org/pdf/Ch-045-Under-5-Wheeze.pdf"],
+  ["046","Sickle Cell Disease","sickle cell SCD hemoglobin anemia HbSS vaso-occlusive crisis pain hydroxyurea","https://iapindia.org/pdf/Ch-046-sickle-cell-disease-management.pdf"],
+  ["047","Acute Gastrointestinal Bleed","GI bleed blood stool hematemesis melena rectal bleed lower GI upper GI","https://iapindia.org/pdf/Ch-047-acute-gastrointestinal-bleed.pdf"],
+  ["048","Febrile Seizures","febrile seizure convulsion fever fits FC diazepam rectal temperature febrile","https://iapindia.org/pdf/Ch-048-febrile-seizures.pdf"],
+  ["049","Atypical Bacterial Pneumonia","atypical mycoplasma chlamydia pneumonia lung walking pneumonia azithromycin","https://iapindia.org/pdf/Ch-049-atypical-bacterial-pneumonia.pdf"],
+  ["050","Varicella","chickenpox varicella vesicle rash VZV itchy pox chicken pox","https://iapindia.org/pdf/Ch-050-stg-varicella.pdf"],
+  ["051","Juvenile Idiopathic Arthritis","JIA arthritis joint swelling juvenile rheumatoid pain stiffness","https://iapindia.org/pdf/Ch-051-STG-juvenile-idiopathic-arthritis.pdf"],
+  ["052","Pneumothorax in Children","pneumothorax lung air chest collapsed lung intercostal drain","https://iapindia.org/pdf/Ch-052-stg-pneumothorax-in-children.pdf"],
+  ["053","Guillain-Barré Syndrome","GBS weakness paralysis ascending neuropathy nerve areflexia IVIG plasmapheresis","https://iapindia.org/pdf/Ch-053-stg-guillain-barre-syndrome.pdf"],
+  ["054","Infectious Mononucleosis","mono EBV glandular fever lymph node sore throat splenomegaly kissing disease","https://iapindia.org/pdf/Ch-054-stg-infectious-mononucleosis.pdf"],
+  ["055","CPR and BLS in Office Practice","CPR resuscitation cardiac arrest BLS basic life support emergency chest compression","https://iapindia.org/pdf/Ch-055-stg-CPR-BLS-in-office-practice.pdf"],
+  ["056","Acute Bacterial Meningitis","meningitis bacterial CSF lumbar puncture fever headache neck stiffness Kernig","https://iapindia.org/pdf/Ch-056-stg-acute-bacterial-meningitis.pdf"],
+  ["057","Hypertension","HTN high blood pressure BP hypertension renal secondary primary","https://iapindia.org/pdf/Ch-057-stg-hypertension.pdf"],
+  ["058","Acute Epiglottitis","epiglottitis stridor airway drooling sore throat HiB tripod","https://iapindia.org/pdf/Ch-058-stg-acute-epiglottitis.pdf"],
+  ["059","Iron Deficiency Anemia","IDA anemia iron hemoglobin pale fatigue ferritin low iron","https://iapindia.org/pdf/Ch-059-stg-Iron-Deficiency-Anemia.pdf"],
+  ["060","Hand Foot and Mouth Disease","HFMD enterovirus rash blisters oral ulcers coxsackie hand foot mouth","https://iapindia.org/pdf/Ch-060-stg-hand-foot-and-mouth-disease.pdf"],
+  ["061","Hemophilia","bleeding clotting factor VIII IX hemophilia joint bleed hemarthrosis","https://iapindia.org/pdf/Ch-061-stg-hemophilia.pdf"],
+  ["062","Preterm with Respiratory Distress","preterm premature RDS surfactant CPAP nicu lung prematurity","https://iapindia.org/pdf/ch-062-stg-preterm-with-respiratory-distress.pdf"],
+  ["063","Multisystem Inflammatory Syndrome in Children","MIS-C MISC COVID kawasaki-like inflammatory multisystem cytokine","https://iapindia.org/pdf/ch-063-stg-multisystem-inflammatory-syndrome-in-children.pdf"],
+  ["064","Nephrotic Syndrome","nephrotic proteinuria edema albumin steroid kidney relapse","https://iapindia.org/pdf/ch-064-stg-nephrotic-syndrome.pdf"],
+  ["065","Acute COVID-19 Infection in Children","covid coronavirus SARS covid-19 fever respiratory pediatric","https://iapindia.org/pdf/ch-065-stg-acute-COVID-19-infection-in-children.pdf"],
+  ["066","Developmental Dysplasia of the Hip","DDH hip dysplasia ortho congenital Barlow Ortolani Pavlik","https://iapindia.org/pdf/ch-066-stg-developmental-dysplasia-of-the-Hip.pdf"],
+  ["067","Neonatal Hypothermia","neonate cold temperature hypothermia newborn kangaroo warming NICU","https://iapindia.org/pdf/Ch-067-Neonatal-Hypothermia.pdf"],
+  ["068","Ophthalmia Neonatorum","eye neonatal conjunctivitis gonococcal neonate discharge newborn eye","https://iapindia.org/pdf/ch-068-ophthalmia-neonatorum.pdf"],
+  ["069","Epistaxis in Children","nosebleed nose bleed bleeding nasal epistaxis anterior pack","https://iapindia.org/pdf/ch-069-epistaxis-in-children.pdf"],
+  ["070","Constipation in Children","constipation stool hard stool bowel laxative toilet training feces","https://iapindia.org/pdf/ch-070-constipation-in-children-updated.pdf"],
+  ["071","Acute Kidney Injury in Children","AKI renal failure kidney creatinine oliguria urine output ARF","https://iapindia.org/pdf/ch-071-Acute-Kidney-Injury-in-Children.pdf"],
+  ["072","Immune Thrombocytopenic Purpura","ITP platelets thrombocytopenia bleeding purpura bruising immune","https://iapindia.org/pdf/ch-072-immune-thrombocytopenic-purpura.pdf"],
+  ["073","Shock in Office Practice","shock septic shock hypovolemic fluid resuscitation emergency BP low distributive","https://iapindia.org/pdf/ch-073-shock-in-office-practice.pdf"],
+  ["074","Respiratory Distress in the Term Newborn","tachypnea respiratory distress TTN newborn NICU grunting retraction","https://iapindia.org/pdf/ch-074-respiratory-distress-in-the-term-newborn.pdf"],
+  ["075","Cow's Milk Protein Allergy","CMPA milk allergy vomiting diarrhea rash protein formula CMPA","https://iapindia.org/pdf/Ch-075-Cows-Milk-Protein-Allergy.pdf"],
+  ["076","Myocarditis","myocarditis heart viral cardiac troponin echo cardiomyopathy","https://iapindia.org/pdf/Ch-076-Myocarditis.pdf"],
+  ["077","Scalds and Burns","burn scald skin wound fluid resuscitation dressing thermal","https://iapindia.org/pdf/Ch-077-Scalds-and-Burns.pdf"],
+  ["078","Hyperthyroidism","thyroid T3 T4 TSH graves hyperthyroid thyrotoxicosis overactive","https://iapindia.org/pdf/Ch-078-Hyperthyroidism.pdf"],
+  ["079","Neonatal Jaundice","jaundice bilirubin phototherapy exchange transfusion newborn yellow icterus neonatal","https://iapindia.org/pdf/Ch-079-Neonatal-Jaundice.pdf"],
+  ["080","Autoimmune Encephalitis","encephalitis autoimmune NMDA seizure behaviour ANA CSF brain","https://iapindia.org/pdf/Ch-080-Autoimmune-Encephalitis.pdf"],
+  ["081","Specific Learning Disorders","dyslexia learning disability SLD reading school neurodevelopment dysgraphia","https://iapindia.org/pdf/Ch-081-Specific-Learning-Disorders.pdf"],
+  ["082","Puberty","puberty adolescent development precocious delayed hormones Tanner","https://iapindia.org/pdf/Ch-082-Puberty.pdf"],
+  ["083","Substance Use Disorders in Adolescents","drugs alcohol substance addiction abuse adolescent rehabilitation","https://iapindia.org/pdf/Ch-083-Substance-Use-Disorders-in-Adolescents.pdf"],
+  ["083b","Rabies Prophylaxis","rabies dog bite PEP post exposure animal bite vaccine ARV RIG","https://iapindia.org/pdf/Ch-083-Rabies-Prophylaxis-in-Children.pdf"],
+  ["084","Oral Thrush","candida thrush oral white patches fungal nystatin candidiasis","https://iapindia.org/pdf/Ch-084-Oral-Thrush.pdf"],
+  ["085","Scorpion Envenomation","scorpion sting envenomation toxin prazosin autonomic storm","https://iapindia.org/pdf/Ch-085-Scorpion-Envenomation.pdf"],
+  ["087","Thalassemia","thalassemia transfusion hemoglobin anemia iron chelation HbE major minor","https://iapindia.org/pdf/Ch-087-Thalassemia.pdf"],
+  ["088","Cerebral Palsy","CP cerebral palsy spasticity disability motor tone physio rehabilitation","https://iapindia.org/pdf/Ch-088-Cerebral-Palsy.pdf"],
+  ["089","Breath-holding Spell","breath holding cyanosis pallid spell infant syncope apnea BHS","https://iapindia.org/pdf/Ch-089-Breath-holding-Spell.pdf"],
+  ["090","Cyanotic Spell","cyanosis Tet spell TOF hypoxia blue baby cardiac spell squat","https://iapindia.org/pdf/Ch-090-Cyanotic-Spell.pdf"],
+  ["091","Antenatally Detected Hydronephrosis","hydronephrosis kidney renal pelvis antenatal ureter obstructive CAKUT","https://iapindia.org/pdf/Ch-091-Antenatally-Detected-Hydronephrosis.pdf"],
+  ["092","Gastroesophageal Reflux Disease","GERD reflux vomiting regurgitation esophagus GER acid spitting PPI","https://iapindia.org/pdf/Ch-092-Gastroesophageal-Reflux-Disease.pdf"],
+  ["093","Anticipatory Guidance in Adolescents","adolescent guidance counseling development puberty health HEADSSS","https://iapindia.org/pdf/Ch-093-Anticipatory-Guidance-in-Adolescents.pdf"],
+  ["094","Autism Spectrum Disorders","autism ASD Asperger neurodevelopment behaviour social communication","https://iapindia.org/pdf/Ch-094-Autism-Spectrum-Disorders.pdf"],
+  ["095","Malaria","malaria plasmodium fever chloroquine artemisinin RDT blood smear falciparum vivax","https://iapindia.org/pdf/Ch-095-Malaria.pdf"],
+  ["096","Social Media Dos and Donts","social media screen time internet adolescent digital health","https://iapindia.org/pdf/Ch-096-Social-Media-Dos-and-Donts.pdf"],
+  ["098","Feeding in Preterm and Feed Intolerance","preterm feeding gavage NEC neonatal formula nicu tube feed intolerance","https://iapindia.org/pdf/Ch-098-Feeding-in-Preterm-and-Feed-Intolerance.pdf"],
+  ["099","Neurocysticercosis","NCC cysticercosis seizure tapeworm CT brain albendazole epilepsy worm brain","https://iapindia.org/pdf/Ch-099-Neurocysticercosis.pdf"],
+  ["100","Attention Deficit Hyperactivity Disorder","ADHD attention deficit hyperactive behavior school methylphenidate inattention","https://iapindia.org/pdf/Ch-100-Attention-Deficit-Hyperactivity-Disorder.pdf"],
+  ["101","Allergic Conjunctivitis","eye conjunctivitis allergy itching red eye antihistamine drops","https://iapindia.org/pdf/Ch-101-Allergic-Conjunctivitis.pdf"],
+  ["102","Snakebite","snake venom ASV anti-snake venom coagulopathy neurotoxic bite management","https://iapindia.org/pdf/Ch-102-Snakebite.pdf"],
+  ["103","Neonatal Cholestasis","cholestasis jaundice bilirubin neonatal liver bile conjugated direct","https://iapindia.org/pdf/Ch-103-Neonatal-Cholestasis.pdf"],
+  ["104","Neonatal Resuscitation Program","NRP resuscitation newborn birth asphyxia APGAR delivery room bag mask","https://iapindia.org/pdf/Ch-104-Neonatal-Resuscitation-Program.pdf"],
+  ["105","Oxygen Therapy in Office Practice","oxygen O2 SpO2 saturation pulse oximetry hypoxia mask nasal prong","https://iapindia.org/pdf/Ch-105-Oxygen-Therapy-in-Office-Practice.pdf"],
+  ["106","Staphylococcal Scalded Skin Syndrome","SSSS staphylococcal skin rash exfoliative Ritter disease blistering staph","https://iapindia.org/pdf/Ch-106-Staphylococcal-Scalded-Skin-Syndrome.pdf"],
+  ["107","CTEV and Flat Foot","clubfoot CTEV flat foot ortho congenital talipes Ponseti physiotherapy","https://iapindia.org/pdf/Ch-107-CTEV-and-Flat-Foot.pdf"],
+  ["108","Teen Depression and Suicide Prevention","depression suicide mental health adolescent mood self harm PHQ","https://iapindia.org/pdf/Ch-108-Teen-Depression-and-Suicide-Prevention%20.pdf"],
+  ["109","Poisoning in Children","poisoning toxin ingestion antidote overdose toxic organophosphate kerosene","https://iapindia.org/pdf/Ch-109-Poisoning-in-Children.pdf"],
+  ["110","Unprovoked Seizures","seizure epilepsy convulsion EEG unprovoked anticonvulsant first seizure","https://iapindia.org/pdf/Ch-110-Unprovoked-Seizures.pdf"],
+  ["111","Paracetamol Poisoning","paracetamol acetaminophen overdose liver NAC N-acetylcysteine hepatotoxicity","https://iapindia.org/pdf/Ch-111-Paracetamol-Poisoning.pdf"],
+  ["112","Undescended Testes and Testicular Torsion","undescended testis cryptorchidism torsion orchidopexy scrotum pain","https://iapindia.org/pdf/Ch-112-Undescended-Testes-and-Testicular-Torsion.pdf"],
+  ["113","Pertussis","whooping cough pertussis Bordetella cough DPT vaccine whoop paroxysm","https://iapindia.org/pdf/Ch-113-Pertusis-in-Children.pdf"],
+  ["114","Pulled Elbow","pulled elbow radial head subluxation ortho nursemaid trauma toddler","https://iapindia.org/pdf/Ch-114-Pulled-Elbow.pdf"],
+  ["115","Encephalitis in Children","encephalitis brain viral fever seizure altered sensorium consciousness stupor","https://iapindia.org/pdf/Ch-115-Encephalitis-in-Children.pdf"],
+  ["116","Dental Caries","dental caries tooth decay fluoride cavity oral health prevention","https://iapindia.org/pdf/Ch-116-Dental-Caries.pdf"],
+  ["117","Stevens Johnson Syndrome","SJS Stevens Johnson TEN drug reaction skin mucosal blistering toxic epidermal","https://iapindia.org/pdf/Ch-117-Steven-Johnson-Syndrome.pdf"],
+  ["118","Acute Dysentery","dysentery bloody diarrhea diarrhoea Shigella amoeba stool GI blood","https://iapindia.org/pdf/Ch-118-Acute-Dysentery.pdf"],
+  ["119","Tinea Infections","tinea ringworm fungal skin scalp groin antifungal capitis corporis","https://iapindia.org/pdf/Ch-119-Tinea-Infections.pdf"],
+  ["120","Tropical Pulmonary Eosinophilia","TPE eosinophilia lung tropical Wuchereria filarial wheeze cough","https://iapindia.org/pdf/Ch-120-Tropical-Pulmonary-Eosinophilia.pdf"],
+  ["121","Coping with Stress in Adolescents","stress mental health adolescent coping anxiety depression resilience","https://iapindia.org/pdf/Ch-121-Coping-with-Stress-in-Adolescents.pdf"],
+  ["122","Hyperpigmented Lesions","pigmentation skin melanin cafe au lait hyperpigmented dark patches",  "https://iapindia.org/pdf/Ch-122-Hyperpigmented-Lesions-in-Children.pdf"],
+  ["123","Early Detection of High-Risk Neonate","high risk neonate NICU premature at-risk early intervention developmental follow up","https://iapindia.org/pdf/Ch-123-Early-Detection-and-Early-Intervention-of-a-High-risk-Neonate.pdf"],
+  ["124","Injuries in Office Practice","injury trauma fracture wound laceration emergency first aid","https://iapindia.org/pdf/Ch-124-Injuries-in-Office-Practice.pdf"],
+  ["125","Common Worm Infestations","worms helminths roundworm pinworm deworming albendazole parasites mebendazole","https://iapindia.org/pdf/Ch-125-Common-Worm-Infestations.pdf"],
+  ["126","Neonatal Seizures","seizure neonate newborn convulsion phenobarbitone EEG NICU fits neonatal","https://iapindia.org/pdf/Ch-126-Neonatal-Seizures.pdf"],
+  ["127","Hemophagocytic Lymphohistiocytosis","HLH macrophage activation fever hepatosplenomegaly ferritin cytokine storm","https://iapindia.org/pdf/CH-127-Haemophagocytic-Lymphohistiocytosis.pdf"],
+  ["128","Cleft Lip and Palate","cleft lip palate surgery feeding speech craniofacial congenital","https://iapindia.org/pdf/Ch-128-Cleft-Lip-and-Palate.pdf"],
+  ["129","Diphtheria","diphtheria bull neck pseudomembrane airway antitoxin DPT grey membrane","https://iapindia.org/pdf/Ch-129-Diphtheria.pdf"],
+  ["130","Traumatic Brain Injury","TBI head injury trauma GCS CT concussion neurosurgery head trauma","https://iapindia.org/pdf/Ch-130-Traumatic-Brain-Injury.pdf"],
+  ["131","Nipah Zika and Monkeypox","nipah zika monkeypox emerging infection viral outbreak mpox","https://iapindia.org/pdf/Ch-131-Nipah-Zika-and-Monkeypox.pdf"],
+  ["132","Viral Encephalitis in Children","viral encephalitis brain herpes acyclovir fever CSF HSV JE","https://iapindia.org/pdf/Ch-132-Encephalitis-in-Children.pdf"],
+  ["133","Phimosis","phimosis foreskin prepuce circumcision urology penis tight foreskin","https://iapindia.org/pdf/Ch-133-Phimosis.pdf"],
+  ["134","Influenza in Children","flu influenza H1N1 oseltamivir Tamiflu fever respiratory seasonal","https://iapindia.org/pdf/Ch-134-Influenza-in-Children.pdf"],
+  ["135","Hypospadias","hypospadias urethra penis surgery urology congenital chordee","https://iapindia.org/pdf/Ch-135-Hypospadias.pdf"],
+  ["136","Severe Acute Malnutrition","SAM malnutrition kwashiorkor marasmus RUTF wasting undernutrition F75 F100","https://iapindia.org/pdf/Ch-136-Severe-Acute-Malnutrition.pdf"],
+  ["137","Hypopigmentation","vitiligo albinism white patches hypopigmented skin pigment leucoderma","https://iapindia.org/pdf/Ch-137-Hypopigmentation.pdf"],
+  ["138","Dengue in Children","dengue fever NS1 platelet hemorrhagic DHF fluid critical phase warning signs shock dengue","https://iapindia.org/pdf/Ch-138-Dengue-in-Children.pdf"],
+  ["139","Acute Glomerulonephritis","AGN glomerulonephritis hematuria edema hypertension renal kidney blood urine","https://iapindia.org/pdf/Ch-139-Acute-Glomerulonephritis.pdf"],
+  ["140","Inguinal Hernia and Hydrocele","hernia hydrocele inguinal surgery scrotum swelling groin","https://iapindia.org/pdf/Ch-140-Inguinal-Hernia-and-Hydrocele.pdf"],
+  ["141","Adolescent Sexuality","sexuality adolescent sex education STI contraception reproductive health","https://iapindia.org/pdf/Ch-141-Adolescent-Sexuality.pdf"],
+  ["143","Pediatric Headache","headache migraine tension raised ICP pain neuro vomiting photophobia","https://iapindia.org/pdf/Ch-143-Pediatric-Headache.pdf"],
+  ["144","Retinopathy of Prematurity","ROP retina eye preterm oxygen screening laser neonatal vision","https://iapindia.org/pdf/Ch-144-Retinopathy-of-Prematurity.pdf"],
+  ["145","Temper Tantrums","tantrum behaviour toddler anger child development parenting breath holding","https://iapindia.org/pdf/Ch-145-Temper-Tantrums.pdf"],
+  ["146","Fever without Focus in Office Practice","fever FWF FUO pyrexia without focus investigation office febrile","https://iapindia.org/pdf/Ch-146-Management-of-Fever-without-Focus-in-Office-Practice.pdf"],
+  ["147","Measles","measles morbilli koplik rash rubeola vitamin A vaccine MCV Koplik spots","https://iapindia.org/pdf/Ch-147-Measles.pdf"],
+  ["148","TORCH Infections","TORCH toxoplasma rubella CMV herpes congenital neonatal infection perinatal","https://iapindia.org/pdf/Ch-148-TORCH-Infections.pdf"],
+  ["149","Childhood Tuberculosis","TB tuberculosis mycobacterium DOTS isoniazid Mantoux lung Ghon focus","https://iapindia.org/pdf/Ch-149-Diagnosis-and-Management-of-Childhood-Tuberculosis.pdf"],
+  ["150","Management of Cough in Office Practice","cough respiratory dry cough wet cough chronic cough acute cough office practice","https://iapindia.org/pdf/Ch-150-Management-of-Cough-in-Office-Practice.pdf"]
+];
 
-  // Hero form quick capture
-  document.getElementById('heroForm').addEventListener('submit', async function(e) {
-    e.preventDefault();
-    const email = document.getElementById('heroEmail').value.trim();
-    const heroBtn = e.currentTarget.querySelector('button[type="submit"]');
-    try {
-      const res = await fetch('https://formspree.io/f/xpqkkppe', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email })
-      });
-      if (!res.ok) throw new Error();
-    } catch {
-      let heroErr = document.getElementById('heroFormError');
-      if (!heroErr) {
-        heroErr = document.createElement('p');
-        heroErr.id = 'heroFormError';
-        heroErr.setAttribute('role', 'alert');
-        heroBtn.insertAdjacentElement('afterend', heroErr);
-      }
-      heroErr.textContent = 'Something went wrong — please try again.';
-      return;
-    }
-    const oldHeroErr = document.getElementById('heroFormError');
-    if (oldHeroErr) oldHeroErr.remove();
-    document.getElementById('femail').value = email;
-    document.getElementById('waitlist').scrollIntoView({ behavior: reducedMotion ? 'auto' : 'smooth' });
-    setTimeout(() => document.getElementById('fname').focus(), reducedMotion ? 0 : 700);
-  });
+// ─────────────────────────────────────────────────────────────────────────────
+// FUZZY SEARCH ENGINE
+// ─────────────────────────────────────────────────────────────────────────────
 
-  async function handleSubmit(e) {
-    e.preventDefault();
-    const name = document.getElementById('fname').value.trim();
-    const email = document.getElementById('femail').value.trim();
-    if (!name || !email) {
-      document.getElementById('fname').style.borderColor = !name ? '#E84545' : '';
-      document.getElementById('femail').style.borderColor = !email ? '#E84545' : '';
-      return;
+function editDist(a, b) {
+  const m = a.length, n = b.length;
+  if (m === 0) return n;
+  if (n === 0) return m;
+  // Use two rows to save memory
+  let prev = Array.from({length: n+1}, (_, i) => i);
+  let curr = new Array(n+1);
+  for (let i = 1; i <= m; i++) {
+    curr[0] = i;
+    for (let j = 1; j <= n; j++) {
+      curr[j] = a[i-1] === b[j-1]
+        ? prev[j-1]
+        : 1 + Math.min(prev[j], curr[j-1], prev[j-1]);
     }
-    document.getElementById('fname').style.borderColor = '';
-    document.getElementById('femail').style.borderColor = '';
-    const existingErr = document.getElementById('waitlistFormError');
-    if (existingErr) existingErr.remove();
-    const role = document.getElementById('frole').value;
-    const branch = document.getElementById('fbranch').value;
-    const hospital = document.getElementById('fhospital').value.trim();
-    const suggestion = document.getElementById('fsuggestion').value.trim();
-    const submitBtn = document.getElementById('waitlistForm').querySelector('.form-submit');
-    try {
-      const res = await fetch('https://formspree.io/f/xpqkkppe', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ name, email, role, branch, hospital, suggestion })
-      });
-      if (!res.ok) throw new Error();
-    } catch {
-      const errEl = document.createElement('p');
-      errEl.id = 'waitlistFormError';
-      errEl.setAttribute('role', 'alert');
-      errEl.textContent = 'Something went wrong — please try again.';
-      submitBtn.insertAdjacentElement('afterend', errEl);
-      return;
-    }
-    const form = document.getElementById('waitlistForm');
-    const successState = document.getElementById('successState');
-    Array.from(form.children).forEach(el => {
-      if (el !== successState) {
-        el.style.display = 'none';
+    [prev, curr] = [curr, prev];
+  }
+  return prev[n];
+}
+
+function norm(s) {
+  return s.toLowerCase().replace(/[^a-z0-9\s]/g, '').replace(/\s+/g, ' ').trim();
+}
+
+function scoreMatch(query, g) {
+  const q = norm(query);
+  if (!q) return 0;
+
+  const name = norm(g[1]);
+  const allText = name + ' ' + norm(g[2]);
+
+  // Highest: query is substring of name
+  if (name.includes(q)) return 150;
+  // High: query is substring of any keyword
+  if (allText.includes(q)) return 110;
+
+  // Word-level matching
+  const qWords = q.split(' ').filter(w => w.length >= 2);
+  if (qWords.length === 0) return 0;
+
+  const tWords = allText.split(' ').filter(w => w.length >= 2);
+  let total = 0, matched = 0;
+
+  for (const qw of qWords) {
+    let best = 0;
+    for (const tw of tWords) {
+      if (tw === qw) { best = Math.max(best, 60); continue; }
+      if (tw.startsWith(qw) || qw.startsWith(tw)) { best = Math.max(best, 40); continue; }
+      if (tw.includes(qw) || qw.includes(tw)) { best = Math.max(best, 30); continue; }
+      // Fuzzy: edit distance for longer words
+      if (qw.length >= 4 && tw.length >= 4) {
+        const d = editDist(qw, tw);
+        if (d === 1) best = Math.max(best, 28);
+        else if (d === 2 && qw.length >= 5) best = Math.max(best, 10);
       }
-    });
-    successState.style.display = 'block';
+    }
+    if (best > 0) matched++;
+    total += best;
   }
 
-  // Waitlist submit
-  document.getElementById('waitlistForm').addEventListener('submit', handleSubmit);
+  // Bonus: all query words matched → likely a good result
+  if (matched === qWords.length && qWords.length > 0) total = Math.round(total * 1.5);
+  return total;
+}
 
-  // Counter animation
-  function animateCounters() {
-    document.querySelectorAll('[data-target]').forEach(el => {
-      const target = parseInt(el.dataset.target, 10);
-      const suffix = el.dataset.suffix || '%';
-      const prefix = el.dataset.prefix || '';
-      if (target === 0) {
-        el.textContent = prefix + '0' + ' ' + suffix;
-        return;
-      }
-      let count = 0;
-      const step = Math.ceil(target / 40);
-      const timer = setInterval(() => {
-        count = Math.min(count + step, target);
-        el.textContent = prefix + count + (suffix.length < 3 ? suffix : '');
-        if (count >= target) clearInterval(timer);
-      }, 35);
+function searchGuidelines(query) {
+  if (!query.trim()) return [];
+  return IAP_GUIDELINES
+    .map(g => ({ g, score: scoreMatch(query, g) }))
+    .filter(r => r.score > 0)
+    .sort((a, b) => b.score - a.score)
+    .slice(0, 8)
+    .map(r => r.g);
+}
+
+function escapeHtml(s) {
+  return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+
+function highlightMatch(text, query) {
+  const q = norm(query).trim();
+  if (!q || q.length < 2) return escapeHtml(text);
+  const escaped = escapeHtml(text);
+  const safeQ = q.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  try {
+    return escaped.replace(new RegExp('(' + safeQ + ')', 'gi'), '<mark>$1</mark>');
+  } catch {
+    return escaped;
+  }
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// RENDER
+// ─────────────────────────────────────────────────────────────────────────────
+
+const POPULAR = [
+  "Dengue","Febrile Seizure","Pneumonia","Asthma","Diarrhea",
+  "Meningitis","Neonatal Jaundice","Tuberculosis","Malaria","Anemia",
+  "Cough","Febrile Neutropenia"
+];
+
+function renderDefault() {
+  return `<div class="search-chips">
+    <div class="search-popular-label" style="width:100%;margin-bottom:0.5rem;">Quick access — tap to search</div>
+    ${POPULAR.map(p => `<button class="search-chip" data-query="${p}">${p}</button>`).join('')}
+  </div>`;
+}
+
+function renderResults(results, query) {
+  const container = document.getElementById('stgResults');
+  if (!query.trim()) {
+    container.innerHTML = renderDefault();
+    return;
+  }
+  if (results.length === 0) {
+    container.innerHTML = `<div class="search-no-results">
+      <p>No results for <strong>"${escapeHtml(query)}"</strong><br>
+      Try a shorter term or a synonym — e.g. "fits" for seizures, "pnuemonia" still works.</p>
+    </div>`;
+    return;
+  }
+  container.innerHTML = results.map(g => `
+    <a class="search-result-item" href="${g[3]}" target="_blank" rel="noopener noreferrer">
+      <span class="result-ch">Ch.${g[0]}</span>
+      <span class="result-name">${highlightMatch(g[1], query)}</span>
+      <span class="result-open">Open PDF ↗</span>
+    </a>
+  `).join('');
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// INIT SEARCH
+// ─────────────────────────────────────────────────────────────────────────────
+
+const searchInput = document.getElementById('stgSearch');
+const stgResults  = document.getElementById('stgResults');
+
+// Seed default state
+stgResults.innerHTML = renderDefault();
+
+// Chip delegation (works even after re-renders)
+stgResults.addEventListener('click', function(e) {
+  const chip = e.target.closest('.search-chip');
+  if (chip) {
+    searchInput.value = chip.dataset.query;
+    searchInput.dispatchEvent(new Event('input'));
+    searchInput.focus();
+  }
+});
+
+let searchTimeout;
+searchInput.addEventListener('input', function() {
+  clearTimeout(searchTimeout);
+  const q = this.value;
+  // Debounce slightly for typo-tolerance (user still typing)
+  searchTimeout = setTimeout(() => {
+    renderResults(searchGuidelines(q), q);
+  }, 110);
+});
+
+// Clear (x button in search input)
+searchInput.addEventListener('search', function() {
+  if (!this.value) renderResults([], '');
+});
+
+// ─────────────────────────────────────────────────────────────────────────────
+// WAITLIST FORM
+// ─────────────────────────────────────────────────────────────────────────────
+
+document.getElementById('waitlistForm').addEventListener('submit', async function(e) {
+  e.preventDefault();
+  const name  = document.getElementById('fname').value.trim();
+  const email = document.getElementById('femail').value.trim();
+  if (!name || !email) {
+    document.getElementById('fname').style.borderColor  = !name  ? '#E84545' : '';
+    document.getElementById('femail').style.borderColor = !email ? '#E84545' : '';
+    return;
+  }
+  document.getElementById('fname').style.borderColor  = '';
+  document.getElementById('femail').style.borderColor = '';
+
+  const existingErr = document.getElementById('waitlistFormError');
+  if (existingErr) existingErr.remove();
+
+  const payload = {
+    name, email,
+    role:       document.getElementById('frole').value,
+    branch:     document.getElementById('fbranch').value,
+    hospital:   document.getElementById('fhospital').value.trim(),
+    suggestion: document.getElementById('fsuggestion').value.trim()
+  };
+
+  try {
+    const res = await fetch('https://formspree.io/f/xpqkkppe', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
     });
+    if (!res.ok) throw new Error();
+  } catch {
+    const errEl = document.createElement('p');
+    errEl.id = 'waitlistFormError';
+    errEl.setAttribute('role', 'alert');
+    errEl.style.cssText = 'color:#D94F4F;font-size:0.85rem;margin-top:0.75rem;text-align:center;';
+    errEl.textContent = 'Something went wrong — please try again.';
+    this.querySelector('.form-submit').insertAdjacentElement('afterend', errEl);
+    return;
   }
 
-  // Intersection Observer for reveals + counter trigger
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        entry.target.classList.add('visible');
-        observer.unobserve(entry.target);
-      }
+  const successState = document.getElementById('successState');
+  Array.from(this.children).forEach(el => {
+    if (el !== successState) el.style.display = 'none';
+  });
+  successState.style.display = 'block';
+});
+
+// ─────────────────────────────────────────────────────────────────────────────
+// COUNTER ANIMATION
+// ─────────────────────────────────────────────────────────────────────────────
+
+function animateCounters() {
+  document.querySelectorAll('[data-target]').forEach(el => {
+    const target = parseInt(el.dataset.target, 10);
+    const suffix = el.dataset.suffix !== undefined ? el.dataset.suffix : '%';
+    const prefix = el.dataset.prefix || '';
+    if (target === 0) { el.textContent = prefix + '0 ' + suffix; return; }
+    let count = 0;
+    const step = Math.ceil(target / 40);
+    const timer = setInterval(() => {
+      count = Math.min(count + step, target);
+      el.textContent = prefix + count + (suffix.length < 3 ? suffix : '');
+      if (count >= target) clearInterval(timer);
+    }, 35);
+  });
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// INTERSECTION OBSERVERS
+// ─────────────────────────────────────────────────────────────────────────────
+
+const revealObserver = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('visible');
+      revealObserver.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+
+document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
+
+const statsBar = document.querySelector('.stats-bar');
+const statsObserver = new IntersectionObserver((entries) => {
+  if (entries[0].isIntersecting) { animateCounters(); statsObserver.unobserve(statsBar); }
+}, { threshold: 0.4 });
+statsObserver.observe(statsBar);
+
+// Stagger transition delays
+document.querySelectorAll('.feat-card.reveal').forEach((el, i) => {
+  el.style.transitionDelay = (i * 0.08) + 's';
+});
+document.querySelectorAll('.branch-card.reveal').forEach((el, i) => {
+  el.style.transitionDelay = (i * 0.06) + 's';
+});
+
+// Animate source cards
+document.querySelectorAll('.source-card').forEach((el, i) => {
+  el.style.opacity = '0';
+  el.style.transform = 'translateY(16px)';
+  el.style.transition = `opacity 0.5s ease ${i * 0.1}s, transform 0.5s ease ${i * 0.1}s`;
+});
+
+const trustObserver = new IntersectionObserver((entries) => {
+  if (entries[0].isIntersecting) {
+    document.querySelectorAll('.source-card').forEach(el => {
+      el.style.opacity = el.classList.contains('source-card--dim') ? '0.5' : '1';
+      el.style.transform = 'translateY(0)';
     });
-  }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+    trustObserver.disconnect();
+  }
+}, { threshold: 0.2 });
 
-  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
-
-  const statsBar = document.querySelector('.stats-bar');
-  const statsObserver = new IntersectionObserver((entries) => {
-    if (entries[0].isIntersecting) {
-      animateCounters();
-      statsObserver.unobserve(statsBar);
-    }
-  }, { threshold: 0.4 });
-  statsObserver.observe(statsBar);
-
-  // Stagger reveal delays
-  document.querySelectorAll('.feat-card.reveal').forEach((el, i) => {
-    el.style.transitionDelay = (i * 0.08) + 's';
-  });
-  document.querySelectorAll('.branch-card.reveal').forEach((el, i) => {
-    el.style.transitionDelay = (i * 0.06) + 's';
-  });
-  document.querySelectorAll('.source-card').forEach((el, i) => {
-    el.style.opacity = '0';
-    el.style.transform = 'translateY(16px)';
-    el.style.transition = `opacity 0.5s ease ${i * 0.1}s, transform 0.5s ease ${i * 0.1}s`;
-  });
-
-  const trustObserver = new IntersectionObserver((entries) => {
-    if (entries[0].isIntersecting) {
-      document.querySelectorAll('.source-card').forEach(el => {
-        const dim = el.classList.contains('source-card--dim');
-        el.style.opacity = dim ? '0.5' : '1';
-        el.style.transform = 'translateY(0)';
-      });
-      trustObserver.disconnect();
-    }
-  }, { threshold: 0.2 });
-  const trustSection = document.querySelector('.trust-section');
-  if (trustSection) trustObserver.observe(trustSection);
+const trustSection = document.querySelector('.trust-section');
+if (trustSection) trustObserver.observe(trustSection);
 </script>
 
 </body>
