@@ -860,9 +860,9 @@
 
   /* Drug values — readable on narrow phones */
   .drug-values-grid { grid-template-columns: 1fr 1fr; gap: 0.5rem; }
-  .drug-value-box { padding: 0.6rem 0.7rem; border-radius: 8px; }
-  .dvb-value { font-size: 1.15rem; }
-  .dvb-label { font-size: 0.52rem; }
+  .drug-value-box { padding: 0.6rem 0.7rem; border-radius: 8px; text-align: center; }
+  .dvb-value { font-size: 1.15rem; line-height: 1.25; }
+  .dvb-label { font-size: 0.52rem; white-space: nowrap; }
   .dvb-sub { font-size: 0.56rem; }
 
   /* Compact variant (teaser cards) */
