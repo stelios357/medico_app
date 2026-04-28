@@ -283,7 +283,7 @@ export default function Landing() {
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
             Search {IAP_COUNT} IAP Protocols
           </a>
-          <Link to="/calc" className="btn-primary" onClick={() => navigate('/calc')} style={{ background: 'transparent', border: '1.5px solid var(--teal)', color: 'var(--teal)' }}>
+          <Link to="/calc" className="btn-primary" style={{ background: 'transparent', border: '1.5px solid var(--teal)', color: 'var(--teal)' }}>
             ⚡ Emergency Dose Calc
           </Link>
           <a href="#waitlist" className="btn-secondary" onClick={e => { e.preventDefault(); document.getElementById('waitlist')?.scrollIntoView({ behavior: 'smooth' }); }}>
