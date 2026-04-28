@@ -697,6 +697,462 @@
     letter-spacing: 0.06em;
   }
 
+  /* ── STORYBOARD (interactive use-case) ── */
+  .story-tabs {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.75rem;
+    margin: 2.5rem 0 2rem;
+  }
+
+  .story-tab {
+    appearance: none;
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 1rem 1.1rem;
+    text-align: left;
+    cursor: pointer;
+    font-family: var(--sans);
+    color: var(--text);
+    transition: border-color 0.25s, transform 0.2s, box-shadow 0.25s, background 0.25s;
+    display: flex;
+    align-items: center;
+    gap: 0.85rem;
+    position: relative;
+  }
+
+  .story-tab:hover {
+    transform: translateY(-2px);
+    border-color: var(--teal-mid);
+  }
+
+  .story-tab[aria-selected="true"] {
+    background: var(--bg3);
+    border-color: var(--teal);
+    box-shadow: 0 6px 24px -10px rgba(10,158,136,0.45);
+  }
+
+  .story-tab .st-num {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background: var(--teal-dim);
+    color: var(--teal);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--mono);
+    font-size: 0.78rem;
+    font-weight: 600;
+    flex-shrink: 0;
+    border: 1px solid var(--teal-mid);
+  }
+
+  .story-tab[aria-selected="true"] .st-num {
+    background: var(--teal);
+    color: var(--white);
+  }
+
+  .story-tab .st-meta { display: flex; flex-direction: column; min-width: 0; }
+  .story-tab .st-label {
+    font-family: var(--mono);
+    font-size: 0.62rem;
+    color: var(--muted);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+  .story-tab .st-title {
+    font-size: 0.95rem;
+    font-weight: 600;
+    line-height: 1.25;
+  }
+
+  .storyboard {
+    display: grid;
+    grid-template-columns: 1.1fr 0.9fr;
+    gap: 2rem;
+    align-items: stretch;
+  }
+
+  .story-scene {
+    position: relative;
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    min-height: 420px;
+    overflow: hidden;
+    isolation: isolate;
+  }
+
+  .story-scene::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(circle at 30% 25%, rgba(10,158,136,0.10), transparent 55%),
+      radial-gradient(circle at 75% 80%, rgba(232,144,10,0.10), transparent 55%);
+    pointer-events: none;
+  }
+
+  .scene {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    transform: scale(0.98);
+    transition: opacity 0.4s ease, transform 0.5s ease;
+    pointer-events: none;
+  }
+
+  .scene.active {
+    opacity: 1;
+    transform: scale(1);
+    pointer-events: auto;
+  }
+
+  /* Resident centerpiece */
+  .scene-resident {
+    position: absolute;
+    left: 50%;
+    top: 52%;
+    transform: translate(-50%, -50%);
+    width: 130px;
+    height: 130px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .scene-resident svg { width: 100%; height: 100%; }
+
+  /* Floating chaos chips */
+  .chaos-bubble {
+    position: absolute;
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 0.55rem 0.8rem;
+    font-family: var(--mono);
+    font-size: 0.72rem;
+    color: var(--text);
+    box-shadow: 0 8px 20px -12px rgba(26,31,46,0.25);
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    animation: floaty 4s ease-in-out infinite;
+  }
+
+  .chaos-bubble.warn { color: var(--red); border-color: rgba(217,79,79,0.28); background: rgba(217,79,79,0.08); }
+  .chaos-bubble.amber { color: var(--amber); border-color: rgba(232,144,10,0.28); background: rgba(232,144,10,0.08); }
+  .chaos-bubble.teal { color: var(--teal); border-color: var(--teal-mid); background: var(--teal-dim); }
+
+  .chaos-bubble svg { width: 14px; height: 14px; }
+
+  .cb-1 { top: 8%;  left: 6%;  animation-delay: 0s; }
+  .cb-2 { top: 14%; right: 8%; animation-delay: 0.6s; }
+  .cb-3 { top: 38%; left: 4%;  animation-delay: 1.1s; }
+  .cb-4 { top: 44%; right: 5%; animation-delay: 0.4s; }
+  .cb-5 { bottom: 14%; left: 12%; animation-delay: 1.5s; }
+  .cb-6 { bottom: 8%; right: 10%; animation-delay: 0.9s; }
+  .cb-7 { top: 60%; left: 50%; transform: translateX(-50%); animation-delay: 1.3s; }
+
+  @keyframes floaty {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-6px); }
+  }
+
+  /* Question marks scattered */
+  .scene-q {
+    position: absolute;
+    font-family: var(--serif);
+    font-size: 2.4rem;
+    color: rgba(217,79,79,0.55);
+    font-style: italic;
+    animation: floaty 5s ease-in-out infinite;
+    pointer-events: none;
+  }
+
+  /* Decision scene — patient + protocol */
+  .scene-protocol {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: 78%;
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 1rem 1.1rem;
+    font-family: var(--mono);
+    font-size: 0.78rem;
+    box-shadow: 0 12px 30px -18px rgba(26,31,46,0.35);
+  }
+
+  .scene-protocol .sp-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.66rem;
+    color: var(--muted);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: 0.65rem;
+  }
+
+  .scene-protocol .sp-tag {
+    background: rgba(217,79,79,0.10);
+    color: var(--red);
+    border: 1px solid rgba(217,79,79,0.25);
+    border-radius: 4px;
+    padding: 0.15rem 0.45rem;
+    font-size: 0.6rem;
+  }
+
+  .scene-protocol .sp-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.4rem 0;
+    border-bottom: 1px dashed var(--border);
+  }
+
+  .scene-protocol .sp-row:last-child { border-bottom: none; }
+  .scene-protocol .sp-key { color: var(--muted); }
+  .scene-protocol .sp-val { color: var(--text); font-weight: 500; }
+  .scene-protocol .sp-val.warn { color: var(--red); }
+  .scene-protocol .sp-val.calc {
+    background: rgba(232,144,10,0.10);
+    color: var(--amber);
+    padding: 0.1rem 0.5rem;
+    border-radius: 4px;
+    border: 1px dashed rgba(232,144,10,0.45);
+  }
+
+  .scene-clock {
+    position: absolute;
+    top: 8%;
+    right: 8%;
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 100px;
+    padding: 0.4rem 0.85rem;
+    font-family: var(--mono);
+    font-size: 0.72rem;
+    color: var(--red);
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    box-shadow: 0 6px 18px -10px rgba(217,79,79,0.45);
+  }
+
+  .scene-clock .clock-dot {
+    width: 7px; height: 7px; border-radius: 50%;
+    background: var(--red);
+    animation: pulse 1.2s ease-in-out infinite;
+  }
+
+  .scene-stat-stick {
+    position: absolute;
+    top: 18%;
+    left: 8%;
+    width: 70px;
+    height: 110px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.25rem;
+  }
+
+  .scene-stat-stick svg { width: 100%; }
+  .scene-stat-stick .ss-label {
+    font-family: var(--mono);
+    font-size: 0.6rem;
+    color: var(--red);
+    letter-spacing: 0.06em;
+    text-align: center;
+    line-height: 1.2;
+  }
+
+  /* Rescue scene — PauseMD answer cards */
+  .scene-pause-mark {
+    position: absolute;
+    top: 14%;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.4rem;
+  }
+
+  .pause-mark-circle {
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    background: var(--white);
+    border: 2px solid var(--teal);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 12px 30px -12px rgba(10,158,136,0.55);
+  }
+
+  .pause-mark-circle svg { width: 30px; height: 30px; }
+
+  .scene-pause-mark .pm-label {
+    font-family: var(--mono);
+    font-size: 0.62rem;
+    color: var(--teal);
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+  }
+
+  .answer-card {
+    position: absolute;
+    background: var(--bg2);
+    border: 1px solid var(--teal-mid);
+    border-radius: 12px;
+    padding: 0.7rem 0.85rem;
+    font-size: 0.78rem;
+    box-shadow: 0 12px 26px -16px rgba(10,158,136,0.45);
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+    min-width: 180px;
+    animation: floaty 4.5s ease-in-out infinite;
+  }
+
+  .answer-card .ac-q {
+    font-family: var(--mono);
+    font-size: 0.62rem;
+    color: var(--muted);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .answer-card .ac-a {
+    color: var(--teal);
+    font-weight: 600;
+    font-family: var(--mono);
+    font-size: 0.78rem;
+  }
+
+  .ac-1 { top: 50%; left: 4%; animation-delay: 0.2s; }
+  .ac-2 { top: 56%; right: 4%; animation-delay: 0.7s; }
+  .ac-3 { bottom: 6%; left: 50%; transform: translateX(-50%); animation-delay: 1.1s; min-width: 220px; }
+
+  /* Side panel that updates with active stage */
+  .story-panel {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 1.75rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    min-height: 420px;
+  }
+
+  .panel-head {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    font-family: var(--mono);
+    font-size: 0.7rem;
+    color: var(--muted);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+
+  .panel-head .ph-dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: var(--red);
+  }
+
+  .story-panel[data-stage="2"] .ph-dot { background: var(--amber); }
+  .story-panel[data-stage="3"] .ph-dot { background: var(--teal); }
+
+  .panel-title {
+    font-family: var(--serif);
+    font-size: 1.55rem;
+    line-height: 1.2;
+  }
+
+  .panel-title em { font-style: italic; color: var(--teal); }
+
+  .panel-line {
+    color: rgba(26,31,46,0.65);
+    font-size: 0.95rem;
+    line-height: 1.6;
+    font-weight: 300;
+  }
+
+  .panel-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.45rem;
+  }
+
+  .p-chip {
+    font-family: var(--mono);
+    font-size: 0.68rem;
+    background: rgba(0,0,0,0.04);
+    border: 1px solid var(--border);
+    border-radius: 100px;
+    padding: 0.3rem 0.7rem;
+    color: var(--muted);
+    letter-spacing: 0.04em;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+  }
+
+  .p-chip.warn { background: rgba(217,79,79,0.08); color: var(--red); border-color: rgba(217,79,79,0.22); }
+  .p-chip.amber { background: rgba(232,144,10,0.08); color: var(--amber); border-color: rgba(232,144,10,0.22); }
+  .p-chip.teal { background: var(--teal-dim); color: var(--teal); border-color: var(--teal-mid); }
+
+  .p-chip-dot { width: 6px; height: 6px; border-radius: 50%; background: currentColor; opacity: 0.75; }
+
+  .panel-meter {
+    margin-top: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .meter-row {
+    display: flex;
+    align-items: center;
+    gap: 0.65rem;
+    font-family: var(--mono);
+    font-size: 0.7rem;
+    color: var(--muted);
+  }
+
+  .meter-bar {
+    flex: 1;
+    height: 6px;
+    background: rgba(0,0,0,0.06);
+    border-radius: 100px;
+    overflow: hidden;
+    position: relative;
+  }
+
+  .meter-fill {
+    height: 100%;
+    width: 0%;
+    background: var(--red);
+    border-radius: 100px;
+    transition: width 0.6s ease, background 0.4s ease;
+  }
+
+  .story-panel[data-stage="1"] .meter-fill { width: 95%; background: var(--red); }
+  .story-panel[data-stage="2"] .meter-fill { width: 70%; background: var(--amber); }
+  .story-panel[data-stage="3"] .meter-fill { width: 18%; background: var(--teal); }
+
+  .meter-val { color: var(--text); font-weight: 600; min-width: 38px; text-align: right; }
+
   /* ── FEATURES ── */
   .features-grid {
     display: grid;
@@ -845,6 +1301,61 @@
     letter-spacing: 0.04em;
   }
 
+  /* Feature flow strip — visual input → output */
+  .feat-flow {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    gap: 0.65rem;
+    align-items: stretch;
+    background: var(--bg3);
+    border: 1px dashed var(--border);
+    border-radius: 12px;
+    padding: 0.85rem;
+    margin-top: 1rem;
+  }
+
+  .feat-flow .ff-cell {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 0.6rem 0.75rem;
+    font-family: var(--mono);
+    font-size: 0.72rem;
+    color: var(--text);
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    min-width: 0;
+  }
+
+  .feat-flow .ff-label {
+    font-size: 0.58rem;
+    letter-spacing: 0.12em;
+    color: var(--muted);
+    text-transform: uppercase;
+  }
+
+  .feat-flow .ff-arrow {
+    align-self: center;
+    color: var(--teal);
+    font-family: var(--mono);
+    font-weight: 600;
+  }
+
+  .feat-flow .ff-cell.out { border-color: var(--teal-mid); background: var(--teal-dim); color: var(--teal); }
+
+  .feat-card .feat-line {
+    color: rgba(26,31,46,0.7);
+    font-size: 0.92rem;
+    line-height: 1.55;
+    font-weight: 400;
+  }
+
+  .feat-card .feat-line strong {
+    color: var(--text);
+    font-weight: 600;
+  }
+
   /* ── TRUST SECTION ── */
   .trust-section { background: var(--bg2); padding: 0; }
 
@@ -955,6 +1466,72 @@
   .doc-val.warn { color: var(--red); }
   .doc-val.ok { color: var(--teal); }
   .doc-val.caution { color: var(--amber); }
+
+  /* Trust headline + visual quote */
+  .trust-headline {
+    font-family: var(--serif);
+    font-size: 1.45rem;
+    line-height: 1.4;
+    color: var(--text);
+    margin: 0.5rem 0 1.25rem;
+  }
+
+  .trust-headline em { color: var(--teal); font-style: italic; }
+
+  .trust-quote {
+    background: var(--bg3);
+    border-left: 3px solid var(--teal);
+    border-radius: 0 12px 12px 0;
+    padding: 1rem 1.25rem;
+    font-family: var(--mono);
+    font-size: 0.85rem;
+    color: var(--text);
+    margin-bottom: 1.25rem;
+  }
+
+  .trust-quote .tq-label {
+    font-size: 0.6rem;
+    color: var(--teal);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    display: block;
+    margin-bottom: 0.35rem;
+  }
+
+  /* Expand-details for shortened trust copy */
+  .trust-details {
+    background: transparent;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 0.75rem 1rem;
+    cursor: pointer;
+    list-style: none;
+  }
+  .trust-details summary {
+    list-style: none;
+    cursor: pointer;
+    font-family: var(--mono);
+    font-size: 0.75rem;
+    color: var(--muted);
+    letter-spacing: 0.05em;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .trust-details summary::-webkit-details-marker { display: none; }
+  .trust-details summary::after {
+    content: '+';
+    font-size: 1rem;
+    color: var(--teal);
+    transition: transform 0.2s;
+  }
+  .trust-details[open] summary::after { content: '−'; }
+  .trust-details p {
+    margin-top: 0.75rem;
+    color: var(--muted);
+    font-size: 0.86rem;
+    line-height: 1.65;
+  }
 
   /* ── BRANCHES ── */
   .branches-row {
@@ -1298,70 +1875,166 @@
   </div>
 </div>
 
-<!-- PROBLEM -->
+<!-- PROBLEM (interactive storyboard) -->
 <div class="problem-section" id="problem">
   <div class="problem-inner">
-    <div class="section-tag">The reality</div>
-    <h2>Every morning is<br><em>a gauntlet.</em></h2>
+    <div class="section-tag reveal">The reality → the rescue</div>
+    <h2 class="reveal">Every morning is<br><em>a gauntlet.</em><br>Until it isn't.</h2>
 
-    <div class="problem-grid">
-      <div class="problem-text">
-        <p>You're a PG1. It's 7 AM. Before you've had tea, your JR2 arrives, then the SR, then two consultants — one of them very awake, very particular. Each one asks what you did for your patient and why.</p>
-        <p>The knowledge is there. The protocol is somewhere in a 40-page IAP PDF you opened on Google three nights ago. <strong>The dose is different for every child's weight.</strong> You do this math multiple times a shift.</p>
-        <p>No one taught you the steps. Your seniors teach experience. <strong>The bookish language is yours to figure out.</strong> You're in a new hospital, clueless about the PICU protocols. You manage 7–8 dengue cases, 3 pneumonias, a febrile seizure, and a neonatal jaundice — all in one duty.</p>
-        <p>And when rounds are over, there's no place to decompress. No one to tell. You carry it home.</p>
+    <div class="story-tabs reveal" role="tablist" aria-label="Resident day storyboard">
+      <button type="button" class="story-tab" role="tab" aria-selected="true" aria-controls="scene1" id="tab1" data-stage="1">
+        <span class="st-num">1</span>
+        <span class="st-meta">
+          <span class="st-label">Stage one</span>
+          <span class="st-title">Chaos hits</span>
+        </span>
+      </button>
+      <button type="button" class="story-tab" role="tab" aria-selected="false" aria-controls="scene2" id="tab2" data-stage="2">
+        <span class="st-num">2</span>
+        <span class="st-meta">
+          <span class="st-label">Stage two</span>
+          <span class="st-title">Critical decision</span>
+        </span>
+      </button>
+      <button type="button" class="story-tab" role="tab" aria-selected="false" aria-controls="scene3" id="tab3" data-stage="3">
+        <span class="st-num">3</span>
+        <span class="st-meta">
+          <span class="st-label">Stage three</span>
+          <span class="st-title">We got you</span>
+        </span>
+      </button>
+    </div>
+
+    <div class="storyboard reveal">
+
+      <!-- Visual scenes (one is active at a time) -->
+      <div class="story-scene" aria-live="polite">
+
+        <!-- SCENE 1: CHAOS -->
+        <div class="scene active" id="scene1" role="tabpanel" aria-labelledby="tab1">
+          <span class="scene-q" style="top:6%; left:18%;">?</span>
+          <span class="scene-q" style="top:12%; right:22%; transform:rotate(-12deg);">?</span>
+          <span class="scene-q" style="bottom:18%; left:22%; transform:rotate(8deg);">?</span>
+
+          <div class="chaos-bubble warn cb-1">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 9v4M12 17h.01M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0Z"/></svg>
+            HARD ROUNDS!!
+          </div>
+          <div class="chaos-bubble cb-2">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6M16 13H8M16 17H8"/></svg>
+            40-page IAP PDF
+          </div>
+          <div class="chaos-bubble amber cb-3">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="2" width="16" height="20" rx="2"/><path d="M8 6h8M8 10h8M8 14h4"/></svg>
+            7 kg · dose?
+          </div>
+          <div class="chaos-bubble warn cb-4">
+            "Which group?"
+          </div>
+          <div class="chaos-bubble cb-5">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
+            Google → 14 tabs
+          </div>
+          <div class="chaos-bubble warn cb-6">HELP.</div>
+
+          <div class="scene-resident" aria-hidden="true">
+            <svg viewBox="0 0 120 120" fill="none">
+              <circle cx="60" cy="48" r="22" fill="#FCE9E1" stroke="#1A1F2E" stroke-width="1.6"/>
+              <path d="M40 50c2-14 12-22 20-22s18 8 20 22c-3-2-7-3-10-2-6 2-12 6-20 6-4 0-8-1-10-4z" fill="#1A1F2E"/>
+              <circle cx="52" cy="50" r="1.6" fill="#1A1F2E"/>
+              <circle cx="68" cy="50" r="1.6" fill="#1A1F2E"/>
+              <path d="M53 60c2 1.5 4 2 7 2s5-.5 7-2" stroke="#1A1F2E" stroke-width="1.5" stroke-linecap="round" fill="none"/>
+              <path d="M40 75 32 110M80 75 88 110M55 70v40M65 70v40" stroke="#0A9E88" stroke-width="3" stroke-linecap="round"/>
+              <rect x="48" y="68" width="24" height="22" rx="2" fill="#FFFFFF" stroke="#1A1F2E" stroke-width="1.2"/>
+              <path d="M48 78h24" stroke="#D94F4F" stroke-width="1.2"/>
+              <path d="M58 73h4" stroke="#D94F4F" stroke-width="2"/>
+              <circle cx="60" cy="40" r="3" fill="#D94F4F"/>
+            </svg>
+          </div>
+        </div>
+
+        <!-- SCENE 2: CRITICAL DECISION -->
+        <div class="scene" id="scene2" role="tabpanel" aria-labelledby="tab2" hidden>
+          <div class="scene-clock"><span class="clock-dot"></span> 09:15 · CONSULTANT</div>
+
+          <div class="scene-stat-stick" aria-hidden="true">
+            <svg viewBox="0 0 60 90" fill="none">
+              <circle cx="30" cy="14" r="9" fill="#FCE9E1" stroke="#D94F4F" stroke-width="1.6"/>
+              <path d="M30 24v36M30 36l-14 12M30 36l14 12M30 60l-10 22M30 60l10 22" stroke="#D94F4F" stroke-width="2.4" stroke-linecap="round"/>
+              <path d="M22 12c2-3 4-3 6 0M32 12c2-3 4-3 6 0" stroke="#D94F4F" stroke-width="1.4" stroke-linecap="round"/>
+            </svg>
+            <span class="ss-label">CRITICAL<br>PATIENT!</span>
+          </div>
+
+          <div class="scene-protocol" aria-hidden="true">
+            <div class="sp-head">
+              <span>Dengue · Day 4 · 7 kg</span>
+              <span class="sp-tag">GROUP B</span>
+            </div>
+            <div class="sp-row"><span class="sp-key">Platelets</span><span class="sp-val warn">60k ↓</span></div>
+            <div class="sp-row"><span class="sp-key">HCT trend</span><span class="sp-val warn">+22%</span></div>
+            <div class="sp-row"><span class="sp-key">IV fluid?</span><span class="sp-val calc">5–7 mL/kg/hr</span></div>
+            <div class="sp-row"><span class="sp-key">Recheck HCT</span><span class="sp-val">2–4 h</span></div>
+          </div>
+        </div>
+
+        <!-- SCENE 3: PAUSEMD RESCUE -->
+        <div class="scene" id="scene3" role="tabpanel" aria-labelledby="tab3" hidden>
+          <div class="scene-pause-mark" aria-hidden="true">
+            <div class="pause-mark-circle">
+              <svg viewBox="0 0 32 32" fill="none">
+                <rect x="2" y="12" width="8" height="8" rx="2" fill="#D94F4F" opacity="0.7"/>
+                <rect x="12" y="4" width="8" height="24" rx="2" fill="#D94F4F"/>
+                <rect x="22" y="14" width="8" height="4" rx="2" fill="#D94F4F" opacity="0.7"/>
+              </svg>
+            </div>
+            <span class="pm-label">PauseMD · 2 taps</span>
+          </div>
+
+          <div class="answer-card ac-1">
+            <span class="ac-q">Which group?</span>
+            <span class="ac-a">Group B — warning signs</span>
+          </div>
+          <div class="answer-card ac-2">
+            <span class="ac-q">IV fluid rate</span>
+            <span class="ac-a">5–7 mL/kg/hr × 1–2 h</span>
+          </div>
+          <div class="answer-card ac-3">
+            <span class="ac-q">Source</span>
+            <span class="ac-a">IAP STG 2022 · Ch.138</span>
+          </div>
+        </div>
+
       </div>
 
-      <div class="rounds-timeline">
-        <div class="tl-header">⚡ Morning Rounds — Ward 4, Pediatrics</div>
-        <div class="tl-item">
-          <span class="tl-time">07:05</span>
-          <div class="tl-content">
-            <div class="tl-name">JR2 arrives</div>
-            <div class="tl-q">"What's the HCT trend on Bed 6?"</div>
+      <!-- Live status panel (updates per active stage) -->
+      <aside class="story-panel" data-stage="1" id="storyPanel">
+        <div class="panel-head"><span class="ph-dot"></span><span class="ph-label">07:05 · Ward 4</span></div>
+        <h3 class="panel-title">Questions arrive <em>before tea.</em></h3>
+        <p class="panel-line">JR2, SR, two consultants. PDFs, doses, 7 kg child. The math doesn't stop.</p>
+        <div class="panel-chips">
+          <span class="p-chip warn"><span class="p-chip-dot"></span>Anxiety: 90%</span>
+          <span class="p-chip warn"><span class="p-chip-dot"></span>14 tabs open</span>
+          <span class="p-chip amber"><span class="p-chip-dot"></span>Dose math × 7</span>
+        </div>
+        <div class="panel-meter">
+          <div class="meter-row">
+            <span>STRESS</span>
+            <div class="meter-bar"><div class="meter-fill"></div></div>
+            <span class="meter-val">95%</span>
           </div>
         </div>
-        <div class="tl-item">
-          <span class="tl-time">07:45</span>
-          <div class="tl-content">
-            <div class="tl-name">SR on round</div>
-            <div class="tl-q">"Which group is this dengue? What fluid rate did you start?"</div>
-            <span class="tl-stress">HIGH STRESS</span>
-          </div>
-        </div>
-        <div class="tl-item">
-          <span class="tl-time">08:30</span>
-          <div class="tl-content">
-            <div class="tl-name">Consultant A arrives</div>
-            <div class="tl-q">"What are the discharge criteria you're tracking?"</div>
-            <span class="tl-stress">VERY HIGH STRESS</span>
-          </div>
-        </div>
-        <div class="tl-item">
-          <span class="tl-time">09:15</span>
-          <div class="tl-content">
-            <div class="tl-name">Attending consultant</div>
-            <div class="tl-q">"Why this antibiotic? Walk me through your reasoning."</div>
-            <span class="tl-stress">MAXIMUM STRESS</span>
-          </div>
-        </div>
-        <div class="tl-item">
-          <span class="tl-time">10:30</span>
-          <div class="tl-content">
-            <div class="tl-name">Rounds end</div>
-            <div class="tl-q">Duty continues. No break. No debrief.</div>
-          </div>
-        </div>
-      </div>
+      </aside>
+
     </div>
   </div>
 </div>
 
 <!-- FEATURES -->
 <section id="features">
-  <div class="section-tag">What PauseMD does</div>
-  <h2>Everything you need.<br><em>In under 10 seconds.</em></h2>
-  <p class="section-intro">Four tools that replace a Google search, a PDF hunt, a calculator, and a nervous guess.</p>
+  <div class="section-tag reveal">What PauseMD does</div>
+  <h2 class="reveal">Everything you need.<br><em>In under 10 seconds.</em></h2>
+  <p class="section-intro reveal">Four tools. Zero PDF hunts.</p>
 
   <div class="features-grid">
 
@@ -1441,8 +2114,13 @@
           <path d="M16 16l2 2 4-4" stroke-width="1.5"/>
         </svg>
       </div>
-      <h3>Weight-Based Dose & Fluid Calculator</h3>
-      <p>Enter weight → get <strong>real numbers, not tables</strong>. Drug doses, IV maintenance, dengue critical phase fluid rates, shock bolus volumes. Rounding guidance included.</p>
+      <h3>Dose & Fluid Calculator</h3>
+      <p class="feat-line">Weight in. <strong>Real numbers</strong> out.</p>
+      <div class="feat-flow" aria-hidden="true">
+        <div class="ff-cell"><span class="ff-label">Input</span>7 kg · Day 4</div>
+        <div class="ff-arrow">→</div>
+        <div class="ff-cell out"><span class="ff-label">Output</span>5–7 mL/kg/hr · 35–49 mL/h</div>
+      </div>
       <div class="feat-tags">
         <span class="tag">Holliday-Segar</span>
         <span class="tag">Critical phase</span>
@@ -1460,11 +2138,16 @@
           <path d="m21 21-4.35-4.35M11 8v3l2 2"/>
         </svg>
       </div>
-      <h3>Symptom → Differential Engine</h3>
-      <p>Enter age + 3 symptoms. Get <strong>4–5 ranked differentials</strong>, rule-in/rule-out points for each, and a direct link to the protocol card. Built for real presentations, not textbook lists.</p>
+      <h3>Symptom → Differential</h3>
+      <p class="feat-line">Age + 3 symptoms. <strong>4–5 ranked Dx</strong>.</p>
+      <div class="feat-flow" aria-hidden="true">
+        <div class="ff-cell"><span class="ff-label">Input</span>2y · fever · rash · vomiting</div>
+        <div class="ff-arrow">→</div>
+        <div class="ff-cell out"><span class="ff-label">Output</span>Dengue · Measles · UTI · …</div>
+      </div>
       <div class="feat-tags">
         <span class="tag">Prevalence-ranked</span>
-        <span class="tag">Rule-out points</span>
+        <span class="tag">Rule-out</span>
         <span class="tag">Protocol linked</span>
         <span class="tag">Age-adjusted</span>
       </div>
@@ -1481,9 +2164,18 @@
 
     <div class="trust-grid">
       <div class="trust-text">
-        <p>The IAP Standard Treatment Guidelines, AIIMS PICU protocols, and WHO guidelines are already the gold standard — they just live inside PDF files nobody has time to read in full during a duty shift.</p>
-        <p>PauseMD doesn't rewrite them. We <strong>make them findable in 2 taps</strong>, show you what's clinically relevant for your patient's exact scenario, and keep the source attribution visible on every screen — so nobody can accuse you of winging it.</p>
-        <p>When a consultant asks how you know something, you can say <strong>"IAP STG 2022, Chapter 138."</strong> Not "I saw it on an app."</p>
+        <p class="trust-headline">Gold-standard guidelines.<br><em>Findable in 2 taps.</em></p>
+
+        <div class="trust-quote">
+          <span class="tq-label">What you can say in rounds</span>
+          “IAP STG 2022, Chapter 138.”<br>
+          <span style="color:var(--muted);font-size:0.78rem;">Not "I saw it on an app."</span>
+        </div>
+
+        <details class="trust-details">
+          <summary>How we use the sources</summary>
+          <p>PauseMD doesn't rewrite IAP, AIIMS or WHO guidelines. We make them findable in 2 taps, surface what's clinically relevant for your patient's exact scenario, and keep the source citation visible on every screen.</p>
+        </details>
 
         <div class="doc-preview" style="margin-top: 1.5rem;">
           <div class="doc-topbar">
