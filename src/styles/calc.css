@@ -841,9 +841,45 @@
   .emergency-toggle-wrap { align-items: flex-start; }
   .drugs-grid { grid-template-columns: 1fr; }
   .teaser-cards { grid-template-columns: 1fr; }
-  .weight-number-input { font-size: 2.8rem; }
   .normal-vals-grid { grid-template-columns: repeat(2, 1fr); }
   .equip-grid { grid-template-columns: 1fr; }
-  .drug-values-grid { grid-template-columns: 1fr 1fr; }
   .calc-tab { font-size: 0.78rem; padding: 0.45rem 0.85rem; }
+
+  /* Weight input */
+  .weight-panel { padding: 1.25rem; }
+  .weight-number-input { font-size: 2.5rem; }
+  .weight-stepper { border-radius: 12px; }
+  .weight-step-btn { min-height: 60px; padding: 0 0.85rem; font-size: 1.3rem; touch-action: manipulation; }
+  .weight-unit { font-size: 1rem; padding-right: 0.85rem; }
+
+  /* Drug card header — allow name to wrap beside badge */
+  .drug-card-header { gap: 0.5rem; }
+  .drug-card-header > div:first-child { min-width: 0; }
+  .drug-name { word-break: break-word; }
+  .drug-indication { font-size: 0.72rem; }
+
+  /* Drug values — readable on narrow phones */
+  .drug-values-grid { grid-template-columns: 1fr 1fr; gap: 0.5rem; }
+  .drug-value-box { padding: 0.6rem 0.7rem; border-radius: 8px; }
+  .dvb-value { font-size: 1.15rem; }
+  .dvb-label { font-size: 0.52rem; }
+  .dvb-sub { font-size: 0.56rem; }
+
+  /* Compact variant (teaser cards) */
+  .drug-card.compact { padding: 0.85rem 0.95rem; }
+  .drug-dose-rule { font-size: 0.62rem; padding: 0.3rem 0.5rem; }
+  .drug-cat-badge { font-size: 0.52rem; padding: 0.15rem 0.4rem; }
+
+  /* Broselow band */
+  .broselow-band { padding: 0.6rem 0.85rem; gap: 0.75rem; }
+  .broselow-color-name { font-size: 0.8rem; }
+}
+
+/* ── EXTRA-NARROW CALC (≤380px) ── */
+@media (max-width: 380px) {
+  .weight-number-input { font-size: 2.2rem; }
+  .weight-step-btn { min-height: 52px; padding: 0 0.65rem; }
+  .dvb-value { font-size: 1rem; }
+  .drug-card.compact { padding: 0.75rem 0.85rem; }
+  .drug-card-header { flex-wrap: wrap; }
 }

@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import Nav from '../components/Nav.jsx';
 import Footer from '../components/Footer.jsx';
 import WeightInput from '../components/DoseCalc/WeightInput.jsx';
@@ -174,6 +174,7 @@ export default function Landing() {
   const [statsVisible, setStatsVisible] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const [teaserWeight, setTeaserWeight] = useState(20);
+  const navigate = useNavigate();
 
   // Update title/meta
   useEffect(() => {
@@ -282,7 +283,7 @@ export default function Landing() {
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
             Search {IAP_COUNT} IAP Protocols
           </a>
-          <Link to="/calc" className="btn-primary" style={{ background: 'transparent', border: '1.5px solid var(--teal)', color: 'var(--teal)' }}>
+          <Link to="/calc" className="btn-primary" onClick={() => navigate('/calc')} style={{ background: 'transparent', border: '1.5px solid var(--teal)', color: 'var(--teal)' }}>
             ⚡ Emergency Dose Calc
           </Link>
           <a href="#waitlist" className="btn-secondary" onClick={e => { e.preventDefault(); document.getElementById('waitlist')?.scrollIntoView({ behavior: 'smooth' }); }}>
@@ -554,7 +555,7 @@ export default function Landing() {
               <span className="tag">Max doses enforced</span>
               <span className="tag">Offline</span>
             </div>
-            <Link to="/calc" className="btn-primary" style={{ marginTop: '1.25rem', display: 'inline-flex', padding: '0.65rem 1.25rem', fontSize: '0.88rem' }}>
+            <Link to="/calc" className="btn-primary" onClick={() => navigate('/calc')} style={{ marginTop: '1.25rem', display: 'inline-flex', padding: '0.65rem 1.25rem', fontSize: '0.88rem', position: 'relative', zIndex: 1 }}>
               Try Dose Calc →
             </Link>
           </div>
@@ -610,8 +611,8 @@ export default function Landing() {
               ))}
             </div>
             <div className="teaser-cta">
-              <Link to="/calc" className="btn-primary">
-                Open Full Calculator — All 30+ Drugs →
+              <Link to="/calc" className="btn-primary" onClick={() => navigate('/calc')} style={{ position: 'relative', zIndex: 1 }}>
+                Open Full Calculator — All 30+ Drugs
               </Link>
               <span className="teaser-note">Free · No login · Works offline</span>
             </div>
