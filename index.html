@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <script>document.documentElement.classList.add('js');</script>
 <title>PauseMD — Your Pocket SR</title>
-<meta name="description" content="Search 150 IAP Standard Treatment Guidelines instantly. PauseMD is the clinical sidekick for Indian PG residents — protocols, dose calculators, rounds prep. No login. No PDF hunting.">
+<meta name="description" content="Search 148 IAP Standard Treatment Guidelines instantly. PauseMD is the clinical sidekick for Indian PG residents — protocols, dose calculators, rounds prep. No login. No PDF hunting.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=IBM+Plex+Mono:wght@400;500&family=Plus+Jakarta+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
@@ -1208,7 +1208,7 @@
 
   <div class="hero-badge">
     <span class="badge-dot"></span>
-    LIVE — 150 IAP PROTOCOLS SEARCHABLE RIGHT NOW
+    LIVE — <span class="iap-protocol-count">150</span> IAP PROTOCOLS SEARCHABLE RIGHT NOW
   </div>
 
   <h1>The protocol is<br><em>already in your pocket.</em></h1>
@@ -1220,12 +1220,12 @@
   <div class="hero-actions">
     <a href="#protocols" class="btn-primary">
       <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
-      Search 150 IAP Protocols
+      Search <span class="iap-protocol-count">150</span> IAP Protocols
     </a>
     <a href="#waitlist" class="btn-secondary">Get notified when the app launches →</a>
   </div>
 
-  <p class="hero-note">FREE · No signup · IAP STG 2022 · Pediatrics · 150 guidelines</p>
+  <p class="hero-note">FREE · No signup · IAP STG 2022 · Pediatrics · <span class="iap-protocol-count">150</span> guidelines</p>
 </div>
 
 <!-- IAP PROTOCOL SEARCH -->
@@ -1237,9 +1237,9 @@
         <span style="width:6px;height:6px;background:var(--teal);border-radius:50%;display:inline-block;animation:pulse 1.5s ease-in-out infinite;"></span>
         Live · Working now
       </div>
-      <h2>150 IAP guidelines.<br><em>Zero PDF hunting.</em></h2>
+      <h2><span class="iap-protocol-count">150</span> IAP guidelines.<br><em>Zero PDF hunting.</em></h2>
       <div class="search-meta">
-        <span><span class="search-meta-dot"></span>150 STGs indexed</span>
+        <span><span class="search-meta-dot"></span><span class="iap-protocol-count">150</span> STGs indexed</span>
         <span>·</span>
         <span>Fuzzy search — handles typos</span>
         <span>·</span>
@@ -1280,7 +1280,7 @@
 <div class="stats-bar">
   <div class="stats-inner">
     <div class="stat-item">
-      <span class="stat-num" data-target="150" data-suffix="">0</span>
+      <span class="stat-num" id="stat-iap-count" data-target="150" data-suffix="">0</span>
       <span class="stat-label">IAP protocols<br>searchable right now</span>
     </div>
     <div class="stat-item">
@@ -1378,11 +1378,11 @@
           </svg>
         </div>
         <h3>IAP Guidelines Search</h3>
-        <p>All 150 IAP Standard Treatment Guidelines, searchable by disease, symptom, or keyword. <strong>Handles typos and partial names</strong> — type "cogh" and you'll find Cough. Type "fits" and you'll find Febrile Seizures. No PDF hunting. Direct link to the source.</p>
+        <p>All <span class="iap-protocol-count">150</span> IAP Standard Treatment Guidelines, searchable by disease, symptom, or keyword. <strong>Handles typos and partial names</strong> — type "cogh" and you'll find Cough. Type "fits" and you'll find Febrile Seizures. No PDF hunting. Direct link to the source.</p>
         <div class="feat-tags">
           <span class="tag">Fuzzy search</span>
           <span class="tag">IAP STG 2022</span>
-          <span class="tag">150 guidelines</span>
+          <span class="tag"><span class="iap-protocol-count">150</span> guidelines</span>
           <span class="tag">No login</span>
         </div>
       </div>
@@ -1522,7 +1522,7 @@
             <div class="source-logo iap">IAP</div>
             <div class="source-info">
               <h4>Indian Academy of Pediatrics</h4>
-              <p>Standard Treatment Guidelines 2022 · 150+ diseases</p>
+              <p>Standard Treatment Guidelines 2022 · <span class="iap-protocol-count">150</span>+ diseases</p>
             </div>
             <span class="source-badge">ACTIVE</span>
           </div>
@@ -1833,6 +1833,12 @@ const IAP_GUIDELINES = [
   ["149","Childhood Tuberculosis","TB tuberculosis mycobacterium DOTS isoniazid Mantoux lung Ghon focus","https://iapindia.org/pdf/Ch-149-Diagnosis-and-Management-of-Childhood-Tuberculosis.pdf"],
   ["150","Management of Cough in Office Practice","cough respiratory dry cough wet cough chronic cough acute cough office practice","https://iapindia.org/pdf/Ch-150-Management-of-Cough-in-Office-Practice.pdf"]
 ];
+
+// Derive the actual count from the array and update all displayed count elements
+const IAP_COUNT = IAP_GUIDELINES.length;
+document.querySelectorAll('.iap-protocol-count').forEach(el => { el.textContent = IAP_COUNT; });
+const _statCountEl = document.getElementById('stat-iap-count');
+if (_statCountEl) _statCountEl.dataset.target = IAP_COUNT;
 
 // ─────────────────────────────────────────────────────────────────────────────
 // FUZZY SEARCH ENGINE
