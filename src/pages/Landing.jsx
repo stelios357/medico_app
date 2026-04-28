@@ -555,7 +555,7 @@ export default function Landing() {
               <span className="tag">Max doses enforced</span>
               <span className="tag">Offline</span>
             </div>
-            <Link to="/calc" className="btn-primary" onClick={() => navigate('/calc')} style={{ marginTop: '1.25rem', display: 'inline-flex', padding: '0.65rem 1.25rem', fontSize: '0.88rem', position: 'relative', zIndex: 1 }}>
+            <Link to="/calc" className="btn-primary" style={{ marginTop: '1.25rem', display: 'inline-flex', padding: '0.65rem 1.25rem', fontSize: '0.88rem', position: 'relative', zIndex: 1 }}>
               Try Dose Calc →
             </Link>
           </div>
