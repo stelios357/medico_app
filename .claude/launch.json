@@ -3,9 +3,10 @@
   "configurations": [
     {
       "name": "pausemd",
-      "runtimeExecutable": "python3",
-      "runtimeArgs": ["-m", "http.server", "3131"],
-      "port": 3131
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["run", "dev"],
+      "port": 3131,
+      "autoPort": true
     }
   ]
 }
