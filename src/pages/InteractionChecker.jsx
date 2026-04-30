@@ -16,7 +16,11 @@ export default function InteractionChecker() {
     <>
       <Nav />
       <main className="ix-page">
-        <ClinicalDisclaimer />
+        <ClinicalDisclaimer
+          className="dd-disclaimer-wrap"
+          textClassName="dd-disclaimer-text"
+          iconClassName="dd-disclaimer-icon"
+        />
         <div className="ix-page-inner">
           <header className="ix-page-header">
             <h1 className="ix-page-title">Drug Interaction Checker</h1>

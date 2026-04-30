@@ -73,7 +73,11 @@ export default function DrugDetail() {
     <>
       <Nav />
       <main className="dd-page">
-        <ClinicalDisclaimer />
+        <ClinicalDisclaimer
+          className="dd-disclaimer-wrap"
+          textClassName="dd-disclaimer-text"
+          iconClassName="dd-disclaimer-icon"
+        />
 
         {drug === null && error === null && <DrugSkeleton />}
 
