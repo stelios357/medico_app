@@ -24,6 +24,6 @@ export function remove(key) {
   }
 }
 
-export function clear(key) {
+export function clearKey(key) {
   remove(key);
 }
