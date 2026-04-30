@@ -14,19 +14,25 @@ export default function DrugDetail() {
   const [error, setError] = useState(null)
 
   useEffect(() => {
+    window.scrollTo(0, 0)
+
     const controller = new AbortController()
+    const { signal } = controller
     setDrug(null)
     setError(null)
 
-    openFDA.detail(id, controller.signal).then(result => {
-      if (controller.signal.aborted) return
+    openFDA.detail(id, signal).then(result => {
+      if (signal.aborted) return
       if (isFallback(result)) {
         setError(result.message)
-      } else if (!result) {
+      } else if (!result || (!result.id && !result.brandName && !result.genericName)) {
         setError('Drug information not found.')
       } else {
         setDrug(result)
       }
+    }).catch(err => {
+      if (signal.aborted) return
+      setError('Unable to load drug information. Please try again.')
     })
 
     return () => controller.abort()

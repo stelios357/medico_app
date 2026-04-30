@@ -27,6 +27,14 @@ function ChevronIcon({ open }) {
   )
 }
 
+function renderParagraphs(text) {
+  return text
+    .split(/\. |\n/)
+    .map(s => s.trim())
+    .filter(Boolean)
+    .map((s, i) => <p key={i} className="dd-accordion-para">{s}</p>)
+}
+
 function AccordionItem({ label, content }) {
   const [open, setOpen] = useState(false)
   const id = `dd-section-${label.replace(/\s+/g, '-').toLowerCase()}`
@@ -44,7 +52,7 @@ function AccordionItem({ label, content }) {
       </button>
       {open && (
         <div id={id} className="dd-accordion-body">
-          {content}
+          {renderParagraphs(content)}
         </div>
       )}
     </div>

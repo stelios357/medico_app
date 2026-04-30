@@ -227,7 +227,14 @@
   font-size: 0.875rem;
   color: var(--text);
   line-height: 1.7;
-  white-space: pre-wrap;
+}
+
+.dd-accordion-para {
+  margin-top: 0.65rem;
+}
+
+.dd-accordion-para:first-child {
+  margin-top: 0.75rem;
 }
 
 /* ── Skeleton ────────────────────────────────────────────────────────────── */
