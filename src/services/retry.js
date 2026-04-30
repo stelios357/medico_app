@@ -7,11 +7,26 @@ function sleep(ms, signal) {
       reject(new DOMException('Aborted', 'AbortError'));
       return;
     }
-    const timer = setTimeout(resolve, ms);
-    signal?.addEventListener('abort', () => {
+
+    let abortListener = null;
+    const cleanup = () => {
+      if (abortListener) {
+        signal?.removeEventListener('abort', abortListener);
+      }
+    };
+
+    const timer = setTimeout(() => {
+      cleanup();
+      resolve();
+    }, ms);
+
+    abortListener = () => {
       clearTimeout(timer);
+      cleanup();
       reject(new DOMException('Aborted', 'AbortError'));
-    }, { once: true });
+    };
+
+    signal?.addEventListener('abort', abortListener, { once: true });
   });
 }
 
