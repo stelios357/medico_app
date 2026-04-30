@@ -12,7 +12,7 @@ export const rxnorm = {
 
     const cacheKey = `rxnorm:autocomplete:${query.toLowerCase()}`;
     const cached = cacheGet(cacheKey);
-    if (cached) return cached;
+    if (cached !== null) return cached;
 
     const url = `${RXNORM_BASE}/spellingsuggestions.json?name=${encodeURIComponent(query)}`;
 
