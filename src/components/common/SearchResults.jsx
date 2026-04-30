@@ -32,7 +32,10 @@ function DiseaseItem({ disease, idx }) {
     : null
 
   return (
-    <Link to={`/disease/${disease.id || idx}`} className="gs-result-item gs-result-disease">
+    <Link
+      to={`/disease/${encodeURIComponent(String(disease.id != null ? disease.id : idx))}`}
+      className="gs-result-item gs-result-disease"
+    >
       <div className="gs-result-names">
         <span className="gs-result-primary">{disease.title || '—'}</span>
       </div>

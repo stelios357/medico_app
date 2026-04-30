@@ -9,6 +9,7 @@ import './styles/search.css';
 import './styles/drugs.css';
 import './styles/saved.css';
 import './styles/interactions.css';
+import './styles/diseases.css';
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>

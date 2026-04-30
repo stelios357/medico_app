@@ -11,6 +11,7 @@ const Saved               = lazy(() => import('./pages/Saved.jsx'));
 const Settings            = lazy(() => import('./pages/Settings.jsx'));
 const DrugDetail          = lazy(() => import('./pages/DrugDetail.jsx'));
 const InteractionChecker  = lazy(() => import('./pages/InteractionChecker.jsx'));
+const DiseaseDetail       = lazy(() => import('./pages/DiseaseDetail.jsx'));
 
 function PageLoader() {
   return (
@@ -39,6 +40,9 @@ export default function App() {
         } />
         <Route path="/drug/:id" element={
           <Suspense fallback={<PageLoader />}><DrugDetail /></Suspense>
+        } />
+        <Route path="/disease/:id" element={
+          <Suspense fallback={<PageLoader />}><DiseaseDetail /></Suspense>
         } />
         <Route path="/interactions" element={
           <Suspense fallback={<PageLoader />}><InteractionChecker /></Suspense>

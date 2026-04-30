@@ -12,8 +12,19 @@ function parseEntry(entry) {
   const id = entry.id ?? null;
   const url = entry.link?.[0]?.href ?? null;
 
-  // MedlinePlus doesn't provide structured sections — we expose what we have
-  return { id, title, summary, url, specialty: null };
+  // MedlinePlus Connect entries are usually title + summary only; structured sections are null until sourced.
+  return {
+    id,
+    title,
+    summary,
+    url,
+    specialty: null,
+    causes: null,
+    symptoms: null,
+    diagnosis: null,
+    treatment: null,
+    whenToSeeDoctor: null,
+  };
 }
 
 export const medlineplus = {
