@@ -25,7 +25,17 @@ export default function DiseaseBrowse() {
           setError(res.message || 'Unable to load conditions.')
           return
         }
-        setItems(Array.isArray(res) ? res : [])
+        const arr = Array.isArray(res) ? res : []
+        const seen = new Set()
+        const unique = []
+        for (const item of arr) {
+          const key = item.id || item.title
+          if (!seen.has(key)) {
+            seen.add(key)
+            unique.push(item)
+          }
+        }
+        setItems(unique)
       })
       .catch(() => {
         if (!ac.signal.aborted) setError('Unable to load conditions.')
@@ -78,13 +88,17 @@ export default function DiseaseBrowse() {
                 : `Showing ${currentPage * PAGE_SIZE + 1}–${currentPage * PAGE_SIZE + slice.length} of ${list.length}`}
             </p>
             <div className="browse-list">
-              {slice.map((disease, i) => (
-                <DiseaseCard
-                  key={disease.id != null ? disease.id : `${disease.title}-${i}`}
-                  disease={disease}
-                  idx={currentPage * PAGE_SIZE + i}
-                />
-              ))}
+              {!slice.length ? (
+                <p className="browse-empty">No results found for this filter.</p>
+              ) : (
+                slice.map((disease, i) => (
+                  <DiseaseCard
+                    key={disease.id != null ? disease.id : `${disease.title}-${i}`}
+                    disease={disease}
+                    idx={currentPage * PAGE_SIZE + i}
+                  />
+                ))
+              )}
             </div>
             {list.length > PAGE_SIZE && (
               <nav className="browse-pager" aria-label="Pagination">

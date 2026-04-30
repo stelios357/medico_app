@@ -462,6 +462,13 @@ section[aria-label="Conditions"] .gs-browse-all {
   margin-bottom: 0.65rem;
 }
 
+.browse-empty {
+  margin: 0;
+  padding: 1rem 0;
+  font-size: 0.875rem;
+  color: var(--muted);
+}
+
 .browse-list {
   display: flex;
   flex-direction: column;

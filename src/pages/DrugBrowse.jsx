@@ -4,6 +4,10 @@ import Nav from '../components/Nav.jsx'
 import DrugCard from '../components/drugs/DrugCard.jsx'
 import { openFDA } from '../services/openFDA.js'
 
+function formatClassLabel(label) {
+  return label.replace(/\s*\[EPC\]$/, '')
+}
+
 const PAGE_SIZE = 20
 
 export default function DrugBrowse() {
@@ -83,7 +87,9 @@ export default function DrugBrowse() {
             >
               <option value="">All classes</option>
               {classOptions.map(c => (
-                <option key={c} value={c}>{c}</option>
+                <option key={c} value={c}>
+                  {formatClassLabel(c)}
+                </option>
               ))}
             </select>
           </label>
@@ -115,9 +121,11 @@ export default function DrugBrowse() {
                 : `Showing ${page * PAGE_SIZE + 1}–${page * PAGE_SIZE + results.length} of ${total.toLocaleString()}`}
             </p>
             <div className="browse-list">
-              {results.map(drug => (
-                <DrugCard key={drug.id} drug={drug} />
-              ))}
+              {!results.length ? (
+                <p className="browse-empty">No results found for this filter.</p>
+              ) : (
+                results.map(drug => <DrugCard key={drug.id} drug={drug} />)
+              )}
             </div>
             <nav className="browse-pager" aria-label="Pagination">
               <button
@@ -135,7 +143,7 @@ export default function DrugBrowse() {
                 type="button"
                 className="browse-page-btn"
                 disabled={page >= totalPages - 1}
-                onClick={() => setPage(p => p + 1)}
+                onClick={() => setPage(p => Math.min(p + 1, totalPages - 1))}
               >
                 Next
               </button>
