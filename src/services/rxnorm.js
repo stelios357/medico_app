@@ -1,5 +1,4 @@
 import { RXNORM_BASE, TTL_DRUG, TTL_INTERACTION } from '../utils/constants.js';
-import { queryNormalize } from '../utils/queryNormalize.js';
 import { cacheGet, cacheSet } from './cache.js';
 import { fetchWithRetry } from './retry.js';
 import { makeFallback } from './fallback.js';
@@ -12,20 +11,19 @@ export const rxnorm = {
 
     const cacheKey = `rxnorm:autocomplete:${query.toLowerCase()}`;
     const cached = cacheGet(cacheKey);
-    if (cached) return cached;
+    if (cached !== null) return cached;
 
     const url = `${RXNORM_BASE}/spellingsuggestions.json?name=${encodeURIComponent(query)}`;
 
     try {
       const data = await dedupFetch(cacheKey, () =>
         fetchWithRetry(url, { signal })
-      );
+      , signal);
 
       const suggestions = data?.suggestionGroup?.suggestionList?.suggestion ?? [];
       cacheSet(cacheKey, suggestions, TTL_DRUG);
       return suggestions;
     } catch (err) {
-      if (err?.name === 'AbortError') throw err;
       return makeFallback('rxnorm', err);
     }
   },
@@ -43,7 +41,7 @@ export const rxnorm = {
     try {
       const data = await dedupFetch(cacheKey, () =>
         fetchWithRetry(url, { signal })
-      );
+      , signal);
 
       const rxcui = data?.idGroup?.rxnormId?.[0] ?? null;
       if (!rxcui) {
@@ -52,27 +50,31 @@ export const rxnorm = {
       cacheSet(cacheKey, rxcui, TTL_DRUG);
       return rxcui;
     } catch (err) {
-      if (err?.name === 'AbortError') throw err;
       return makeFallback('rxnorm', err);
     }
   },
 
   async getInteractions(rxcuis, signal) {
-    if (!rxcuis || rxcuis.length < 2) {
+    if (!Array.isArray(rxcuis) || rxcuis.length < 2) {
       return makeFallback('rxnorm', new Error('At least 2 RxCUI IDs required'));
+    }
+    // Guard: RxCUI values must be numeric strings — catch accidental drug name passthrough
+    const allNumeric = rxcuis.every(id => typeof id === 'string' && /^\d+$/.test(id));
+    if (!allNumeric) {
+      return makeFallback('rxnorm', new Error('RxCUI IDs must be numeric strings — resolve names first via resolveRxCUI()'));
     }
 
     const key = rxcuis.slice().sort().join(',');
     const cacheKey = `rxnorm:interactions:${key}`;
     const cached = cacheGet(cacheKey);
-    if (cached) return cached;
+    if (cached !== null) return cached;
 
     const url = `${RXNORM_BASE}/interaction/list.json?rxcuis=${rxcuis.join(',')}`;
 
     try {
       const data = await dedupFetch(cacheKey, () =>
         fetchWithRetry(url, { signal })
-      );
+      , signal);
 
       const pairs = data?.fullInteractionTypeGroup ?? [];
       const interactions = [];
@@ -93,7 +95,6 @@ export const rxnorm = {
       cacheSet(cacheKey, interactions, TTL_INTERACTION);
       return interactions;
     } catch (err) {
-      if (err?.name === 'AbortError') throw err;
       return makeFallback('rxnorm', err);
     }
   },

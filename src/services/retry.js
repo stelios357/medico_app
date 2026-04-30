@@ -1,29 +1,63 @@
 import { FETCH_TIMEOUT_MS, RETRY_MAX, RETRY_BACKOFF_MS } from '../utils/constants.js';
 
-function sleep(ms) {
-  return new Promise(resolve => setTimeout(resolve, ms));
+// Resolves early if signal fires, otherwise resolves after ms
+function sleep(ms, signal) {
+  return new Promise((resolve, reject) => {
+    if (signal?.aborted) {
+      reject(new DOMException('Aborted', 'AbortError'));
+      return;
+    }
+
+    let abortListener = null;
+    const cleanup = () => {
+      if (abortListener) {
+        signal?.removeEventListener('abort', abortListener);
+      }
+    };
+
+    const timer = setTimeout(() => {
+      cleanup();
+      resolve();
+    }, ms);
+
+    abortListener = () => {
+      clearTimeout(timer);
+      cleanup();
+      reject(new DOMException('Aborted', 'AbortError'));
+    };
+
+    signal?.addEventListener('abort', abortListener, { once: true });
+  });
 }
 
 export async function fetchWithRetry(url, options = {}) {
+  const callerSignal = options.signal ?? null;
   let lastError;
 
   for (let attempt = 0; attempt <= RETRY_MAX; attempt++) {
-    const controller = new AbortController();
-    const timer = setTimeout(() => controller.abort(), FETCH_TIMEOUT_MS);
-
-    // Allow caller to pass their own signal for cancellation (query change)
-    const callerSignal = options.signal;
+    // Bail immediately if caller already aborted
     if (callerSignal?.aborted) {
-      clearTimeout(timer);
       throw new DOMException('Aborted by caller', 'AbortError');
+    }
+
+    // Timeout controller for this attempt
+    const timeoutController = new AbortController();
+    const timer = setTimeout(() => timeoutController.abort(), FETCH_TIMEOUT_MS);
+
+    // Link caller abort → timeout controller so fetch is cancelled on both
+    let callerListener = null;
+    if (callerSignal) {
+      callerListener = () => timeoutController.abort();
+      callerSignal.addEventListener('abort', callerListener, { once: true });
     }
 
     try {
       const res = await fetch(url, {
         ...options,
-        signal: controller.signal,
+        signal: timeoutController.signal,
       });
       clearTimeout(timer);
+      callerSignal?.removeEventListener('abort', callerListener);
 
       if (!res.ok) {
         throw new Error(`HTTP ${res.status}`);
@@ -31,13 +65,15 @@ export async function fetchWithRetry(url, options = {}) {
       return await res.json();
     } catch (err) {
       clearTimeout(timer);
+      callerSignal?.removeEventListener('abort', callerListener);
 
-      // If the caller's signal fired, stop retrying
+      // If caller aborted, propagate immediately — do not retry
       if (callerSignal?.aborted) throw err;
 
       lastError = err;
       if (attempt < RETRY_MAX) {
-        await sleep(RETRY_BACKOFF_MS * Math.pow(2, attempt));
+        // Sleep is also abort-aware: wakes up early if caller signal fires
+        await sleep(RETRY_BACKOFF_MS * Math.pow(2, attempt), callerSignal);
       }
     }
   }

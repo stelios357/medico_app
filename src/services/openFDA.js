@@ -1,4 +1,4 @@
-import { OPENFDA_BASE, TTL_DRUG, RATE_LIMIT_PER_MIN, RATE_LIMIT_WARN_THRESHOLD } from '../utils/constants.js';
+import { OPENFDA_BASE, TTL_DRUG, RATE_LIMIT_WARN_THRESHOLD } from '../utils/constants.js';
 import { queryNormalize } from '../utils/queryNormalize.js';
 import { formatDrug, formatDrugList } from '../utils/formatDrug.js';
 import { cacheGet, cacheSet } from './cache.js';
@@ -32,11 +32,13 @@ export const openFDA = {
 
     const cacheKey = `openfda:search:${query}`;
     const cached = cacheGet(cacheKey);
-    if (cached) return cached;
+    if (cached !== null) return cached;
 
+    // Cache miss — check rate limit before committing to a network call
     if (isApproachingRateLimit()) {
       this.rateLimitWarning = true;
-      return cacheGet(cacheKey) ?? [];
+      // Nothing to serve — return empty rather than a hard error
+      return [];
     }
 
     const url = `${OPENFDA_BASE}/drug/label.json?search=brand_name:${encodeURIComponent(query)}+generic_name:${encodeURIComponent(query)}&limit=10`;
@@ -45,14 +47,13 @@ export const openFDA = {
       const data = await dedupFetch(cacheKey, () => {
         recordRequest();
         return fetchWithRetry(url, { signal });
-      });
+      }, signal);
 
       const results = formatDrugList(data);
       cacheSet(cacheKey, results, TTL_DRUG);
       this.rateLimitWarning = false;
       return results;
     } catch (err) {
-      if (err?.name === 'AbortError') throw err;
       return makeFallback('openFDA', err);
     }
   },
@@ -62,7 +63,7 @@ export const openFDA = {
 
     const cacheKey = `openfda:detail:${id}`;
     const cached = cacheGet(cacheKey);
-    if (cached) return cached;
+    if (cached !== null) return cached;
 
     const url = `${OPENFDA_BASE}/drug/label.json?search=id:${encodeURIComponent(id)}&limit=1`;
 
@@ -70,14 +71,13 @@ export const openFDA = {
       const data = await dedupFetch(cacheKey, () => {
         recordRequest();
         return fetchWithRetry(url, { signal });
-      });
+      }, signal);
 
       const result = formatDrug(data);
       if (!result) return makeFallback('openFDA', new Error('Empty response'));
       cacheSet(cacheKey, result, TTL_DRUG);
       return result;
     } catch (err) {
-      if (err?.name === 'AbortError') throw err;
       return makeFallback('openFDA', err);
     }
   },

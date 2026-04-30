@@ -1,26 +1,22 @@
-function stripHtml(str) {
-  if (!str) return null;
-  return str
-    .replace(/<[^>]*>/g, '')
-    .replace(/&amp;/g, '&')
-    .replace(/&lt;/g, '<')
-    .replace(/&gt;/g, '>')
-    .replace(/&quot;/g, '"')
-    .replace(/&#39;/g, "'")
-    .replace(/&nbsp;/g, ' ')
-    .replace(/[\r\n]+/g, ' ')
-    .replace(/\s{2,}/g, ' ')
-    .trim() || null;
-}
+import { stripHtml } from './stripHtml.js';
 
 function safeField(arr) {
-  const raw = arr?.[0] || null;
+  // arr may be an array (OpenFDA standard) or a bare string (some label variants)
+  let raw;
+  if (Array.isArray(arr)) {
+    raw = arr[0] ?? null;
+  } else if (typeof arr === 'string') {
+    raw = arr || null;
+  } else {
+    raw = null;
+  }
   return stripHtml(raw);
 }
 
 function firstSentence(text, maxLen = 120) {
   if (!text) return null;
   const match = text.match(/^([^.!?]+[.!?])/);
+  // If no sentence boundary found, fall back to hard truncation of full text
   const sentence = match ? match[1].trim() : text;
   if (sentence.length <= maxLen) return sentence;
   return sentence.slice(0, maxLen - 1) + '…';
