@@ -145,6 +145,12 @@
   background: transparent;
 }
 
+.dd-btn:disabled {
+  cursor: not-allowed;
+  opacity: 0.45;
+  filter: grayscale(0.3);
+}
+
 .dd-btn-interaction {
   border-color: var(--color-severity-major);
   color: var(--color-severity-major);
