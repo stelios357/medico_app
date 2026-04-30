@@ -1,0 +1,309 @@
+/* ── Drug Detail Page ───────────────────────────────────────────────────── */
+.dd-page {
+  min-height: 100vh;
+  padding-top: 72px;
+  background: var(--bg);
+}
+
+.dd-disclaimer-wrap {
+  position: sticky;
+  top: 72px;
+  z-index: 50;
+  background: var(--color-disclaimer-bg);
+  border-bottom: 2px solid var(--color-disclaimer-border);
+  padding: 0.55rem 2.5rem;
+}
+
+.dd-disclaimer-text {
+  max-width: 860px;
+  margin: 0 auto;
+  font-size: 0.8rem;
+  color: #7a5c00;
+  font-family: var(--mono);
+  letter-spacing: 0.02em;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.dd-disclaimer-icon {
+  flex-shrink: 0;
+  width: 14px;
+  height: 14px;
+  color: #f9a825;
+}
+
+/* ── Container ───────────────────────────────────────────────────────────── */
+.dd-container {
+  max-width: 860px;
+  margin: 0 auto;
+  padding: 2rem 2.5rem 4rem;
+}
+
+/* ── Highlights ──────────────────────────────────────────────────────────── */
+.dd-highlights {
+  margin-bottom: 1.75rem;
+}
+
+.dd-heading {
+  font-family: var(--serif);
+  font-size: clamp(1.6rem, 3.5vw, 2.2rem);
+  color: var(--text);
+  line-height: 1.15;
+  letter-spacing: -0.01em;
+  margin-bottom: 0.25rem;
+}
+
+.dd-generic-name {
+  font-size: 1rem;
+  color: var(--muted);
+  margin-bottom: 0.85rem;
+  font-family: var(--sans);
+}
+
+.dd-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+  margin-bottom: 1rem;
+}
+
+.dd-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.18rem 0.52rem;
+  border-radius: 5px;
+  font-size: 0.7rem;
+  font-weight: 700;
+  font-family: var(--mono);
+  letter-spacing: 0.04em;
+  white-space: nowrap;
+  line-height: 1.6;
+}
+
+.dd-badge-rx       { background: rgba(13,71,161,0.10);  color: var(--color-badge-rx); }
+.dd-badge-otc      { background: rgba(27,94,32,0.10);   color: var(--color-badge-otc); }
+.dd-badge-class    { background: var(--teal-dim);       color: var(--teal); }
+.dd-badge-mfr      { background: rgba(0,0,0,0.05);      color: var(--muted); }
+
+.dd-blackbox-banner {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.65rem;
+  background: rgba(183,28,28,0.07);
+  border: 1.5px solid rgba(183,28,28,0.30);
+  border-left: 4px solid var(--color-badge-blackbox);
+  border-radius: 8px;
+  padding: 0.75rem 1rem;
+  margin-bottom: 1rem;
+}
+
+.dd-blackbox-banner-icon {
+  flex-shrink: 0;
+  font-size: 1rem;
+  margin-top: 0.05rem;
+}
+
+.dd-blackbox-banner-text {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--color-badge-blackbox);
+  line-height: 1.45;
+}
+
+.dd-indication-short {
+  font-size: 0.92rem;
+  color: var(--muted);
+  line-height: 1.55;
+  padding: 0.75rem 1rem;
+  background: var(--bg3);
+  border-radius: 8px;
+  border-left: 3px solid var(--color-drug-accent);
+}
+
+/* ── Action bar ──────────────────────────────────────────────────────────── */
+.dd-actions {
+  display: flex;
+  gap: 0.75rem;
+  margin-bottom: 1.75rem;
+  flex-wrap: wrap;
+}
+
+.dd-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.55rem 1.1rem;
+  border-radius: 8px;
+  border: 1.5px solid;
+  font-size: 0.875rem;
+  font-family: var(--sans);
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s, box-shadow 0.15s;
+  text-decoration: none;
+  background: transparent;
+}
+
+.dd-btn-interaction {
+  border-color: var(--color-severity-major);
+  color: var(--color-severity-major);
+}
+
+.dd-btn-interaction:hover {
+  background: rgba(211,47,47,0.07);
+  box-shadow: 0 1px 6px rgba(211,47,47,0.12);
+}
+
+.dd-btn-save {
+  border-color: var(--color-drug-accent);
+  color: var(--color-drug-accent);
+}
+
+.dd-btn-save:hover {
+  background: rgba(21,101,192,0.07);
+  box-shadow: 0 1px 6px rgba(21,101,192,0.12);
+}
+
+/* ── Accordion ───────────────────────────────────────────────────────────── */
+.dd-accordion {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.dd-accordion-item {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  overflow: hidden;
+  transition: border-color 0.15s;
+}
+
+.dd-accordion-item:hover {
+  border-color: rgba(21,101,192,0.22);
+}
+
+.dd-accordion-trigger {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.9rem 1.1rem;
+  background: none;
+  border: none;
+  cursor: pointer;
+  text-align: left;
+  font-family: var(--sans);
+  color: var(--text);
+}
+
+.dd-accordion-trigger:focus-visible {
+  outline: 2px solid var(--color-drug-accent);
+  outline-offset: -2px;
+}
+
+.dd-accordion-label {
+  font-size: 0.92rem;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.dd-accordion-chevron {
+  width: 16px;
+  height: 16px;
+  color: var(--muted);
+  flex-shrink: 0;
+  transition: transform 0.2s ease;
+}
+
+.dd-accordion-chevron.open {
+  transform: rotate(180deg);
+}
+
+.dd-accordion-body {
+  padding: 0 1.1rem 1rem;
+  border-top: 1px solid var(--border);
+  font-size: 0.875rem;
+  color: var(--text);
+  line-height: 1.7;
+  white-space: pre-wrap;
+}
+
+/* ── Skeleton ────────────────────────────────────────────────────────────── */
+.dd-skeleton {
+  max-width: 860px;
+  margin: 0 auto;
+  padding: 2rem 2.5rem;
+}
+
+.dd-skeleton-block {
+  border-radius: 8px;
+  background: linear-gradient(
+    90deg,
+    var(--subtle) 25%,
+    rgba(226,234,244,0.4) 50%,
+    var(--subtle) 75%
+  );
+  background-size: 200% 100%;
+  animation: dd-shimmer 1.4s infinite;
+}
+
+.dd-skeleton-title  { height: 38px; width: 55%; margin-bottom: 0.6rem; border-radius: 6px; }
+.dd-skeleton-sub    { height: 18px; width: 35%; margin-bottom: 1rem; }
+.dd-skeleton-badges { height: 22px; width: 48%; margin-bottom: 1.25rem; }
+.dd-skeleton-indication { height: 56px; width: 100%; margin-bottom: 1.5rem; border-radius: 8px; }
+.dd-skeleton-actions { height: 36px; width: 42%; margin-bottom: 1.75rem; }
+.dd-skeleton-row {
+  height: 50px;
+  width: 100%;
+  margin-bottom: 0.5rem;
+  border-radius: 10px;
+}
+
+@keyframes dd-shimmer {
+  0%   { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+/* ── Error fallback ──────────────────────────────────────────────────────── */
+.dd-error {
+  max-width: 860px;
+  margin: 0 auto;
+  padding: 3rem 2.5rem;
+  text-align: center;
+}
+
+.dd-error-title {
+  font-family: var(--serif);
+  font-size: 1.3rem;
+  color: var(--text);
+  margin-bottom: 0.5rem;
+}
+
+.dd-error-msg {
+  font-size: 0.9rem;
+  color: var(--muted);
+  margin-bottom: 1.25rem;
+}
+
+.dd-back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--color-drug-accent);
+  text-decoration: none;
+}
+
+.dd-back-link:hover { text-decoration: underline; }
+
+/* ── Responsive ──────────────────────────────────────────────────────────── */
+@media (max-width: 768px) {
+  .dd-disclaimer-wrap { padding: 0.5rem 1rem; }
+  .dd-container { padding: 1.25rem 1rem 3rem; }
+  .dd-skeleton  { padding: 1.25rem 1rem; }
+  .dd-error     { padding: 2rem 1rem; }
+  .dd-heading   { font-size: 1.6rem; }
+}

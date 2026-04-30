@@ -6,6 +6,7 @@ import './styles/themes.css';
 import './styles/components.css';
 import './styles/monograph.css';
 import './styles/search.css';
+import './styles/drugs.css';
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
