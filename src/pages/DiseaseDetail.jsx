@@ -27,7 +27,9 @@ export default function DiseaseDetail() {
 
   useEffect(() => {
     window.scrollTo(0, 0)
+  }, [idParam])
 
+  useEffect(() => {
     const controller = new AbortController()
     const { signal } = controller
     setDisease(null)
@@ -39,11 +41,14 @@ export default function DiseaseDetail() {
       if (signal.aborted) return
       if (isFallback(result)) {
         setError(result.message)
-      } else if (!result || (!result.title && !result.summary)) {
-        setError('Condition information not found.')
-      } else {
-        setDisease(result)
+        return
       }
+      const data = result
+      if (!data || !data.title) {
+        setError(true)
+        return
+      }
+      setDisease(data)
     }).catch(() => {
       if (signal.aborted) return
       setError('Unable to load condition information. Please try again.')
@@ -53,7 +58,11 @@ export default function DiseaseDetail() {
   }, [idParam])
 
   const stableId = disease ? diseaseStableId(disease, idParam) : null
-  const detailPath = stableId ? `/disease/${encodeURIComponent(stableId)}` : null
+  const encodedId =
+    stableId != null && String(stableId).trim() !== ''
+      ? encodeURIComponent(stableId)
+      : null
+  const detailPath = encodedId ? `/disease/${encodedId}` : null
 
   useEffect(() => {
     if (!disease || !detailPath) return
@@ -66,12 +75,12 @@ export default function DiseaseDetail() {
   }, [disease, detailPath])
 
   const saved =
-    disease && stableId ? isItemSaved(stableId) : false
+    disease && encodedId ? isItemSaved(encodedId) : false
 
   function handleSave() {
-    if (!disease || !stableId || !detailPath) return
+    if (!disease || !encodedId || !detailPath) return
     toggle({
-      id: stableId,
+      id: encodedId,
       name: disease.title || 'Condition',
       type: 'disease',
       route: detailPath,

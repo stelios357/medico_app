@@ -59,16 +59,17 @@ function AccordionItem({ sectionKey, label, content }) {
 }
 
 export default function DiseaseAccordion({ disease }) {
-  const visibleSections = SECTIONS.filter(s => {
-    const v = disease[s.key]
-    return v != null && String(v).trim() !== ''
-  })
+  const sections = SECTIONS.map(s => ({
+    ...s,
+    content: disease[s.key],
+  }))
+  const hasContent = sections.some(s => s.content)
 
-  if (visibleSections.length === 0) return null
+  if (!hasContent) return null
 
   return (
     <div className="dis-accordion">
-      {visibleSections.map(s => (
+      {sections.filter(s => s.content).map(s => (
         <AccordionItem
           key={s.key}
           sectionKey={s.key}

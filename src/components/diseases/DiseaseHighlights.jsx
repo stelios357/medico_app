@@ -1,8 +1,13 @@
+function truncateSummary(text, limit = 150) {
+  if (!text) return null
+  if (text.length <= limit) return text
+  return text.slice(0, limit).replace(/\s+\S*$/, '')
+}
+
 export default function DiseaseHighlights({ disease }) {
   const title = disease.title || '—'
   const summaryRaw = disease.summary
-  const summary =
-    summaryRaw && summaryRaw.length > 150 ? summaryRaw.slice(0, 150) + '…' : summaryRaw
+  const summary = truncateSummary(summaryRaw, 150)
 
   return (
     <div className="dis-highlights">

@@ -48,8 +48,9 @@ export default function Home() {
     const q = location.state?.relatedDrugSearch
     if (typeof q !== 'string' || q.trim().length < 2) return
     const trimmed = q.trim()
-    setQuery(trimmed)
-    handleSearch(trimmed)
+    const cleanQuery = trimmed.split('(')[0].trim()
+    setQuery(cleanQuery)
+    handleSearch(cleanQuery)
     navigate('.', { replace: true, state: {} })
   }, [location.state?.relatedDrugSearch, handleSearch, navigate])
 
