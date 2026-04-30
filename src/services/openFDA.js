@@ -81,4 +81,39 @@ export const openFDA = {
       return makeFallback('openFDA', err);
     }
   },
+
+  /** Raw SPL record for interaction screening (first search hit). Not used for detail UX. */
+  async firstMatchingLabelRecord(rawQuery, signal) {
+    const query = queryNormalize(rawQuery);
+    if (!query) return null;
+
+    const cacheKey = `openfda:labelraw:${query}`;
+    const cached = cacheGet(cacheKey);
+    if (cached !== null) return cached;
+
+    if (isApproachingRateLimit()) {
+      this.rateLimitWarning = true;
+      return null;
+    }
+
+    const url = `${OPENFDA_BASE}/drug/label.json?search=openfda.brand_name:${encodeURIComponent(query)}+openfda.generic_name:${encodeURIComponent(query)}&limit=3`;
+
+    try {
+      const data = await dedupFetch(cacheKey, () => {
+        recordRequest();
+        return fetchWithRetry(url, { signal });
+      }, signal);
+
+      if (data?.error || !data?.results?.length) {
+        return null;
+      }
+
+      const rec = data.results[0];
+      cacheSet(cacheKey, rec, TTL_DRUG);
+      this.rateLimitWarning = false;
+      return rec;
+    } catch {
+      return null;
+    }
+  },
 };

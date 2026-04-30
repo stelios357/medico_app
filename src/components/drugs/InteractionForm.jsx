@@ -1,5 +1,6 @@
 import { useState, useRef, useEffect } from 'react'
 import { rxnorm } from '../../services/rxnorm.js'
+import { checkDrugInteractions } from '../../services/drugInteractions.js'
 import { isFallback } from '../../services/fallback.js'
 
 export default function InteractionForm({ initialDrug, onResults, onLoading }) {
@@ -109,8 +110,7 @@ export default function InteractionForm({ initialDrug, onResults, onLoading }) {
     if (chips.length < 2 || isChecking) return
     setIsChecking(true)
     onLoading?.(true)
-    const rxcuis = chips.map(c => c.rxcui)
-    const result = await rxnorm.getInteractions(rxcuis)
+    const result = await checkDrugInteractions(chips)
     setIsChecking(false)
     onLoading?.(false)
     onResults(result, chips)
