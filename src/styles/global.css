@@ -17,6 +17,20 @@
   --serif: 'DM Serif Display', serif;
   --mono: 'IBM Plex Mono', monospace;
   --sans: 'Plus Jakarta Sans', sans-serif;
+
+  /* Clinical reference UI */
+  --color-severity-major: #d32f2f;
+  --color-severity-moderate: #f57c00;
+  --color-severity-minor: #388e3c;
+  --color-drug-accent: #1565c0;
+  --color-disease-accent: #6a1b9a;
+  --color-disclaimer-bg: #fff8e1;
+  --color-disclaimer-border: #f9a825;
+  --color-badge-rx: #0d47a1;
+  --color-badge-otc: #1b5e20;
+  --color-badge-blackbox: #b71c1c;
+  --color-badge-exact: #4a148c;
+  --color-badge-common: #e65100;
 }
 
 html { scroll-behavior: smooth; }

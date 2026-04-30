@@ -5,6 +5,7 @@ import './styles/global.css';
 import './styles/themes.css';
 import './styles/components.css';
 import './styles/monograph.css';
+import './styles/search.css';
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>

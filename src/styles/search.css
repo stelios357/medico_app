@@ -1,0 +1,284 @@
+/* ── Home page layout ────────────────────────────────────────────────────── */
+.gs-home {
+  min-height: 100vh;
+  padding-top: 72px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.gs-home-header {
+  text-align: center;
+  padding: 3rem 1.5rem 1.25rem;
+  max-width: 680px;
+  width: 100%;
+}
+
+.gs-home-title {
+  font-family: var(--serif);
+  font-size: clamp(1.8rem, 4vw, 2.6rem);
+  color: var(--text);
+  margin-bottom: 0.4rem;
+  line-height: 1.15;
+  letter-spacing: -0.01em;
+}
+
+.gs-home-subtitle {
+  color: var(--muted);
+  font-size: 0.94rem;
+}
+
+/* ── Search wrap ─────────────────────────────────────────────────────────── */
+.gs-search-wrap {
+  width: 100%;
+  max-width: 680px;
+  padding: 0 1.5rem 0.5rem;
+}
+
+.gs-rate-warning {
+  font-size: 0.75rem;
+  color: var(--amber);
+  text-align: center;
+  margin-top: 0.4rem;
+  font-family: var(--mono);
+  letter-spacing: 0.03em;
+}
+
+/* ── SearchBar ───────────────────────────────────────────────────────────── */
+.gs-searchbar {
+  position: relative;
+  display: flex;
+  align-items: center;
+  background: var(--bg2);
+  border: 1.5px solid var(--border);
+  border-radius: 12px;
+  box-shadow: 0 2px 14px rgba(0,0,0,0.06);
+  transition: border-color 0.18s, box-shadow 0.18s;
+}
+
+.gs-searchbar:focus-within {
+  border-color: var(--color-drug-accent);
+  box-shadow: 0 0 0 3px rgba(21,101,192,0.12), 0 2px 14px rgba(0,0,0,0.06);
+}
+
+.gs-searchbar-icon {
+  position: absolute;
+  left: 1rem;
+  width: 18px;
+  height: 18px;
+  color: var(--muted);
+  pointer-events: none;
+  flex-shrink: 0;
+}
+
+.gs-input {
+  width: 100%;
+  padding: 0.9rem 1rem 0.9rem 2.8rem;
+  border: none;
+  background: transparent;
+  font-size: 1rem;
+  color: var(--text);
+  font-family: var(--sans);
+  outline: none;
+  border-radius: 12px;
+}
+
+.gs-input::placeholder { color: var(--muted); }
+
+/* ── Results container ───────────────────────────────────────────────────── */
+.gs-results {
+  width: 100%;
+  max-width: 680px;
+  padding: 0.75rem 1.5rem 0;
+}
+
+/* ── Result group ────────────────────────────────────────────────────────── */
+.gs-group {
+  margin-bottom: 1.5rem;
+}
+
+.gs-group-heading {
+  font-family: var(--mono);
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 0.55rem;
+  padding-bottom: 0.4rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.gs-group-items {
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+}
+
+/* ── Individual result items ─────────────────────────────────────────────── */
+.gs-result-item {
+  display: block;
+  padding: 0.8rem 1rem;
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  text-decoration: none;
+  color: inherit;
+  transition: border-color 0.15s, box-shadow 0.15s, transform 0.1s;
+}
+
+.gs-result-item:hover {
+  box-shadow: 0 2px 10px rgba(0,0,0,0.07);
+  transform: translateY(-1px);
+}
+
+.gs-result-drug:hover  { border-color: rgba(21,101,192,0.3); }
+.gs-result-disease:hover { border-color: rgba(106,27,154,0.3); }
+
+.gs-result-names {
+  display: flex;
+  align-items: baseline;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  margin-bottom: 0.25rem;
+}
+
+.gs-result-primary {
+  font-weight: 600;
+  font-size: 0.95rem;
+  color: var(--text);
+}
+
+.gs-result-secondary {
+  font-size: 0.8rem;
+  color: var(--muted);
+}
+
+.gs-result-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.28rem;
+  margin-bottom: 0.2rem;
+}
+
+.gs-result-indication,
+.gs-result-summary {
+  font-size: 0.81rem;
+  color: var(--muted);
+  margin-top: 0.2rem;
+  line-height: 1.45;
+}
+
+/* ── Badges ──────────────────────────────────────────────────────────────── */
+.gs-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.08rem 0.42rem;
+  border-radius: 4px;
+  font-size: 0.67rem;
+  font-weight: 600;
+  font-family: var(--mono);
+  letter-spacing: 0.03em;
+  white-space: nowrap;
+  line-height: 1.6;
+}
+
+.gs-badge-rx       { background: rgba(13,71,161,0.10);  color: var(--color-badge-rx); }
+.gs-badge-otc      { background: rgba(27,94,32,0.10);   color: var(--color-badge-otc); }
+.gs-badge-blackbox { background: rgba(183,28,28,0.10);  color: var(--color-badge-blackbox); }
+.gs-badge-exact    { background: rgba(74,20,140,0.10);  color: var(--color-badge-exact); }
+.gs-badge-class    { background: var(--teal-dim);       color: var(--teal); }
+.gs-badge-specialty { background: rgba(106,27,154,0.10); color: var(--color-disease-accent); }
+
+/* ── Skeleton ────────────────────────────────────────────────────────────── */
+.gs-skeleton {
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+}
+
+.gs-skeleton-item {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 0.8rem 1rem;
+}
+
+.gs-skeleton-title,
+.gs-skeleton-sub {
+  height: 12px;
+  border-radius: 4px;
+  background: linear-gradient(
+    90deg,
+    var(--subtle) 25%,
+    rgba(226,234,244,0.4) 50%,
+    var(--subtle) 75%
+  );
+  background-size: 200% 100%;
+  animation: gs-shimmer 1.4s infinite;
+}
+
+.gs-skeleton-title { width: 52%; margin-bottom: 0.45rem; height: 14px; }
+.gs-skeleton-sub   { width: 78%; }
+
+@keyframes gs-shimmer {
+  0%   { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+/* ── No results ──────────────────────────────────────────────────────────── */
+.gs-no-results {
+  text-align: center;
+  padding: 2.5rem 1rem;
+}
+
+.gs-no-results p {
+  margin-bottom: 0.55rem;
+  font-size: 0.94rem;
+  color: var(--text);
+}
+
+.gs-no-results-tip { color: var(--muted); font-size: 0.86rem; }
+
+.gs-suggestion-btn {
+  background: none;
+  border: none;
+  color: var(--color-drug-accent);
+  cursor: pointer;
+  font-size: inherit;
+  font-family: inherit;
+  text-decoration: underline;
+  padding: 0;
+}
+
+/* ── Refinement chips ────────────────────────────────────────────────────── */
+.gs-refinements {
+  display: flex;
+  gap: 0.5rem;
+  width: 100%;
+  max-width: 680px;
+  padding: 0.25rem 1.5rem 1.5rem;
+}
+
+.gs-refine-chip {
+  padding: 0.32rem 0.8rem;
+  border-radius: 20px;
+  border: 1.5px solid var(--border);
+  background: var(--bg2);
+  color: var(--muted);
+  font-size: 0.8rem;
+  font-family: var(--sans);
+  cursor: pointer;
+  transition: border-color 0.15s, color 0.15s, background 0.15s;
+}
+
+.gs-refine-chip:hover {
+  border-color: var(--color-drug-accent);
+  color: var(--color-drug-accent);
+}
+
+.gs-refine-chip.active {
+  background: var(--color-drug-accent);
+  border-color: var(--color-drug-accent);
+  color: #fff;
+}

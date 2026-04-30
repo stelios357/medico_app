@@ -1,6 +1,7 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { lazy, Suspense } from 'react';
 import Landing from './pages/Landing.jsx';
+import Home from './pages/Home.jsx';
 import Calculator from './pages/Calculator.jsx';
 import QuickCalcPanel from './components/QuickCalc/QuickCalcPanel.jsx';
 import OnboardingGate from './components/Onboarding/OnboardingGate.jsx';
@@ -22,7 +23,8 @@ export default function App() {
     <BrowserRouter>
       <OnboardingGate />
       <Routes>
-        <Route path="/" element={<Landing />} />
+        <Route path="/" element={<Home />} />
+        <Route path="/landing" element={<Landing />} />
         <Route path="/calc" element={<Calculator />} />
         <Route path="/topic/:slug" element={
           <Suspense fallback={<PageLoader />}><Topic /></Suspense>
