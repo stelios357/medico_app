@@ -56,30 +56,6 @@ export function calcNNT(cer, eer) {
 
   const nnt = 1 / Math.abs(arr);
 
-  // Altman 95% CI for NNT (Altman 1998): CI on ARR using normal approximation,
-  // then invert the limits. Requires sample-size-independent form: ±1.96·SE_ARR
-  // Without n, we provide the formula-based CI on the NNT using a simplified
-  // Newcombe-Wilson approach for the difference of two independent proportions.
-  // Since n is not provided, we approximate with a heuristic SE based on midpoint.
-  // For the panel we use the closed-form Altman method that does NOT need n:
-  // 95% CI on ARR = ARR ± 1.96 * sqrt( p1*(1-p1)/n + p2*(1-p2)/n )
-  // Without n, we present asymptotic CI assuming equal group sizes with n → ∞
-  // convention: return exact ARR CI as "±0" when n is unknown; callers must note.
-  // Instead, we compute confidence limits for NNT correctly as 1/ARR ± heuristic.
-  // We'll use the Gart & Nam (1988) approach approximation for display:
-  const z = 1.959964; // 95%
-  // SE_ARR (pooled) = sqrt(p1*(1-p1) + p2*(1-p2)) — per-unit when n=1; callers scale
-  const se_arr_unit = Math.sqrt(
-    cerFrac * (1 - cerFrac) + eerFrac * (1 - eerFrac)
-  );
-  // CI half-width on ARR scaled to "per 100 patients per standard unit"
-  const arrCiHalf = z * se_arr_unit;
-  const arrLow  = Math.abs(arr) - arrCiHalf;
-  const arrHigh = Math.abs(arr) + arrCiHalf;
-
-  const ciLow  = arrHigh > 0 ? 1 / arrHigh : Infinity;
-  const ciHigh = arrLow  > 0 ? 1 / arrLow  : Infinity;
-
   const isBenefit = arr > 0;
   const absARR = Math.abs(arr) * 100;
   let interpretation = '';
@@ -95,8 +71,6 @@ export function calcNNT(cer, eer) {
   return {
     arr: absARR.toFixed(2),
     nnt: nnt.toFixed(1),
-    ciLow: isFinite(ciLow)  ? ciLow.toFixed(1)  : '∞',
-    ciHigh: isFinite(ciHigh) ? ciHigh.toFixed(1) : '∞',
     isBenefit,
     interpretation,
     error: null,

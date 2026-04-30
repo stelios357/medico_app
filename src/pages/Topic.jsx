@@ -37,7 +37,6 @@ export default function Topic() {
   const [designFilter, setDesignFilter] = useState('All');
   const [showPathway, setShowPathway] = useState(false);
   const [showForestPlot, setShowForestPlot] = useState(false);
-  const [citationStyle, setCitationStyle] = useState('vancouver');
   const [copyAllMsg, setCopyAllMsg] = useState('');
   const { toggle: toggleBookmark, isBookmarked } = useBookmarks();
 
@@ -191,7 +190,14 @@ export default function Topic() {
                 const isSelected = selectedStudies.includes(study.id);
                 return (
                   <div key={study.id} className={`study-row${isOpen ? ' open' : ''}`}>
-                    <div className="study-row-header" onClick={() => setExpandedStudy(isOpen ? null : study.id)}>
+                    <div
+                      className="study-row-header"
+                      role="button"
+                      tabIndex={0}
+                      onClick={() => setExpandedStudy(isOpen ? null : study.id)}
+                      onKeyDown={e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); setExpandedStudy(isOpen ? null : study.id); } }}
+                      aria-expanded={isOpen}
+                    >
                       <input
                         type="checkbox"
                         className="study-row-check"
@@ -287,18 +293,6 @@ export default function Topic() {
           {activeTab === 'refs' && (
             <div id="tabpanel-refs" role="tabpanel" aria-label="References">
               <div className="references-header">
-                <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
-                  <span style={{ fontFamily: 'var(--mono)', fontSize: '0.65rem', color: 'var(--muted)', letterSpacing: '0.08em', textTransform: 'uppercase' }}>Format</span>
-                  {['vancouver', 'apa'].map(f => (
-                    <button
-                      key={f}
-                      className={`evidence-filter-chip${citationStyle === f ? ' active' : ''}`}
-                      onClick={() => setCitationStyle(f)}
-                    >
-                      {f.toUpperCase()}
-                    </button>
-                  ))}
-                </div>
                 <button className="drug-action-btn" onClick={copyAllCitations}>
                   {copyAllMsg || 'Export all'}
                 </button>

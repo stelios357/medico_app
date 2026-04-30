@@ -80,13 +80,6 @@ export default function NNTCalc() {
               <span className="qc-result-mono">{result.arr}%</span>
             </div>
 
-            <div className="qc-result-row">
-              <span className="qc-result-key">95% CI</span>
-              <span className="qc-result-mono">
-                {result.ciLow} – {result.ciHigh}
-              </span>
-            </div>
-
             <div className="qc-result-row qc-result-row--interp">
               <span className="qc-interp-text">{result.interpretation}</span>
             </div>
