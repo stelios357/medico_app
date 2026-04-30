@@ -89,7 +89,9 @@ export default function DiseaseBrowse() {
             </p>
             <div className="browse-list">
               {!slice.length ? (
-                <p className="browse-empty">No results found for this filter.</p>
+                <p className="browse-empty">
+                  No conditions found for this specialty.
+                </p>
               ) : (
                 slice.map((disease, i) => (
                   <DiseaseCard

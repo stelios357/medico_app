@@ -122,7 +122,9 @@ export default function DrugBrowse() {
             </p>
             <div className="browse-list">
               {!results.length ? (
-                <p className="browse-empty">No results found for this filter.</p>
+                <p className="browse-empty">
+                  No medications found for this filter.
+                </p>
               ) : (
                 results.map(drug => <DrugCard key={drug.id} drug={drug} />)
               )}
