@@ -1,5 +1,4 @@
 import { RXNORM_BASE, TTL_DRUG, TTL_INTERACTION } from '../utils/constants.js';
-import { queryNormalize } from '../utils/queryNormalize.js';
 import { cacheGet, cacheSet } from './cache.js';
 import { fetchWithRetry } from './retry.js';
 import { makeFallback } from './fallback.js';
