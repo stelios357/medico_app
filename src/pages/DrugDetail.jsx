@@ -7,11 +7,16 @@ import DrugAccordion from '../components/drugs/DrugAccordion.jsx'
 import DrugSkeleton from '../components/drugs/DrugSkeleton.jsx'
 import { openFDA } from '../services/openFDA.js'
 import { isFallback } from '../services/fallback.js'
+import { useRecentlyViewed } from '../hooks/useRecentlyViewed.js'
+import { useSaved } from '../hooks/useSaved.js'
 
 export default function DrugDetail() {
   const { id } = useParams()
   const [drug, setDrug] = useState(null)
   const [error, setError] = useState(null)
+
+  const recentlyViewed = useRecentlyViewed()
+  const { toggle, isItemSaved } = useSaved()
 
   useEffect(() => {
     window.scrollTo(0, 0)
@@ -37,6 +42,30 @@ export default function DrugDetail() {
 
     return () => controller.abort()
   }, [id])
+
+  // Track recently viewed once the drug data loads
+  useEffect(() => {
+    if (!drug) return
+    recentlyViewed.add({
+      name: drug.brandName || drug.genericName || 'Unknown Drug',
+      route: `/drug/${id}`,
+      type: 'drug',
+    })
+  // recentlyViewed.add is stable (no deps change), intentionally omit recentlyViewed
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [drug, id])
+
+  const saved = drug ? isItemSaved(drug.id) : false
+
+  function handleSave() {
+    if (!drug) return
+    toggle({
+      id: drug.id,
+      name: drug.brandName || drug.genericName || 'Unknown Drug',
+      type: 'drug',
+      route: `/drug/${id}`,
+    })
+  }
 
   return (
     <>
