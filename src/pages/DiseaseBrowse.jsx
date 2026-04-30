@@ -54,7 +54,7 @@ export default function DiseaseBrowse() {
       <main className="browse-page browse-page--disease">
         <header className="browse-header">
           <h1 className="browse-title">Browse conditions</h1>
-          <p className="browse-lead">MedlinePlus Connect topics — filter by specialty area, paginated locally.</p>
+          <p className="browse-lead">MedlinePlus health topics — filter by specialty area, paginated locally.</p>
           <Link to="/" className="browse-back">← Back to search</Link>
         </header>
 

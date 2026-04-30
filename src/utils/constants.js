@@ -1,6 +1,7 @@
 export const OPENFDA_BASE = 'https://api.fda.gov';
 export const RXNORM_BASE = 'https://rxnav.nlm.nih.gov/REST';
-export const MEDLINEPLUS_BASE = 'https://connect.medlineplus.gov/application';
+/** Full-text search over English health topics (plain language). */
+export const MEDLINEPLUS_WSEARCH = 'https://wsearch.nlm.nih.gov/ws/query';
 
 export const TTL_DRUG = 5 * 60 * 1000;       // 5 minutes
 export const TTL_DISEASE = 5 * 60 * 1000;    // 5 minutes
