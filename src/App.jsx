@@ -6,9 +6,10 @@ import Calculator from './pages/Calculator.jsx';
 import QuickCalcPanel from './components/QuickCalc/QuickCalcPanel.jsx';
 import OnboardingGate from './components/Onboarding/OnboardingGate.jsx';
 
-const Topic    = lazy(() => import('./pages/Topic.jsx'));
-const Saved    = lazy(() => import('./pages/Saved.jsx'));
-const Settings = lazy(() => import('./pages/Settings.jsx'));
+const Topic      = lazy(() => import('./pages/Topic.jsx'));
+const Saved      = lazy(() => import('./pages/Saved.jsx'));
+const Settings   = lazy(() => import('./pages/Settings.jsx'));
+const DrugDetail = lazy(() => import('./pages/DrugDetail.jsx'));
 
 function PageLoader() {
   return (
@@ -34,6 +35,9 @@ export default function App() {
         } />
         <Route path="/settings" element={
           <Suspense fallback={<PageLoader />}><Settings /></Suspense>
+        } />
+        <Route path="/drug/:id" element={
+          <Suspense fallback={<PageLoader />}><DrugDetail /></Suspense>
         } />
       </Routes>
       <QuickCalcPanel />
