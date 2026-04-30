@@ -161,6 +161,10 @@
   box-shadow: 0 1px 6px rgba(211,47,47,0.12);
 }
 
+.dd-btn-interaction--active {
+  background: rgba(211,47,47,0.09);
+}
+
 .dd-btn-save {
   border-color: var(--color-drug-accent);
   color: var(--color-drug-accent);

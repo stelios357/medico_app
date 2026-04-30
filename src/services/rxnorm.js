@@ -20,6 +20,10 @@ export const rxnorm = {
         fetchWithRetry(url, { signal })
       , signal);
 
+      if (typeof data === 'string' && data.includes('Not found')) {
+        return [];
+      }
+
       const suggestions = data?.suggestionGroup?.suggestionList?.suggestion ?? [];
       cacheSet(cacheKey, suggestions, TTL_DRUG);
       return suggestions;
@@ -42,6 +46,10 @@ export const rxnorm = {
       const data = await dedupFetch(cacheKey, () =>
         fetchWithRetry(url, { signal })
       , signal);
+
+      if (typeof data === 'string' && data.includes('Not found')) {
+        return makeFallback('rxnorm', new Error(`No RxCUI found for "${name}"`));
+      }
 
       const rxcui = data?.idGroup?.rxnormId?.[0] ?? null;
       if (!rxcui) {
@@ -72,25 +80,28 @@ export const rxnorm = {
     const url = `${RXNORM_BASE}/interaction/list.json?rxcuis=${rxcuis.join(',')}`;
 
     try {
-      const data = await dedupFetch(cacheKey, () =>
-        fetchWithRetry(url, { signal })
-      , signal);
+      const interactions = await dedupFetch(cacheKey, async () => {
+        const data = await fetchWithRetry(url, { signal });
 
-      const pairs = data?.fullInteractionTypeGroup ?? [];
-      const interactions = [];
+        if (typeof data === 'string' && data.includes('Not found')) {
+          return [];
+        }
 
-      for (const group of pairs) {
-        for (const typeEntry of group.fullInteractionType ?? []) {
-          for (const pair of typeEntry.interactionPair ?? []) {
-            const drugA = pair.interactionConcept?.[0]?.minConceptItem?.name ?? null;
-            const drugB = pair.interactionConcept?.[1]?.minConceptItem?.name ?? null;
-            const severity = pair.severity?.toLowerCase() ?? null;
-            const description = pair.description ?? null;
-
-            interactions.push({ drugA, drugB, severity, description });
+        const pairs = data?.fullInteractionTypeGroup || [];
+        const result = [];
+        for (const group of pairs) {
+          for (const typeEntry of group.fullInteractionType ?? []) {
+            for (const pair of typeEntry.interactionPair ?? []) {
+              const drugA = pair.interactionConcept?.[0]?.minConceptItem?.name ?? null;
+              const drugB = pair.interactionConcept?.[1]?.minConceptItem?.name ?? null;
+              const severity = (pair.severity || '').toLowerCase() || null;
+              const description = pair.description ?? null;
+              result.push({ drugA, drugB, severity, description });
+            }
           }
         }
-      }
+        return result;
+      }, signal);
 
       cacheSet(cacheKey, interactions, TTL_INTERACTION);
       return interactions;

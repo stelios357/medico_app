@@ -6,10 +6,11 @@ import Calculator from './pages/Calculator.jsx';
 import QuickCalcPanel from './components/QuickCalc/QuickCalcPanel.jsx';
 import OnboardingGate from './components/Onboarding/OnboardingGate.jsx';
 
-const Topic      = lazy(() => import('./pages/Topic.jsx'));
-const Saved      = lazy(() => import('./pages/Saved.jsx'));
-const Settings   = lazy(() => import('./pages/Settings.jsx'));
-const DrugDetail = lazy(() => import('./pages/DrugDetail.jsx'));
+const Topic               = lazy(() => import('./pages/Topic.jsx'));
+const Saved               = lazy(() => import('./pages/Saved.jsx'));
+const Settings            = lazy(() => import('./pages/Settings.jsx'));
+const DrugDetail          = lazy(() => import('./pages/DrugDetail.jsx'));
+const InteractionChecker  = lazy(() => import('./pages/InteractionChecker.jsx'));
 
 function PageLoader() {
   return (
@@ -38,6 +39,9 @@ export default function App() {
         } />
         <Route path="/drug/:id" element={
           <Suspense fallback={<PageLoader />}><DrugDetail /></Suspense>
+        } />
+        <Route path="/interactions" element={
+          <Suspense fallback={<PageLoader />}><InteractionChecker /></Suspense>
         } />
       </Routes>
       <QuickCalcPanel />
