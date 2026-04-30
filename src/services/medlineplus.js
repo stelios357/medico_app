@@ -37,7 +37,7 @@ export const medlineplus = {
 
     const cacheKey = `medlineplus:search:${query}`;
     const cached = cacheGet(cacheKey);
-    if (cached) return cached;
+    if (cached !== null) return cached;
 
     const url =
       `${MEDLINEPLUS_BASE}?mainSearchCriteria.v.cs=2.16.840.1.113883.6.90` +
@@ -66,7 +66,7 @@ export const medlineplus = {
 
     const cacheKey = `medlineplus:detail:${id}`;
     const cached = cacheGet(cacheKey);
-    if (cached) return cached;
+    if (cached !== null) return cached;
 
     // MedlinePlus Connect does not have a dedicated detail endpoint by ID.
     // Re-search by the ID string (which is often the condition name or code).

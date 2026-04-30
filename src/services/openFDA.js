@@ -32,7 +32,7 @@ export const openFDA = {
 
     const cacheKey = `openfda:search:${query}`;
     const cached = cacheGet(cacheKey);
-    if (cached) return cached;
+    if (cached !== null) return cached;
 
     // Cache miss — check rate limit before committing to a network call
     if (isApproachingRateLimit()) {
@@ -64,7 +64,7 @@ export const openFDA = {
 
     const cacheKey = `openfda:detail:${id}`;
     const cached = cacheGet(cacheKey);
-    if (cached) return cached;
+    if (cached !== null) return cached;
 
     const url = `${OPENFDA_BASE}/drug/label.json?search=id:${encodeURIComponent(id)}&limit=1`;
 
