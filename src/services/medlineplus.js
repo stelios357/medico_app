@@ -27,6 +27,31 @@ function parseEntry(entry) {
   };
 }
 
+/** Topic hints per specialty for browse (merged client-side; API has no native browse). */
+const BROWSE_QUERIES_BY_SPECIALTY = {
+  all: ['hypertension', 'diabetes', 'asthma', 'arthritis', 'migraine', 'pneumonia', 'depression', 'hepatitis'],
+  cardiology: ['hypertension', 'heart attack', 'atrial fibrillation', 'heart failure', 'angina'],
+  endocrinology: ['diabetes', 'thyroid', 'osteoporosis', 'hyperthyroidism'],
+  neurology: ['migraine', 'epilepsy', 'stroke', 'parkinson', 'multiple sclerosis'],
+  pulmonology: ['asthma', 'copd', 'pneumonia', 'bronchitis'],
+  gastroenterology: ['gerd', 'hepatitis', 'crohn', 'colitis', 'irritable bowel'],
+  psychiatry: ['depression', 'anxiety', 'bipolar', 'schizophrenia'],
+  nephrology: ['kidney disease', 'kidney stones', 'chronic kidney'],
+  rheumatology: ['arthritis', 'lupus', 'fibromyalgia', 'gout'],
+};
+
+const SPECIALTY_LABELS = {
+  all: null,
+  cardiology: 'Cardiology',
+  endocrinology: 'Endocrinology',
+  neurology: 'Neurology',
+  pulmonology: 'Pulmonology',
+  gastroenterology: 'Gastroenterology',
+  psychiatry: 'Psychiatry',
+  nephrology: 'Nephrology',
+  rheumatology: 'Rheumatology',
+};
+
 export const medlineplus = {
   async search(rawQuery, signal) {
     const query = queryNormalize(rawQuery);
@@ -87,4 +112,42 @@ export const medlineplus = {
       return makeFallback('medlineplus', err);
     }
   },
+
+  /**
+   * Merge several Connect searches (no native browse API).
+   * @param {{ specialty?: string, signal?: AbortSignal }} opts
+   */
+  async browse(opts = {}) {
+    const key = opts.specialty && BROWSE_QUERIES_BY_SPECIALTY[opts.specialty]
+      ? opts.specialty
+      : 'all';
+    const { signal } = opts;
+    const queries = BROWSE_QUERIES_BY_SPECIALTY[key];
+    const label = SPECIALTY_LABELS[key];
+
+    const merged = new Map();
+    for (const q of queries) {
+      const rows = await this.search(q, signal);
+      if (signal?.aborted) break;
+      if (!Array.isArray(rows)) continue;
+      for (const row of rows) {
+        const mapKey = row.id != null ? String(row.id) : row.title;
+        if (!mapKey || merged.has(mapKey)) continue;
+        merged.set(mapKey, label ? { ...row, specialty: label } : row);
+      }
+    }
+
+    const list = Array.from(merged.values());
+    list.sort((a, b) =>
+      (a.title || '').localeCompare(b.title || '', undefined, { sensitivity: 'base' }),
+    );
+    return list;
+  },
 };
+
+export const DISEASE_BROWSE_OPTIONS = [
+  { value: 'all', label: 'All specialties' },
+  ...Object.entries(SPECIALTY_LABELS)
+    .filter(([k]) => k !== 'all')
+    .map(([value, lbl]) => ({ value, label: lbl })),
+];
