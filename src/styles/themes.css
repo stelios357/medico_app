@@ -1,0 +1,76 @@
+/* ── THEME SYSTEM ─────────────────────────────────────────────
+   Themes override :root variables declared in global.css.
+   Apply by adding class .theme-[name] to <html>.
+   The default theme needs no class — global.css :root is the baseline.
+   ─────────────────────────────────────────────────────────── */
+
+:root {
+  /* Density scale — components use these for adaptive spacing */
+  --density-spacing-sm: 8px;
+  --density-spacing-md: 16px;
+  --density-font-body: 16px;
+  --density-line-height: 1.6;
+}
+
+/* ── PAEDIATRICS — warm teal, comfortable density ── */
+.theme-paediatrics {
+  --teal: #0F9B8E;
+  --teal-dim: rgba(15,155,142,0.10);
+  --teal-mid: rgba(15,155,142,0.28);
+  --density-spacing-sm: 8px;
+  --density-spacing-md: 16px;
+  --density-font-body: 16px;
+  --density-line-height: 1.6;
+}
+
+/* ── CRITICAL CARE — deep amber, compact density ── */
+.theme-critical-care {
+  --teal: #C47D0E;
+  --teal-dim: rgba(196,125,14,0.10);
+  --teal-mid: rgba(196,125,14,0.28);
+  --density-spacing-sm: 6px;
+  --density-spacing-md: 12px;
+  --density-font-body: 14px;
+  --density-line-height: 1.45;
+}
+
+/* ── EMERGENCY — coral red, compact density ── */
+.theme-emergency {
+  --teal: #C0392B;
+  --teal-dim: rgba(192,57,43,0.10);
+  --teal-mid: rgba(192,57,43,0.28);
+  --density-spacing-sm: 6px;
+  --density-spacing-md: 12px;
+  --density-font-body: 14px;
+  --density-line-height: 1.45;
+}
+
+/* ── GENERAL — slate blue, comfortable density ── */
+.theme-general {
+  --teal: #2E5F8A;
+  --teal-dim: rgba(46,95,138,0.10);
+  --teal-mid: rgba(46,95,138,0.28);
+  --density-spacing-sm: 8px;
+  --density-spacing-md: 16px;
+  --density-font-body: 16px;
+  --density-line-height: 1.6;
+}
+
+/* ── NIGHT SHIFT — dark mode, muted sage ── */
+.theme-night {
+  --bg: #12151E;
+  --bg2: #1A1F2E;
+  --bg3: #1E2535;
+  --teal: #6B9E7A;
+  --teal-dim: rgba(107,158,122,0.12);
+  --teal-mid: rgba(107,158,122,0.25);
+  --text: #E8EDF5;
+  --muted: #8A97AD;
+  --subtle: #2A3045;
+  --border: rgba(255,255,255,0.08);
+  --white: #E8EDF5;
+  --density-spacing-sm: 8px;
+  --density-spacing-md: 16px;
+  --density-font-body: 16px;
+  --density-line-height: 1.6;
+}

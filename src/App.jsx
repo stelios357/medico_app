@@ -1,14 +1,40 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { lazy, Suspense } from 'react';
 import Landing from './pages/Landing.jsx';
 import Calculator from './pages/Calculator.jsx';
+import QuickCalcPanel from './components/QuickCalc/QuickCalcPanel.jsx';
+import OnboardingGate from './components/Onboarding/OnboardingGate.jsx';
+
+const Topic    = lazy(() => import('./pages/Topic.jsx'));
+const Saved    = lazy(() => import('./pages/Saved.jsx'));
+const Settings = lazy(() => import('./pages/Settings.jsx'));
+
+function PageLoader() {
+  return (
+    <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'var(--bg)' }}>
+      <span style={{ fontFamily: 'var(--mono)', fontSize: '0.8rem', color: 'var(--muted)', letterSpacing: '0.06em' }}>Loading…</span>
+    </div>
+  );
+}
 
 export default function App() {
   return (
     <BrowserRouter>
+      <OnboardingGate />
       <Routes>
         <Route path="/" element={<Landing />} />
         <Route path="/calc" element={<Calculator />} />
+        <Route path="/topic/:slug" element={
+          <Suspense fallback={<PageLoader />}><Topic /></Suspense>
+        } />
+        <Route path="/saved" element={
+          <Suspense fallback={<PageLoader />}><Saved /></Suspense>
+        } />
+        <Route path="/settings" element={
+          <Suspense fallback={<PageLoader />}><Settings /></Suspense>
+        } />
       </Routes>
+      <QuickCalcPanel />
     </BrowserRouter>
   );
 }

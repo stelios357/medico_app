@@ -1,0 +1,671 @@
+/* ── QUICK CALC — quickcalc.css ───────────────────────────────────────────── */
+
+/* ── FAB (Floating Action Button) ─────────────────────────────────────────── */
+.qc-fab {
+  position: fixed;
+  bottom: 1.5rem;
+  right: 1.5rem;
+  z-index: 9999;
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  background: var(--teal);
+  color: var(--white);
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow:
+    0 4px 16px rgba(10, 158, 136, 0.40),
+    0 1px 4px rgba(0, 0, 0, 0.12);
+  transition: transform 0.15s ease-out, box-shadow 0.15s ease-out, background 0.15s;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+}
+
+.qc-fab:hover {
+  transform: scale(1.08);
+  box-shadow:
+    0 8px 24px rgba(10, 158, 136, 0.48),
+    0 2px 6px rgba(0, 0, 0, 0.14);
+}
+
+.qc-fab:active {
+  transform: scale(0.96);
+}
+
+.qc-fab.open {
+  background: var(--text);
+  box-shadow:
+    0 4px 16px rgba(26, 31, 46, 0.30),
+    0 1px 4px rgba(0, 0, 0, 0.12);
+}
+
+.qc-fab svg {
+  pointer-events: none;
+  flex-shrink: 0;
+}
+
+/* ── Backdrop ──────────────────────────────────────────────────────────────── */
+.qc-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 9998;
+  background: rgba(26, 31, 46, 0.28);
+  backdrop-filter: blur(2px);
+  -webkit-backdrop-filter: blur(2px);
+  animation: qcBackdropIn 0.2s ease-out forwards;
+}
+
+@keyframes qcBackdropIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+/* ── Panel ─────────────────────────────────────────────────────────────────── */
+.qc-panel {
+  position: fixed;
+  bottom: calc(1.5rem + 52px + 0.75rem);
+  right: 1.5rem;
+  width: min(360px, 92vw);
+  max-height: 70vh;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  z-index: 9999;
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  box-shadow:
+    0 8px 40px rgba(10, 158, 136, 0.10),
+    0 2px 12px rgba(0, 0, 0, 0.08),
+    0 0 0 0.5px rgba(0, 0, 0, 0.06);
+  animation: qcPanelIn 0.3s ease-out forwards;
+
+  /* Scrollbar styling */
+  scrollbar-width: thin;
+  scrollbar-color: var(--teal-mid) transparent;
+}
+
+.qc-panel::-webkit-scrollbar {
+  width: 4px;
+}
+
+.qc-panel::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.qc-panel::-webkit-scrollbar-thumb {
+  background: var(--teal-mid);
+  border-radius: 100px;
+}
+
+@keyframes qcPanelIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ── Panel header ──────────────────────────────────────────────────────────── */
+.qc-panel-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem 1rem 0.75rem;
+  border-bottom: 1px solid var(--border);
+  position: sticky;
+  top: 0;
+  background: var(--bg2);
+  z-index: 2;
+  border-radius: 16px 16px 0 0;
+}
+
+.qc-panel-title {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: var(--mono);
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--text);
+  letter-spacing: 0.04em;
+}
+
+.qc-panel-title-icon {
+  font-family: var(--serif);
+  font-size: 1.1rem;
+  color: var(--teal);
+  font-style: italic;
+  line-height: 1;
+}
+
+.qc-panel-close {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--muted);
+  padding: 0.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 4px;
+  transition: color 0.15s, background 0.15s;
+  line-height: 1;
+}
+
+.qc-panel-close:hover {
+  color: var(--text);
+  background: var(--teal-dim);
+}
+
+/* ── Tab bar ───────────────────────────────────────────────────────────────── */
+.qc-tabs {
+  display: flex;
+  gap: 0.35rem;
+  padding: 0.65rem 1rem;
+  overflow-x: auto;
+  scrollbar-width: none;
+  position: sticky;
+  top: 52px; /* below header */
+  background: var(--bg2);
+  z-index: 1;
+  border-bottom: 1px solid var(--border);
+}
+
+.qc-tabs::-webkit-scrollbar { display: none; }
+
+.qc-tab {
+  flex-shrink: 0;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 100px;
+  padding: 0.3rem 0.8rem;
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  color: var(--muted);
+  cursor: pointer;
+  transition: background 0.2s, border-color 0.2s, color 0.2s;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.qc-tab:hover {
+  border-color: var(--teal-mid);
+  color: var(--text);
+}
+
+.qc-tab.active {
+  background: var(--teal);
+  border-color: var(--teal);
+  color: var(--white);
+}
+
+/* ── Calc body (wrapper injected by each calculator) ──────────────────────── */
+.qc-calc-body {
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+/* ── Input groups ──────────────────────────────────────────────────────────── */
+.qc-input-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+.qc-input-group label {
+  font-size: 0.72rem;
+  font-weight: 500;
+  color: var(--muted);
+  letter-spacing: 0.02em;
+}
+
+.qc-input-group input,
+.qc-input-group select {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 0.55rem 0.75rem;
+  font-family: var(--mono);
+  font-size: 0.9rem;
+  color: var(--text);
+  outline: none;
+  width: 100%;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  /* Remove spinners */
+  -moz-appearance: textfield;
+}
+
+.qc-input-group input::-webkit-outer-spin-button,
+.qc-input-group input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+}
+
+.qc-input-group input:focus,
+.qc-input-group select:focus {
+  border-color: var(--teal-mid);
+  box-shadow: 0 0 0 3px rgba(10, 158, 136, 0.10);
+}
+
+.qc-input-group select {
+  cursor: pointer;
+  appearance: none;
+  -webkit-appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%236B7A8D' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 0.75rem center;
+  padding-right: 2rem;
+}
+
+/* ── 2×2 grid for RR table inputs ─────────────────────────────────────────── */
+.qc-2x2-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.6rem;
+}
+
+/* ── 2-column grid for ES inputs ──────────────────────────────────────────── */
+.qc-2col-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.6rem;
+}
+
+/* ── Toggle buttons (benefit/harm, n/SE) ───────────────────────────────────── */
+.qc-toggle-row {
+  display: flex;
+  gap: 0.4rem;
+}
+
+.qc-toggle-btn {
+  flex: 1;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 0.45rem 0.6rem;
+  font-family: var(--mono);
+  font-size: 0.7rem;
+  font-weight: 500;
+  color: var(--muted);
+  cursor: pointer;
+  transition: background 0.2s, border-color 0.2s, color 0.2s;
+  text-align: center;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.qc-toggle-btn:hover {
+  border-color: var(--teal-mid);
+  color: var(--text);
+}
+
+.qc-toggle-btn.active {
+  background: var(--teal-dim);
+  border-color: var(--teal-mid);
+  color: var(--teal);
+  font-weight: 600;
+}
+
+/* ── Radio row for confidence level ───────────────────────────────────────── */
+.qc-radio-row {
+  display: flex;
+  gap: 0.75rem;
+  align-items: center;
+}
+
+.qc-radio-label {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  color: var(--muted);
+  cursor: pointer;
+  user-select: none;
+}
+
+.qc-radio-label input[type="radio"] {
+  accent-color: var(--teal);
+  width: 14px;
+  height: 14px;
+  cursor: pointer;
+  margin: 0;
+}
+
+/* ── Results area ──────────────────────────────────────────────────────────── */
+.qc-results {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 0.85rem;
+  margin-top: 0.25rem;
+}
+
+.qc-result-primary {
+  display: flex;
+  align-items: baseline;
+  gap: 0.6rem;
+  padding-bottom: 0.6rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.qc-result-label {
+  font-family: var(--mono);
+  font-size: 0.65rem;
+  color: var(--muted);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  flex-shrink: 0;
+}
+
+.qc-result-value {
+  font-family: var(--mono);
+  font-size: 1.6rem;
+  font-weight: 600;
+  color: var(--teal);
+  line-height: 1;
+  letter-spacing: -0.02em;
+}
+
+.qc-result-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  min-height: 1.4rem;
+}
+
+.qc-result-row--interp {
+  display: block;
+  padding-top: 0.4rem;
+  border-top: 1px dashed var(--border);
+}
+
+.qc-result-row--badge {
+  justify-content: flex-start;
+  gap: 0.6rem;
+}
+
+.qc-result-key {
+  font-family: var(--mono);
+  font-size: 0.68rem;
+  color: var(--muted);
+  flex-shrink: 0;
+}
+
+.qc-result-mono {
+  font-family: var(--mono);
+  font-size: 0.82rem;
+  color: var(--text);
+  font-weight: 500;
+  text-align: right;
+}
+
+.qc-interp-text {
+  font-size: 0.78rem;
+  color: var(--muted);
+  line-height: 1.5;
+  font-style: italic;
+}
+
+/* ── Error / hint ──────────────────────────────────────────────────────────── */
+.qc-error {
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  color: var(--red);
+  background: rgba(217, 79, 79, 0.08);
+  border: 1px solid rgba(217, 79, 79, 0.22);
+  border-radius: 8px;
+  padding: 0.55rem 0.75rem;
+  line-height: 1.5;
+}
+
+.qc-hint {
+  font-family: var(--mono);
+  font-size: 0.7rem;
+  color: var(--muted);
+  text-align: center;
+  padding: 0.5rem 0;
+  letter-spacing: 0.03em;
+}
+
+/* ── Badges ────────────────────────────────────────────────────────────────── */
+.qc-badge {
+  display: inline-flex;
+  align-items: center;
+  font-family: var(--mono);
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 0.25rem 0.65rem;
+  border-radius: 100px;
+  border: 1px solid transparent;
+}
+
+.qc-badge--teal {
+  background: var(--teal-dim);
+  border-color: var(--teal-mid);
+  color: var(--teal);
+}
+
+.qc-badge--amber {
+  background: rgba(232, 144, 10, 0.10);
+  border-color: rgba(232, 144, 10, 0.28);
+  color: var(--amber);
+}
+
+.qc-badge--muted {
+  background: rgba(107, 122, 141, 0.10);
+  border-color: rgba(107, 122, 141, 0.22);
+  color: var(--muted);
+}
+
+.qc-badge--red {
+  background: rgba(217, 79, 79, 0.10);
+  border-color: rgba(217, 79, 79, 0.28);
+  color: var(--red);
+}
+
+/* ── CI Number line ────────────────────────────────────────────────────────── */
+.qc-numberline-wrap {
+  margin-top: 0.5rem;
+  padding-top: 0.5rem;
+  border-top: 1px dashed var(--border);
+}
+
+.qc-numberline-svg {
+  width: 100%;
+  height: auto;
+  display: block;
+  overflow: visible;
+}
+
+/* ── GRADE checklist ───────────────────────────────────────────────────────── */
+.qc-grade-domain {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.qc-grade-domain-label {
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: var(--text);
+}
+
+.qc-grade-options {
+  display: flex;
+  gap: 0.35rem;
+  flex-wrap: wrap;
+}
+
+.qc-grade-option {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  font-family: var(--mono);
+  font-size: 0.68rem;
+  color: var(--muted);
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 0.3rem 0.55rem;
+  cursor: pointer;
+  transition: background 0.15s, border-color 0.15s, color 0.15s;
+  user-select: none;
+}
+
+.qc-grade-option input[type="radio"] {
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+  pointer-events: none;
+}
+
+.qc-grade-option:hover {
+  border-color: var(--teal-mid);
+  color: var(--text);
+}
+
+.qc-grade-option.active {
+  background: var(--teal-dim);
+  border-color: var(--teal-mid);
+  color: var(--teal);
+  font-weight: 600;
+}
+
+.qc-grade-deduction {
+  font-size: 0.62rem;
+  color: var(--red);
+  font-weight: 700;
+  margin-left: 0.1rem;
+}
+
+/* ── GRADE result badge ────────────────────────────────────────────────────── */
+.qc-grade-result {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 1rem;
+  border-radius: 12px;
+  border: 1.5px solid transparent;
+  text-align: center;
+  margin-top: 0.25rem;
+}
+
+.qc-grade-result-label {
+  font-family: var(--mono);
+  font-size: 0.62rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  opacity: 0.75;
+}
+
+.qc-grade-result-value {
+  font-family: var(--serif);
+  font-size: 1.75rem;
+  font-weight: 600;
+  line-height: 1;
+  letter-spacing: -0.01em;
+}
+
+.qc-grade-result-score {
+  font-family: var(--mono);
+  font-size: 0.68rem;
+  opacity: 0.65;
+}
+
+.qc-grade-result--high {
+  background: var(--teal-dim);
+  border-color: var(--teal-mid);
+  color: var(--teal);
+}
+
+.qc-grade-result--moderate {
+  background: rgba(232, 144, 10, 0.10);
+  border-color: rgba(232, 144, 10, 0.28);
+  color: var(--amber);
+}
+
+.qc-grade-result--low {
+  background: rgba(107, 122, 141, 0.10);
+  border-color: rgba(107, 122, 141, 0.22);
+  color: var(--muted);
+}
+
+.qc-grade-result--verylow {
+  background: rgba(217, 79, 79, 0.10);
+  border-color: rgba(217, 79, 79, 0.28);
+  color: var(--red);
+}
+
+/* ── Loading spinner ───────────────────────────────────────────────────────── */
+.qc-loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  padding: 2rem;
+}
+
+.qc-loading-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--teal);
+  animation: qcDotPulse 1.2s ease-in-out infinite;
+}
+
+.qc-loading-dot:nth-child(2) { animation-delay: 0.15s; }
+.qc-loading-dot:nth-child(3) { animation-delay: 0.30s; }
+
+@keyframes qcDotPulse {
+  0%, 80%, 100% { opacity: 0.25; transform: scale(0.75); }
+  40%           { opacity: 1;    transform: scale(1);    }
+}
+
+/* ── Mobile adjustments ────────────────────────────────────────────────────── */
+@media (max-width: 480px) {
+  .qc-fab {
+    bottom: 1rem;
+    right: 1rem;
+  }
+
+  .qc-panel {
+    right: 1rem;
+    bottom: calc(1rem + 52px + 0.65rem);
+    width: min(360px, calc(100vw - 2rem));
+    max-height: 75vh;
+  }
+
+  .qc-2x2-grid,
+  .qc-2col-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .qc-result-value {
+    font-size: 1.35rem;
+  }
+
+  .qc-grade-options {
+    gap: 0.3rem;
+  }
+
+  .qc-grade-option {
+    font-size: 0.62rem;
+    padding: 0.25rem 0.45rem;
+  }
+}
