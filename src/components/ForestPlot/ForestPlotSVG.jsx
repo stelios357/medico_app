@@ -24,9 +24,24 @@ function weightToSize(weight, weights) {
   return 4 + norm * 12; /* 4–16 */
 }
 
-/* linear interpolation: value → svg x coordinate */
-function toX(value, domainMin, domainMax) {
-  return COL_MID_START + ((value - domainMin) / (domainMax - domainMin)) * MID_W;
+/* value/domain mapping for the plot area */
+function mapPlotValue(value, scale) {
+  if (scale === 'ratio' && value > 0) {
+    return Math.log(value);
+  }
+  return value;
+}
+
+/* interpolation: value → svg x coordinate */
+function toX(value, domainMin, domainMax, scale = 'linear') {
+  const useLogScale =
+    scale === 'ratio' && value > 0 && domainMin > 0 && domainMax > 0;
+
+  const mappedValue = mapPlotValue(value, useLogScale ? 'ratio' : 'linear');
+  const mappedMin = mapPlotValue(domainMin, useLogScale ? 'ratio' : 'linear');
+  const mappedMax = mapPlotValue(domainMax, useLogScale ? 'ratio' : 'linear');
+
+  return COL_MID_START + ((mappedValue - mappedMin) / (mappedMax - mappedMin)) * MID_W;
 }
 
 function fmt(n, decimals = 2) {
@@ -35,11 +50,11 @@ function fmt(n, decimals = 2) {
 }
 
 /* ── Diamond (pooled estimate) ── */
-function Diamond({ cx, ciLow, ciHigh, y, domainMin, domainMax }) {
+function Diamond({ cx, ciLow, ciHigh, y, domainMin, domainMax, scale = 'linear' }) {
   const halfH = 10;
-  const x     = toX(cx,    domainMin, domainMax);
-  const x0    = toX(ciLow, domainMin, domainMax);
-  const x1    = toX(ciHigh,domainMin, domainMax);
+  const x     = toX(cx,     domainMin, domainMax, scale);
+  const x0    = toX(ciLow,  domainMin, domainMax, scale);
+  const x1    = toX(ciHigh, domainMin, domainMax, scale);
   const pts   = [
     `${x},${y - halfH}`,
     `${x1},${y}`,
