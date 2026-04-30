@@ -117,12 +117,18 @@ export function calcRR(a, b, c, d) {
   if (cv === 0 && dv === 0) return { error: 'Unexposed group total is zero.' };
   if (av + bv === 0 || cv + dv === 0) return { error: 'Group totals cannot be zero.' };
 
-  const n1 = av + bv; // exposed total
-  const n2 = cv + dv; // unexposed total
-  const p1 = av / n1; // incidence in exposed
-  const p2 = cv / n2; // incidence in unexposed
+  // Apply 0.5 continuity correction to all cells when any cell is zero,
+  // to avoid log(0) and division-by-zero in the log-method CI calculation.
+  const needsCC = av === 0 || bv === 0 || cv === 0 || dv === 0;
+  const aa = needsCC ? av + 0.5 : av;
+  const bb = needsCC ? bv + 0.5 : bv;
+  const cc = needsCC ? cv + 0.5 : cv;
+  const dd = needsCC ? dv + 0.5 : dv;
 
-  if (p2 === 0) return { error: 'Unexposed event rate is zero — RR undefined.' };
+  const n1 = aa + bb; // exposed total
+  const n2 = cc + dd; // unexposed total
+  const p1 = aa / n1; // incidence in exposed
+  const p2 = cc / n2; // incidence in unexposed
 
   const rr = p1 / p2;
 
@@ -133,26 +139,10 @@ export function calcRR(a, b, c, d) {
   const rrCiLow  = Math.exp(lnRR - z * seLnRR);
   const rrCiHigh = Math.exp(lnRR + z * seLnRR);
 
-  // Odds ratio
-  if (bv === 0 || cv === 0) {
-    // OR undefined — handle zero cells
-    const orNote = bv === 0 || cv === 0 ? 'OR undefined (zero cell)' : null;
-    let interpretation = rrInterpret(rr);
-    return {
-      rr: rr.toFixed(2),
-      rrCiLow: rrCiLow.toFixed(2),
-      rrCiHigh: rrCiHigh.toFixed(2),
-      or_: orNote ?? 'N/A',
-      orCiLow: 'N/A',
-      orCiHigh: 'N/A',
-      interpretation,
-      error: null,
-    };
-  }
-
-  const or_ = (av * dv) / (bv * cv);
+  // Odds ratio — all cells guaranteed > 0 after continuity correction
+  const or_ = (aa * dd) / (bb * cc);
   const lnOR = Math.log(or_);
-  const seLnOR = Math.sqrt(1/av + 1/bv + 1/cv + 1/dv);
+  const seLnOR = Math.sqrt(1/aa + 1/bb + 1/cc + 1/dd);
   const orCiLow  = Math.exp(lnOR - z * seLnOR);
   const orCiHigh = Math.exp(lnOR + z * seLnOR);
 

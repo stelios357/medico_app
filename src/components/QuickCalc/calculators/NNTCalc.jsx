@@ -11,7 +11,9 @@ export default function NNTCalc() {
     return calcNNT(cer, eer);
   }, [cer, eer]);
 
-  const label = mode === 'benefit' ? 'NNT' : 'NNH';
+  const label = (result && !result.error)
+    ? (result.isBenefit ? 'NNT' : 'NNH')
+    : (mode === 'benefit' ? 'NNT' : 'NNH');
 
   return (
     <div className="qc-calc-body">

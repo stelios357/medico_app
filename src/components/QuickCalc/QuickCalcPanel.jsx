@@ -98,6 +98,7 @@ export default function QuickCalcPanel() {
       {open && (
         <div
           ref={panelRef}
+          id="qc-panel"
           className="qc-panel"
           role="dialog"
           aria-modal="true"

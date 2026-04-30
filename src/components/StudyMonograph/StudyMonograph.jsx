@@ -112,7 +112,9 @@ export default function StudyMonograph({
   const allOpen    = variant === 'full';
 
   const handleCopyCitation = useCallback(() => {
-    const citation = `${study.authors}. ${study.name}. ${study.journal}. ${study.year}. DOI: ${study.doi}`;
+    const parts = [study.authors, study.name, study.journal, study.year].filter(Boolean);
+    if (study.doi) parts.push(`DOI: ${study.doi}`);
+    const citation = parts.join('. ');
     navigator.clipboard?.writeText(citation).catch(() => {
       /* silent fallback — clipboard may be unavailable */
     });

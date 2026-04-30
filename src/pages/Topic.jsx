@@ -17,6 +17,8 @@ const TABS = [
 ];
 
 const DESIGN_FILTER_OPTIONS = ['All', 'RCT', 'cohort', 'meta-analysis', 'case-control', 'cross-sectional'];
+const VALID_TAB_IDS = new Set(TABS.map(t => t.id));
+function safeTab(raw) { return VALID_TAB_IDS.has(raw) ? raw : 'summary'; }
 
 function gradeColor(level) {
   return { high: 'high', moderate: 'moderate', low: 'low', 'very-low': 'very-low' }[level] || 'low';
@@ -29,7 +31,7 @@ function gradeLabel(level) {
 export default function Topic() {
   const { slug } = useParams();
   const [searchParams, setSearchParams] = useSearchParams();
-  const [activeTab, setActiveTab] = useState(searchParams.get('tab') || 'summary');
+  const [activeTab, setActiveTab] = useState(safeTab(searchParams.get('tab')));
   const [expandedStudy, setExpandedStudy] = useState(null);
   const [selectedStudies, setSelectedStudies] = useState([]);
   const [designFilter, setDesignFilter] = useState('All');
@@ -43,8 +45,7 @@ export default function Topic() {
   const pathway = topic?.pathwayId ? pathwaysData.find(p => p.id === topic.pathwayId) : null;
 
   useEffect(() => {
-    const tab = searchParams.get('tab') || 'summary';
-    setActiveTab(tab);
+    setActiveTab(safeTab(searchParams.get('tab')));
   }, [searchParams]);
 
   function switchTab(tabId) {
@@ -78,6 +79,9 @@ export default function Topic() {
     const text = topic.references.map((r, i) => `[${i + 1}] ${r.citation}`).join('\n\n');
     navigator.clipboard.writeText(text).then(() => {
       setCopyAllMsg('Copied!');
+      setTimeout(() => setCopyAllMsg(''), 2000);
+    }).catch(() => {
+      setCopyAllMsg('Copy failed');
       setTimeout(() => setCopyAllMsg(''), 2000);
     });
   }
