@@ -17,10 +17,10 @@ export default function PathwayStep({ step, stepIndex, totalSteps, isFirst, onSe
     const branch = step.branches.find(b => {
       if (b.condition === 'any' || b.condition === 'submit') return true;
       // Numeric comparisons
-      if (b.condition.startsWith('>')) return val > parseFloat(b.condition.slice(1));
-      if (b.condition.startsWith('<')) return val < parseFloat(b.condition.slice(1));
       if (b.condition.startsWith('>=')) return val >= parseFloat(b.condition.slice(2));
       if (b.condition.startsWith('<=')) return val <= parseFloat(b.condition.slice(2));
+      if (b.condition.startsWith('>')) return val > parseFloat(b.condition.slice(1));
+      if (b.condition.startsWith('<')) return val < parseFloat(b.condition.slice(1));
       return false;
     }) || step.branches[0];
     if (branch) onSelect(branch.nextStepId, numberValue, branch.outcomeMessage);
