@@ -3,7 +3,6 @@ import { openFDA } from '../services/openFDA'
 import { medlineplus } from '../services/medlineplus'
 import { queryNormalize } from '../utils/queryNormalize'
 import { matchScore } from '../utils/matchScore'
-import { createQueryScope, STALE } from '../utils/queryGuard'
 
 function getResultName(result) {
   return result.brandName || result.genericName || result.title || ''
@@ -30,10 +29,6 @@ export function useGlobalSearch() {
 
   // AbortController cancels in-flight fetch on query change
   const abortRef = useRef(null)
-
-  // queryGuard scope: protects against async race conditions where two
-  // calls to the same guarded function resolve out of order
-  const queryScopeRef = useRef(createQueryScope())
 
   // Cancel any in-flight requests on unmount
   useEffect(() => {
@@ -70,21 +65,12 @@ export function useGlobalSearch() {
     abortRef.current = controller
     const { signal } = controller
 
-    // Create per-query guards on the shared scope.
-    // Each guard() call increments the scope version so that when an older
-    // guarded promise resolves it returns STALE instead of the real result.
-    const guardedDrugSearch = queryScopeRef.current.guard(openFDA.search.bind(openFDA))
-    const guardedDiseaseSearch = queryScopeRef.current.guard(medlineplus.search.bind(medlineplus))
-
     // ── Drug search — independent, does NOT block disease rendering ──
     ;(async () => {
       try {
-        let results = await guardedDrugSearch(raw, signal)
+        let results = await openFDA.search(raw, signal)
 
-        // queryGuard check: a newer query has started — discard
-        if (results === STALE) return
-
-        // queryId check: logical query changed — discard
+        // queryId check: logical query changed — discard stale response
         if (queryIdRef.current !== currentId) return
 
         // Retry with normalized query if poor results and raw differs from norm
@@ -105,10 +91,7 @@ export function useGlobalSearch() {
     // ── Disease search — independent, renders when ready ──
     ;(async () => {
       try {
-        let results = await guardedDiseaseSearch(raw, signal)
-
-        // queryGuard check
-        if (results === STALE) return
+        let results = await medlineplus.search(raw, signal)
 
         // queryId check
         if (queryIdRef.current !== currentId) return

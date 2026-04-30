@@ -41,7 +41,7 @@ export const openFDA = {
       return [];
     }
 
-    const url = `${OPENFDA_BASE}/drug/label.json?search=brand_name:${encodeURIComponent(query)}+generic_name:${encodeURIComponent(query)}&limit=10`;
+    const url = `${OPENFDA_BASE}/drug/label.json?search=openfda.brand_name:${encodeURIComponent(query)}+openfda.generic_name:${encodeURIComponent(query)}&limit=10`;
 
     try {
       const data = await dedupFetch(cacheKey, () => {
