@@ -229,7 +229,14 @@ const ForestPlotSVG = forwardRef(function ForestPlotSVG(
               key={s.id}
               className="fp-study-row"
               onClick={() => onStudyClick?.(s.id)}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                  e.preventDefault();
+                  onStudyClick?.(s.id);
+                }
+              }}
               role="button"
+              tabIndex={0}
               aria-label={`${s.label}: ${ciText}`}
             >
               {/* hover background */}
