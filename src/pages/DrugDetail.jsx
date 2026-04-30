@@ -62,13 +62,27 @@ export default function DrugDetail() {
             <DrugHighlights drug={drug} />
 
             <div className="dd-actions">
-              <button className="dd-btn dd-btn-interaction" type="button" disabled>
+              <button
+                className="dd-btn dd-btn-interaction"
+                type="button"
+                aria-disabled="true"
+                title="Coming soon"
+                onClick={e => e.preventDefault()}
+              >
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
                 Check Interactions
+                <span className="dd-btn-soon" aria-hidden="true">Coming soon</span>
               </button>
-              <button className="dd-btn dd-btn-save" type="button" disabled>
+              <button
+                className="dd-btn dd-btn-save"
+                type="button"
+                aria-disabled="true"
+                title="Coming soon"
+                onClick={e => e.preventDefault()}
+              >
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M19 21l-7-5-7 5V5a2 2 0 012-2h10a2 2 0 012 2z"/></svg>
                 Save
+                <span className="dd-btn-soon" aria-hidden="true">Coming soon</span>
               </button>
             </div>
 

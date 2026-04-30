@@ -35,13 +35,14 @@ function renderParagraphs(text) {
     .map((s, i) => <p key={i} className="dd-accordion-para">{s}</p>)
 }
 
-function AccordionItem({ label, content }) {
+function AccordionItem({ sectionKey, label, content }) {
   const [open, setOpen] = useState(false)
-  const id = `dd-section-${label.replace(/\s+/g, '-').toLowerCase()}`
+  const id = `dd-section-${sectionKey}`
 
   return (
     <div className="dd-accordion-item">
       <button
+        type="button"
         className="dd-accordion-trigger"
         aria-expanded={open}
         aria-controls={id}
@@ -69,6 +70,7 @@ export default function DrugAccordion({ drug }) {
       {visibleSections.map(s => (
         <AccordionItem
           key={s.key}
+          sectionKey={s.key}
           label={s.label}
           content={drug[s.key]}
         />
