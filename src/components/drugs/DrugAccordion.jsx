@@ -29,7 +29,7 @@ function ChevronIcon({ open }) {
 
 function renderParagraphs(text) {
   return text
-    .split(/\. |\n/)
+    .split(/\r?\n+/)
     .map(s => s.trim())
     .filter(Boolean)
     .map((s, i) => <p key={i} className="dd-accordion-para">{s}</p>)
