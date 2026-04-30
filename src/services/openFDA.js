@@ -1,4 +1,4 @@
-import { OPENFDA_BASE, TTL_DRUG, RATE_LIMIT_PER_MIN, RATE_LIMIT_WARN_THRESHOLD } from '../utils/constants.js';
+import { OPENFDA_BASE, TTL_DRUG, RATE_LIMIT_WARN_THRESHOLD } from '../utils/constants.js';
 import { queryNormalize } from '../utils/queryNormalize.js';
 import { formatDrug, formatDrugList } from '../utils/formatDrug.js';
 import { cacheGet, cacheSet } from './cache.js';
