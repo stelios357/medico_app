@@ -21,11 +21,10 @@ function termsByCategory(cat) {
 export default function PICOStepForm({ step, value, onChange, onNext, onBack, isLastStep }) {
   const [customComparator, setCustomComparator] = useState('');
 
+  const canNext = Array.isArray(value) ? value.length > 0 : (value || '').trim().length > 0;
+
   function handleKeyDown(e) {
-    if (e.key === 'Enter') onNext();
-    if (e.key === 'Escape') {
-      // parent handles escape
-    }
+    if (e.key === 'Enter' && canNext) onNext();
   }
 
   // Step 1 — Population
