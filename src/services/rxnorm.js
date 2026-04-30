@@ -69,7 +69,7 @@ export const rxnorm = {
     const key = rxcuis.slice().sort().join(',');
     const cacheKey = `rxnorm:interactions:${key}`;
     const cached = cacheGet(cacheKey);
-    if (cached) return cached;
+    if (cached !== null) return cached;
 
     const url = `${RXNORM_BASE}/interaction/list.json?rxcuis=${rxcuis.join(',')}`;
 
