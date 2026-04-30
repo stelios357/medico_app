@@ -1,17 +1,4 @@
-function stripHtml(str) {
-  if (!str) return null;
-  return str
-    .replace(/<[^>]*>/g, '')
-    .replace(/&amp;/g, '&')
-    .replace(/&lt;/g, '<')
-    .replace(/&gt;/g, '>')
-    .replace(/&quot;/g, '"')
-    .replace(/&#39;/g, "'")
-    .replace(/&nbsp;/g, ' ')
-    .replace(/[\r\n]+/g, ' ')
-    .replace(/\s{2,}/g, ' ')
-    .trim() || null;
-}
+import { stripHtml } from './stripHtml.js';
 
 function safeField(arr) {
   // arr may be an array (OpenFDA standard) or a bare string (some label variants)

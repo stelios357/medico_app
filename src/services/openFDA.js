@@ -47,14 +47,13 @@ export const openFDA = {
       const data = await dedupFetch(cacheKey, () => {
         recordRequest();
         return fetchWithRetry(url, { signal });
-      });
+      }, signal);
 
       const results = formatDrugList(data);
       cacheSet(cacheKey, results, TTL_DRUG);
       this.rateLimitWarning = false;
       return results;
     } catch (err) {
-      if (err?.name === 'AbortError') throw err;
       return makeFallback('openFDA', err);
     }
   },
@@ -72,14 +71,13 @@ export const openFDA = {
       const data = await dedupFetch(cacheKey, () => {
         recordRequest();
         return fetchWithRetry(url, { signal });
-      });
+      }, signal);
 
       const result = formatDrug(data);
       if (!result) return makeFallback('openFDA', new Error('Empty response'));
       cacheSet(cacheKey, result, TTL_DRUG);
       return result;
     } catch (err) {
-      if (err?.name === 'AbortError') throw err;
       return makeFallback('openFDA', err);
     }
   },

@@ -18,13 +18,12 @@ export const rxnorm = {
     try {
       const data = await dedupFetch(cacheKey, () =>
         fetchWithRetry(url, { signal })
-      );
+      , signal);
 
       const suggestions = data?.suggestionGroup?.suggestionList?.suggestion ?? [];
       cacheSet(cacheKey, suggestions, TTL_DRUG);
       return suggestions;
     } catch (err) {
-      if (err?.name === 'AbortError') throw err;
       return makeFallback('rxnorm', err);
     }
   },
@@ -42,7 +41,7 @@ export const rxnorm = {
     try {
       const data = await dedupFetch(cacheKey, () =>
         fetchWithRetry(url, { signal })
-      );
+      , signal);
 
       const rxcui = data?.idGroup?.rxnormId?.[0] ?? null;
       if (!rxcui) {
@@ -51,7 +50,6 @@ export const rxnorm = {
       cacheSet(cacheKey, rxcui, TTL_DRUG);
       return rxcui;
     } catch (err) {
-      if (err?.name === 'AbortError') throw err;
       return makeFallback('rxnorm', err);
     }
   },
@@ -76,7 +74,7 @@ export const rxnorm = {
     try {
       const data = await dedupFetch(cacheKey, () =>
         fetchWithRetry(url, { signal })
-      );
+      , signal);
 
       const pairs = data?.fullInteractionTypeGroup ?? [];
       const interactions = [];
@@ -97,7 +95,6 @@ export const rxnorm = {
       cacheSet(cacheKey, interactions, TTL_INTERACTION);
       return interactions;
     } catch (err) {
-      if (err?.name === 'AbortError') throw err;
       return makeFallback('rxnorm', err);
     }
   },

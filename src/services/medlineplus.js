@@ -1,24 +1,10 @@
 import { MEDLINEPLUS_BASE, TTL_DISEASE } from '../utils/constants.js';
 import { queryNormalize } from '../utils/queryNormalize.js';
+import { stripHtml } from '../utils/stripHtml.js';
 import { cacheGet, cacheSet } from './cache.js';
 import { fetchWithRetry } from './retry.js';
 import { makeFallback } from './fallback.js';
 import { dedupFetch } from './requestDedup.js';
-
-function stripHtml(str) {
-  if (!str) return null;
-  return str
-    .replace(/<[^>]*>/g, '')
-    .replace(/&amp;/g, '&')
-    .replace(/&lt;/g, '<')
-    .replace(/&gt;/g, '>')
-    .replace(/&quot;/g, '"')
-    .replace(/&#39;/g, "'")
-    .replace(/&nbsp;/g, ' ')
-    .replace(/[\r\n]+/g, ' ')
-    .replace(/\s{2,}/g, ' ')
-    .trim() || null;
-}
 
 function parseEntry(entry) {
   const title = stripHtml(entry.title?.['_value'] ?? entry.title ?? null);
@@ -47,7 +33,7 @@ export const medlineplus = {
     try {
       const data = await dedupFetch(cacheKey, () =>
         fetchWithRetry(url, { signal })
-      );
+      , signal);
 
       const feed = data?.feed;
       const entries = feed?.entry ?? [];
@@ -56,7 +42,6 @@ export const medlineplus = {
       cacheSet(cacheKey, results, TTL_DISEASE);
       return results;
     } catch (err) {
-      if (err?.name === 'AbortError') throw err;
       return makeFallback('medlineplus', err);
     }
   },
@@ -78,7 +63,7 @@ export const medlineplus = {
     try {
       const data = await dedupFetch(cacheKey, () =>
         fetchWithRetry(url, { signal })
-      );
+      , signal);
 
       const entries = data?.feed?.entry ?? [];
       const entry = entries[0];
@@ -88,7 +73,6 @@ export const medlineplus = {
       cacheSet(cacheKey, result, TTL_DISEASE);
       return result;
     } catch (err) {
-      if (err?.name === 'AbortError') throw err;
       return makeFallback('medlineplus', err);
     }
   },
