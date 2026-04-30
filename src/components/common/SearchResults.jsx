@@ -114,7 +114,7 @@ export default function SearchResults({
           ) : hasDiseases ? (
             <div className="gs-group-items">
               {diseaseList.map((disease, i) => (
-                <DiseaseItem key={disease.id || i} disease={disease} idx={i} />
+                <DiseaseItem key={disease.id != null ? disease.id : i} disease={disease} idx={i} />
               ))}
             </div>
           ) : null}
