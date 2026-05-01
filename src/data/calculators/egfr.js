@@ -3,29 +3,43 @@ export default {
   slug: 'egfr-ckd-epi',
   name: 'eGFR — CKD-EPI (2021)',
   specialty: 'nephrology',
+  version: 'CKD-EPI 2021 (race-neutral)',
   description: 'Estimates glomerular filtration rate using the 2021 race-free CKD-EPI creatinine equation to stage chronic kidney disease.',
   references: [
     'Inker LA, et al. New Creatinine- and Cystatin C–Based Equations to Estimate GFR without Race. N Engl J Med. 2021;385(19):1737–1749.',
     'KDIGO 2012 Clinical Practice Guideline for the Evaluation and Management of Chronic Kidney Disease.',
   ],
   inputs: [
-    { id: 'creatinine', label: 'Serum Creatinine', type: 'number', unit: 'mg/dL', min: 0.1, max: 30 },
-    { id: 'age',        label: 'Age',              type: 'number', unit: 'years', min: 18,  max: 120 },
+    {
+      id: 'creatinineUnit',
+      label: 'Creatinine Unit',
+      type: 'select',
+      default: 0,
+      options: [
+        { value: 0, label: 'mg/dL' },
+        { value: 1, label: 'µmol/L' },
+      ],
+    },
+    { id: 'creatinine', label: 'Serum Creatinine', type: 'number', min: 0.1, max: 2700, required: true },
+    { id: 'age',        label: 'Age',              type: 'number', unit: 'years', min: 18, max: 120, required: true },
     {
       id: 'sex',
       label: 'Biological Sex',
       type: 'select',
+      required: true,
       options: [
         { value: 0, label: 'Male' },
         { value: 1, label: 'Female' },
       ],
     },
   ],
-  calculate({ creatinine, age, sex }) {
+  calculate({ creatinineUnit, creatinine, age, sex }) {
+    const creatMgDl = creatinineUnit === 1 ? creatinine / 88.4 : creatinine;
+    if (creatMgDl < 0.1 || creatMgDl > 30) return null;
     const isFemale = sex === 1;
     const kappa = isFemale ? 0.7 : 0.9;
     const alpha = isFemale ? -0.241 : -0.302;
-    const ratio = creatinine / kappa;
+    const ratio = creatMgDl / kappa;
     const egfr =
       142 *
       Math.pow(Math.min(ratio, 1), alpha) *

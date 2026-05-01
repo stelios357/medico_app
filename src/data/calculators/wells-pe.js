@@ -18,7 +18,17 @@ export default {
     { id: 'malignancy',     label: 'Active malignancy (treatment within 6 months or palliative) (+1 pt)',                       type: 'checkbox' },
   ],
   calculate({ dvt_signs, pe_likely, hr_gt100, immobilisation, prior_dvtpe, haemoptysis, malignancy }) {
-    const score = dvt_signs * 3 + pe_likely * 3 + hr_gt100 * 1.5 + immobilisation * 1.5 + prior_dvtpe * 1.5 + haemoptysis + malignancy;
+    const components = [
+      { label: 'Clinical signs of DVT',           points: dvt_signs * 3 },
+      { label: 'PE most likely diagnosis',         points: pe_likely * 3 },
+      { label: 'Heart rate > 100 bpm',             points: hr_gt100 * 1.5 },
+      { label: 'Immobilisation / recent surgery',  points: immobilisation * 1.5 },
+      { label: 'Previous DVT or PE',               points: prior_dvtpe * 1.5 },
+      { label: 'Haemoptysis',                      points: haemoptysis },
+      { label: 'Active malignancy',                points: malignancy },
+    ];
+    const score = components.reduce((s, c) => s + c.points, 0);
+    const breakdown = components.filter(c => c.points > 0);
     const display = score % 1 === 0 ? score : score.toFixed(1);
     let interpretation, risk;
     if (score < 2) {
@@ -31,6 +41,6 @@ export default {
       interpretation = `Score ${display} — High probability (~66.7%); proceed directly to CT-PA; anticoagulate empirically if delay anticipated`;
       risk = 'high';
     }
-    return { result: display, unit: 'points', interpretation, risk };
+    return { result: display, unit: 'points', interpretation, risk, breakdown };
   },
 };

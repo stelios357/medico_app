@@ -379,6 +379,18 @@
   line-height: 1.4;
 }
 
+/* ── Input error & invalid state ────────────────────────────────────────── */
+.ci-error {
+  font-size: 0.72rem;
+  font-family: var(--mono);
+  color: var(--color-severity-major);
+  margin-top: -0.1rem;
+}
+
+.ci-input--error {
+  border-color: var(--color-severity-major) !important;
+}
+
 /* ── Calculate Button ────────────────────────────────────────────────────── */
 .cp-calc-btn {
   width: 100%;
@@ -461,6 +473,51 @@
   background: rgba(211, 47, 47, 0.1);
   color: var(--color-severity-major);
   border: 1px solid rgba(211, 47, 47, 0.25);
+}
+
+/* ── Version label (eGFR) ────────────────────────────────────────────────── */
+.cr-version {
+  font-size: 0.72rem;
+  font-family: var(--mono);
+  color: var(--teal);
+  margin: 0 0 0.85rem;
+  letter-spacing: 0.02em;
+}
+
+/* ── Score Breakdown ─────────────────────────────────────────────────────── */
+.cr-breakdown {
+  border-top: 1px solid var(--border);
+  padding-top: 0.85rem;
+  margin-top: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.cr-breakdown-list {
+  list-style: none;
+  margin: 0.4rem 0 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.cr-breakdown-item {
+  font-size: 0.8rem;
+  color: var(--text);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.2rem 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.cr-breakdown-item:last-child { border-bottom: none; }
+
+.cr-breakdown-pts {
+  font-family: var(--mono);
+  font-size: 0.75rem;
+  color: var(--teal);
+  font-weight: 600;
 }
 
 .cr-interpretation {

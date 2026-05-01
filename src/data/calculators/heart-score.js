@@ -12,6 +12,7 @@ export default {
       id: 'history',
       label: 'History',
       type: 'select',
+      required: true,
       options: [
         { value: 0, label: '0 — Slightly suspicious (non-specific history)' },
         { value: 1, label: '1 — Moderately suspicious (some typical features)' },
@@ -22,6 +23,7 @@ export default {
       id: 'ecg',
       label: 'ECG',
       type: 'select',
+      required: true,
       options: [
         { value: 0, label: '0 — Normal' },
         { value: 1, label: '1 — Non-specific repolarization disturbance / LBBB / LVH / pacing' },
@@ -32,6 +34,7 @@ export default {
       id: 'age',
       label: 'Age',
       type: 'select',
+      required: true,
       options: [
         { value: 0, label: '0 — < 45 years' },
         { value: 1, label: '1 — 45–64 years' },
@@ -42,6 +45,7 @@ export default {
       id: 'risk_factors',
       label: 'Risk Factors',
       type: 'select',
+      required: true,
       options: [
         { value: 0, label: '0 — No known risk factors' },
         { value: 1, label: '1 — 1–2 risk factors (HTN, hypercholesterolaemia, DM, obesity, smoking, family history)' },
@@ -52,6 +56,7 @@ export default {
       id: 'troponin',
       label: 'Troponin',
       type: 'select',
+      required: true,
       options: [
         { value: 0, label: '0 — ≤ Normal limit' },
         { value: 1, label: '1 — 1–3× normal limit' },
@@ -60,7 +65,14 @@ export default {
     },
   ],
   calculate({ history, ecg, age, risk_factors, troponin }) {
-    const score = history + ecg + age + risk_factors + troponin;
+    const components = [
+      { label: 'History',       points: history },
+      { label: 'ECG',           points: ecg },
+      { label: 'Age',           points: age },
+      { label: 'Risk factors',  points: risk_factors },
+      { label: 'Troponin',      points: troponin },
+    ];
+    const score = components.reduce((s, c) => s + c.points, 0);
     let interpretation, risk;
     if (score <= 3) {
       interpretation = `Score ${score}/10 — Low risk (~1.7% MACE); safe for early discharge with outpatient follow-up`;
@@ -72,6 +84,6 @@ export default {
       interpretation = `Score ${score}/10 — High risk (~65% MACE); early invasive strategy (cardiology consult, consider angiography)`;
       risk = 'high';
     }
-    return { result: score, unit: '/ 10', interpretation, risk };
+    return { result: score, unit: '/ 10', interpretation, risk, breakdown: components };
   },
 };

@@ -9,22 +9,35 @@ export default {
     'Levey AS, et al. A more accurate method to estimate glomerular filtration rate from serum creatinine. Ann Intern Med. 1999;130(6):461–470.',
   ],
   inputs: [
-    { id: 'age',        label: 'Age',              type: 'number', unit: 'years', min: 18,  max: 120 },
-    { id: 'weight',     label: 'Weight',           type: 'number', unit: 'kg',    min: 1,   max: 300 },
-    { id: 'creatinine', label: 'Serum Creatinine', type: 'number', unit: 'mg/dL', min: 0.1, max: 30  },
+    { id: 'age',    label: 'Age',    type: 'number', unit: 'years', min: 18,  max: 120, required: true },
+    { id: 'weight', label: 'Weight', type: 'number', unit: 'kg',    min: 20,  max: 300, required: true },
+    {
+      id: 'creatinineUnit',
+      label: 'Creatinine Unit',
+      type: 'select',
+      default: 0,
+      options: [
+        { value: 0, label: 'mg/dL' },
+        { value: 1, label: 'µmol/L' },
+      ],
+    },
+    { id: 'creatinine', label: 'Serum Creatinine', type: 'number', min: 0.1, max: 2700, required: true },
     {
       id: 'sex',
       label: 'Biological Sex',
       type: 'select',
+      required: true,
       options: [
         { value: 0, label: 'Male' },
         { value: 1, label: 'Female' },
       ],
     },
   ],
-  calculate({ age, weight, creatinine, sex }) {
+  calculate({ age, weight, creatinineUnit, creatinine, sex }) {
+    const creatMgDl = creatinineUnit === 1 ? creatinine / 88.4 : creatinine;
+    if (creatMgDl < 0.1 || creatMgDl > 30) return null;
     const isFemale = sex === 1;
-    const crcl = ((140 - age) * weight) / (72 * creatinine) * (isFemale ? 0.85 : 1);
+    const crcl = ((140 - age) * weight) / (72 * creatMgDl) * (isFemale ? 0.85 : 1);
     const result = Math.round(crcl);
     let interpretation, risk;
     if (crcl >= 90) {

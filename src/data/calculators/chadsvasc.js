@@ -12,21 +12,32 @@ export default {
       id: 'age_cat',
       label: 'Age',
       type: 'select',
+      required: true,
       options: [
         { value: 0, label: '< 65 years (0 pts)' },
         { value: 1, label: '65–74 years (1 pt)' },
         { value: 2, label: '≥ 75 years (2 pts)' },
       ],
     },
-    { id: 'chf',             label: 'Congestive heart failure / LV dysfunction',         type: 'checkbox' },
-    { id: 'hypertension',    label: 'Hypertension (treated or untreated)',                type: 'checkbox' },
-    { id: 'diabetes',        label: 'Diabetes mellitus',                                  type: 'checkbox' },
-    { id: 'stroke_tia',      label: 'Stroke, TIA, or thromboembolism (prior history)',    type: 'checkbox' },
-    { id: 'vascular',        label: 'Vascular disease (prior MI, PAD, or aortic plaque)', type: 'checkbox' },
-    { id: 'female',          label: 'Female sex',                                         type: 'checkbox' },
+    { id: 'chf',          label: 'Congestive heart failure / LV dysfunction',          type: 'checkbox' },
+    { id: 'hypertension', label: 'Hypertension (treated or untreated)',                 type: 'checkbox' },
+    { id: 'diabetes',     label: 'Diabetes mellitus',                                   type: 'checkbox' },
+    { id: 'stroke_tia',   label: 'Stroke, TIA, or thromboembolism (prior history)',     type: 'checkbox' },
+    { id: 'vascular',     label: 'Vascular disease (prior MI, PAD, or aortic plaque)', type: 'checkbox' },
+    { id: 'female',       label: 'Female sex',                                          type: 'checkbox' },
   ],
   calculate({ age_cat, chf, hypertension, diabetes, stroke_tia, vascular, female }) {
-    const score = age_cat + chf + hypertension + diabetes + (stroke_tia * 2) + vascular + female;
+    const components = [
+      { label: 'Age category',                    points: age_cat },
+      { label: 'CHF / LV dysfunction',             points: chf },
+      { label: 'Hypertension',                     points: hypertension },
+      { label: 'Diabetes mellitus',                points: diabetes },
+      { label: 'Stroke / TIA / thromboembolism',   points: stroke_tia * 2 },
+      { label: 'Vascular disease',                 points: vascular },
+      { label: 'Female sex',                       points: female },
+    ];
+    const score = components.reduce((s, c) => s + c.points, 0);
+    const breakdown = components.filter(c => c.points > 0);
     let interpretation, risk;
     if (score === 0) {
       interpretation = 'Low risk — antithrombotic therapy not recommended';
@@ -35,10 +46,9 @@ export default {
       interpretation = 'Low-moderate risk — consider anticoagulation; weigh bleeding risk';
       risk = 'moderate';
     } else {
-      // Annual stroke risk by score: 2→2.2%, 3→3.2%, 4→4.0%, 5→6.7%, 6→9.8%, 7→9.6%, 8→12.5%, 9→15.2%
       interpretation = `High risk (score ${score}) — oral anticoagulation recommended`;
       risk = 'high';
     }
-    return { result: score, unit: 'points', interpretation, risk };
+    return { result: score, unit: 'points', interpretation, risk, breakdown };
   },
 };
