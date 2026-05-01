@@ -6,10 +6,14 @@ import Calculator from './pages/Calculator.jsx';
 import QuickCalcPanel from './components/QuickCalc/QuickCalcPanel.jsx';
 import OnboardingGate from './components/Onboarding/OnboardingGate.jsx';
 
-const Topic      = lazy(() => import('./pages/Topic.jsx'));
-const Saved      = lazy(() => import('./pages/Saved.jsx'));
-const Settings   = lazy(() => import('./pages/Settings.jsx'));
-const DrugDetail = lazy(() => import('./pages/DrugDetail.jsx'));
+const Topic               = lazy(() => import('./pages/Topic.jsx'));
+const Saved               = lazy(() => import('./pages/Saved.jsx'));
+const Settings            = lazy(() => import('./pages/Settings.jsx'));
+const DrugDetail          = lazy(() => import('./pages/DrugDetail.jsx'));
+const InteractionChecker  = lazy(() => import('./pages/InteractionChecker.jsx'));
+const DiseaseDetail       = lazy(() => import('./pages/DiseaseDetail.jsx'));
+const DrugBrowse          = lazy(() => import('./pages/DrugBrowse.jsx'));
+const DiseaseBrowse       = lazy(() => import('./pages/DiseaseBrowse.jsx'));
 
 function PageLoader() {
   return (
@@ -38,6 +42,18 @@ export default function App() {
         } />
         <Route path="/drug/:id" element={
           <Suspense fallback={<PageLoader />}><DrugDetail /></Suspense>
+        } />
+        <Route path="/disease/:id" element={
+          <Suspense fallback={<PageLoader />}><DiseaseDetail /></Suspense>
+        } />
+        <Route path="/interactions" element={
+          <Suspense fallback={<PageLoader />}><InteractionChecker /></Suspense>
+        } />
+        <Route path="/drugs" element={
+          <Suspense fallback={<PageLoader />}><DrugBrowse /></Suspense>
+        } />
+        <Route path="/diseases" element={
+          <Suspense fallback={<PageLoader />}><DiseaseBrowse /></Suspense>
         } />
       </Routes>
       <QuickCalcPanel />

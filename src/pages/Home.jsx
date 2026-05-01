@@ -1,11 +1,20 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
+import { useLocation, useNavigate, Link } from 'react-router-dom'
 import Nav from '../components/Nav.jsx'
 import SearchBar from '../components/common/SearchBar.jsx'
 import SearchResults from '../components/common/SearchResults.jsx'
 import SearchRefinements from '../components/common/SearchRefinements.jsx'
+import RecentSearches from '../components/common/RecentSearches.jsx'
+import RecentlyViewed from '../components/common/RecentlyViewed.jsx'
+import SavedItems from '../components/common/SavedItems.jsx'
 import { useGlobalSearch } from '../hooks/useGlobalSearch'
+import { useRecentSearches } from '../hooks/useRecentSearches'
+import { useRecentlyViewed } from '../hooks/useRecentlyViewed'
+import { useSaved } from '../hooks/useSaved'
 
 export default function Home() {
+  const location = useLocation()
+  const navigate = useNavigate()
   const {
     drugResults,
     diseaseResults,
@@ -17,13 +26,34 @@ export default function Home() {
     rateLimitWarning,
   } = useGlobalSearch()
 
+  const recentSearches = useRecentSearches()
+  const recentlyViewed = useRecentlyViewed()
+  const savedHook = useSaved()
+
   const [query, setQuery] = useState('')
   const [activeFilter, setActiveFilter] = useState(null)
 
-  // Reset active filter when the query changes
   useEffect(() => {
     setActiveFilter(null)
   }, [normalizedQuery])
+
+  const handleSearch = useCallback((raw) => {
+    search(raw)
+    if (raw && raw.trim().length >= 2) {
+      recentSearches.add(raw.trim())
+    }
+  }, [search, recentSearches])
+
+  useEffect(() => {
+    const q = location.state?.relatedDrugSearch
+    if (typeof q !== 'string' || q.trim().length < 2) return
+    const trimmed = q.trim()
+    const base = trimmed.split('(')[0].trim()
+    const cleanQuery = base || trimmed
+    setQuery(cleanQuery)
+    handleSearch(cleanQuery)
+    navigate('.', { replace: true, state: {} })
+  }, [location.state?.relatedDrugSearch, handleSearch, navigate])
 
   const drugList = Array.isArray(drugResults) ? drugResults : []
   const diseaseList = Array.isArray(diseaseResults) ? diseaseResults : []
@@ -31,10 +61,7 @@ export default function Home() {
   const hasDiseases = diseaseList.length > 0
   const bothLoaded = drugResults !== null && diseaseResults !== null
 
-  function handleSuggestion(suggested) {
-    setQuery(suggested)
-    search(suggested)
-  }
+  const showHabitLoop = !hasSearched
 
   return (
     <>
@@ -43,19 +70,38 @@ export default function Home() {
         <header className="gs-home-header">
           <h1 className="gs-home-title">Clinical Reference</h1>
           <p className="gs-home-subtitle">Search drugs, conditions, and interactions</p>
+          <div className="gs-home-browse-row">
+            <Link to="/drugs">Browse all medications</Link>
+            <span className="gs-home-browse-sep" aria-hidden>·</span>
+            <Link to="/diseases">Browse all conditions</Link>
+          </div>
         </header>
 
         <div className="gs-search-wrap">
           <SearchBar
             value={query}
             onValueChange={setQuery}
-            onSearch={search}
+            onSearch={handleSearch}
             directHit={directHit}
           />
           {rateLimitWarning && (
             <p className="gs-rate-warning">Data may be slightly delayed</p>
           )}
         </div>
+
+        {showHabitLoop && (
+          <div className="hl-section">
+            <RecentSearches
+              searches={recentSearches.searches}
+              onSearch={(q) => {
+                setQuery(q)
+                handleSearch(q)
+              }}
+            />
+            <RecentlyViewed items={recentlyViewed.items} />
+            <SavedItems saved={savedHook.saved} />
+          </div>
+        )}
 
         <SearchResults
           drugResults={drugResults}
@@ -64,7 +110,7 @@ export default function Home() {
           normalizedQuery={normalizedQuery}
           hasSearched={hasSearched}
           activeFilter={activeFilter}
-          onSearch={handleSuggestion}
+          onSearch={handleSearch}
         />
 
         {bothLoaded && (hasDrugs || hasDiseases) && (

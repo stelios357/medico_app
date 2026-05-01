@@ -18,7 +18,7 @@ export default function SearchBar({ value, onValueChange, onSearch, directHit })
     if (e.key === 'Enter' && directHit) {
       const route = directHit.type === 'drug'
         ? `/drug/${directHit.id}`
-        : `/disease/${directHit.id}`
+        : `/disease/${encodeURIComponent(String(directHit.id ?? ''))}`
       navigate(route)
     }
   }, [directHit, navigate])

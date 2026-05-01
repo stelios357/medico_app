@@ -5,13 +5,20 @@ import ClinicalDisclaimer from '../components/common/ClinicalDisclaimer.jsx'
 import DrugHighlights from '../components/drugs/DrugHighlights.jsx'
 import DrugAccordion from '../components/drugs/DrugAccordion.jsx'
 import DrugSkeleton from '../components/drugs/DrugSkeleton.jsx'
+import InteractionPanel from '../components/drugs/InteractionPanel.jsx'
 import { openFDA } from '../services/openFDA.js'
 import { isFallback } from '../services/fallback.js'
+import { useRecentlyViewed } from '../hooks/useRecentlyViewed.js'
+import { useSaved } from '../hooks/useSaved.js'
 
 export default function DrugDetail() {
   const { id } = useParams()
   const [drug, setDrug] = useState(null)
   const [error, setError] = useState(null)
+  const [panelOpen, setPanelOpen] = useState(false)
+
+  const recentlyViewed = useRecentlyViewed()
+  const { toggle, isItemSaved } = useSaved()
 
   useEffect(() => {
     window.scrollTo(0, 0)
@@ -38,11 +45,39 @@ export default function DrugDetail() {
     return () => controller.abort()
   }, [id])
 
+  // Track recently viewed once the drug data loads
+  useEffect(() => {
+    if (!drug) return
+    recentlyViewed.add({
+      name: drug.brandName || drug.genericName || 'Unknown Drug',
+      route: `/drug/${id}`,
+      type: 'drug',
+    })
+  // recentlyViewed.add is stable (no deps change), intentionally omit recentlyViewed
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [drug, id])
+
+  const saved = drug ? isItemSaved(drug.id) : false
+
+  function handleSave() {
+    if (!drug) return
+    toggle({
+      id: drug.id,
+      name: drug.brandName || drug.genericName || 'Unknown Drug',
+      type: 'drug',
+      route: `/drug/${id}`,
+    })
+  }
+
   return (
     <>
       <Nav />
       <main className="dd-page">
-        <ClinicalDisclaimer />
+        <ClinicalDisclaimer
+          className="dd-disclaimer-wrap"
+          textClassName="dd-disclaimer-text"
+          iconClassName="dd-disclaimer-icon"
+        />
 
         {drug === null && error === null && <DrugSkeleton />}
 
@@ -63,28 +98,34 @@ export default function DrugDetail() {
 
             <div className="dd-actions">
               <button
-                className="dd-btn dd-btn-interaction"
+                className={`dd-btn dd-btn-interaction${panelOpen ? ' dd-btn-interaction--active' : ''}`}
                 type="button"
-                aria-disabled="true"
-                title="Coming soon"
-                onClick={e => e.preventDefault()}
+                onClick={() => setPanelOpen(o => !o)}
+                aria-expanded={panelOpen}
+                aria-controls="dd-interaction-panel"
               >
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
-                Check Interactions
-                <span className="dd-btn-soon" aria-hidden="true">Coming soon</span>
+                {panelOpen ? 'Hide Interactions' : 'Check Interactions'}
               </button>
               <button
-                className="dd-btn dd-btn-save"
+                className={`dd-btn dd-btn-save${saved ? ' dd-btn-save--saved' : ''}`}
                 type="button"
-                aria-disabled="true"
-                title="Coming soon"
-                onClick={e => e.preventDefault()}
+                onClick={handleSave}
+                aria-pressed={saved}
               >
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M19 21l-7-5-7 5V5a2 2 0 012-2h10a2 2 0 012 2z"/></svg>
-                Save
-                <span className="dd-btn-soon" aria-hidden="true">Coming soon</span>
+                {saved ? 'Saved' : 'Save'}
               </button>
             </div>
+
+            {panelOpen && (
+              <div id="dd-interaction-panel">
+                <InteractionPanel
+                  drugName={drug.genericName || drug.brandName}
+                  onClose={() => setPanelOpen(false)}
+                />
+              </div>
+            )}
 
             <DrugAccordion drug={drug} />
           </div>

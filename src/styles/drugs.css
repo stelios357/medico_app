@@ -161,6 +161,10 @@
   box-shadow: 0 1px 6px rgba(211,47,47,0.12);
 }
 
+.dd-btn-interaction--active {
+  background: rgba(211,47,47,0.09);
+}
+
 .dd-btn-save {
   border-color: var(--color-drug-accent);
   color: var(--color-drug-accent);
@@ -169,6 +173,12 @@
 .dd-btn-save:hover {
   background: rgba(21,101,192,0.07);
   box-shadow: 0 1px 6px rgba(21,101,192,0.12);
+}
+
+.dd-btn-save--saved {
+  background: rgba(21,101,192,0.10);
+  border-color: var(--color-drug-accent);
+  color: var(--color-drug-accent);
 }
 
 /* ── Accordion ───────────────────────────────────────────────────────────── */
