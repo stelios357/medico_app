@@ -153,7 +153,7 @@ export default function Home() {
               Clinical Reference · For Residents
             </div>
             <h1 className="hm-hero-title">
-              medico<span className="hm-hero-accent">.</span>
+              PauseMD<span className="hm-hero-accent">.</span>
             </h1>
             <p className="hm-hero-tagline">Search. Calculate. Reference.</p>
 
