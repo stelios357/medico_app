@@ -35,7 +35,7 @@ function buildBrowseSearchQuery(drugClass, rxFilter) {
   } else if (rxFilter === 'otc') {
     clauses.push('openfda.product_type:"HUMAN OTC DRUG"')
   }
-  return clauses.join('+AND+')
+  return clauses.join(' AND ')
 }
 
 export const openFDA = {
