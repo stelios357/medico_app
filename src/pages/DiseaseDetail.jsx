@@ -45,7 +45,7 @@ export default function DiseaseDetail() {
       }
       const data = result
       if (!data || !data.title) {
-        setError(true)
+        setError('No condition data found.')
         return
       }
       setDisease(data)

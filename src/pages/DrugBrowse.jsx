@@ -17,6 +17,7 @@ export default function DrugBrowse() {
   const [classOptions, setClassOptions] = useState([])
   const [payload, setPayload] = useState(null)
   const [error, setError] = useState(null)
+  const [rateLimitWarning, setRateLimitWarning] = useState(false)
 
   useEffect(() => {
     const ac = new AbortController()
@@ -44,6 +45,7 @@ export default function DrugBrowse() {
           setError(res.message || 'Unable to load medications.')
           return
         }
+        setRateLimitWarning(openFDA.rateLimitWarning)
         setPayload(res)
       })
       .catch(() => {
@@ -103,7 +105,7 @@ export default function DrugBrowse() {
           </label>
         </div>
 
-        {openFDA.rateLimitWarning && (
+        {rateLimitWarning && (
           <p className="browse-notice">Data may be slightly delayed.</p>
         )}
 
