@@ -1,7 +1,12 @@
 export const OPENFDA_BASE = 'https://api.fda.gov';
 export const RXNORM_BASE = 'https://rxnav.nlm.nih.gov/REST';
-/** Full-text search over English health topics (plain language). */
-export const MEDLINEPLUS_WSEARCH = 'https://wsearch.nlm.nih.gov/ws/query';
+/** Full-text search over English health topics (plain language).
+ *  wsearch.nlm.nih.gov has no CORS headers — dev traffic is proxied via Vite.
+ *  Production deployments must proxy /api/medlineplus-wsearch → wsearch.nlm.nih.gov/ws/query.
+ */
+export const MEDLINEPLUS_WSEARCH = import.meta.env.DEV
+  ? '/api/medlineplus-wsearch'
+  : 'https://wsearch.nlm.nih.gov/ws/query';
 
 export const TTL_DRUG = 5 * 60 * 1000;       // 5 minutes
 export const TTL_DISEASE = 5 * 60 * 1000;    // 5 minutes
