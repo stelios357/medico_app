@@ -16,6 +16,8 @@ const DrugBrowse          = lazy(() => import('./pages/DrugBrowse.jsx'));
 const DiseaseBrowse       = lazy(() => import('./pages/DiseaseBrowse.jsx'));
 const Procedures          = lazy(() => import('./pages/Procedures.jsx'));
 const ProcedureDetail     = lazy(() => import('./pages/ProcedureDetail.jsx'));
+const Calculators         = lazy(() => import('./pages/Calculators.jsx'));
+const ClinicalCalculator  = lazy(() => import('./pages/ClinicalCalculator.jsx'));
 
 function PageLoader() {
   return (
@@ -68,6 +70,12 @@ export default function App() {
         } />
         <Route path="/procedure/:slug" element={
           <Suspense fallback={<PageLoader />}><ProcedureDetail /></Suspense>
+        } />
+        <Route path="/calculators" element={
+          <Suspense fallback={<PageLoader />}><Calculators /></Suspense>
+        } />
+        <Route path="/calculator/:slug" element={
+          <Suspense fallback={<PageLoader />}><ClinicalCalculator /></Suspense>
         } />
       </Routes>
       <QuickCalcPanel />
