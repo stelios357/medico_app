@@ -24,3 +24,23 @@ export function matchScore(query, name) {
   )
   return hasOverlap ? 1 : 0
 }
+
+/**
+ * Drug-aware scoring so a query like "metformin" counts as exact against
+ * "METFORMIN HYDROCHLORIDE" / brand+generic combinations (Session 7).
+ */
+export function matchDrugScore(query, drug) {
+  if (!query || !drug) return 0
+  const norm = query.toLowerCase().trim()
+  if (!norm) return 0
+
+  const names = [drug.brandName, drug.genericName].filter(Boolean).map(s => s.toLowerCase().trim())
+  for (const n of names) {
+    if (n === norm) return 3
+    const first = n.split(/[\s,/]+/)[0]
+    if (first === norm) return 3
+  }
+
+  const primary = drug.brandName || drug.genericName || ''
+  return matchScore(norm, primary)
+}

@@ -2,13 +2,20 @@ import { useState, useRef, useCallback, useEffect, useMemo } from 'react'
 import { openFDA } from '../services/openFDA'
 import { medlineplus } from '../services/medlineplus'
 import { queryNormalize } from '../utils/queryNormalize'
-import { matchScore } from '../utils/matchScore'
+import { matchScore, matchDrugScore } from '../utils/matchScore'
 
 function getResultName(result) {
   return result.brandName || result.genericName || result.title || ''
 }
 
-function scoreAndSort(results, normalizedQuery) {
+function scoreAndSortDrugs(results, normalizedQuery) {
+  if (!Array.isArray(results)) return []
+  return results
+    .map(r => ({ ...r, _score: matchDrugScore(normalizedQuery, r) }))
+    .sort((a, b) => b._score - a._score)
+}
+
+function scoreAndSortDiseases(results, normalizedQuery) {
   if (!Array.isArray(results)) return []
   return results
     .map(r => ({ ...r, _score: matchScore(normalizedQuery, getResultName(r)) }))
@@ -80,7 +87,7 @@ export function useGlobalSearch() {
           if (!retried?.error) results = retried
         }
 
-        setDrugResults(scoreAndSort(results?.error ? [] : results, norm))
+        setDrugResults(scoreAndSortDrugs(results?.error ? [] : results, norm))
       } catch (err) {
         if (err?.name === 'AbortError') return
         if (queryIdRef.current !== currentId) return
@@ -103,7 +110,7 @@ export function useGlobalSearch() {
           if (!retried?.error) results = retried
         }
 
-        setDiseaseResults(scoreAndSort(results?.error ? [] : results, norm))
+        setDiseaseResults(scoreAndSortDiseases(results?.error ? [] : results, norm))
       } catch (err) {
         if (err?.name === 'AbortError') return
         if (queryIdRef.current !== currentId) return

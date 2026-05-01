@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from 'react'
-import { useLocation, useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate, Link } from 'react-router-dom'
 import Nav from '../components/Nav.jsx'
 import SearchBar from '../components/common/SearchBar.jsx'
 import SearchResults from '../components/common/SearchResults.jsx'
@@ -70,6 +70,11 @@ export default function Home() {
         <header className="gs-home-header">
           <h1 className="gs-home-title">Clinical Reference</h1>
           <p className="gs-home-subtitle">Search drugs, conditions, and interactions</p>
+          <div className="gs-home-browse-row">
+            <Link to="/drugs">Browse all medications</Link>
+            <span className="gs-home-browse-sep" aria-hidden>·</span>
+            <Link to="/diseases">Browse all conditions</Link>
+          </div>
         </header>
 
         <div className="gs-search-wrap">
