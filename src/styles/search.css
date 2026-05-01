@@ -7,6 +7,199 @@
   align-items: center;
 }
 
+/* ── Hero ────────────────────────────────────────────────────────────────── */
+.hm-hero {
+  position: relative;
+  width: 100%;
+  text-align: center;
+  padding: 4rem 1.5rem 2rem;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.hm-hero::after {
+  content: '';
+  position: absolute;
+  top: 55%; left: 50%;
+  transform: translate(-50%, -50%);
+  width: 680px; height: 400px;
+  background: radial-gradient(ellipse, rgba(10,158,136,0.11) 0%, transparent 70%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.hm-hero .ecg-bg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0.13;
+}
+
+.hm-hero-inner {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+
+.hm-hero .hero-badge {
+  margin-bottom: 1.25rem;
+}
+
+.hm-hero-title {
+  font-family: var(--serif);
+  font-size: clamp(3.2rem, 8vw, 5.5rem);
+  color: var(--text);
+  letter-spacing: -0.03em;
+  line-height: 1;
+  margin-bottom: 0.55rem;
+  opacity: 0;
+  animation: fadeUp 0.7s ease forwards 0.4s;
+}
+
+.hm-hero-accent { color: var(--teal); }
+
+.hm-hero-tagline {
+  font-family: var(--mono);
+  font-size: 0.78rem;
+  color: var(--muted);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  margin-bottom: 2rem;
+  opacity: 0;
+  animation: fadeUp 0.7s ease forwards 0.55s;
+}
+
+.hm-search-wrap {
+  max-width: 640px !important;
+  width: 100%;
+  padding: 0 !important;
+  opacity: 0;
+  animation: fadeUp 0.7s ease forwards 0.7s;
+}
+
+/* ── Feature cards ───────────────────────────────────────────────────────── */
+.hm-features {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0.65rem;
+  width: 100%;
+  max-width: 680px;
+  padding: 1.25rem 1.5rem 0.25rem;
+  opacity: 0;
+  animation: fadeUp 0.6s ease forwards 0.85s;
+}
+
+.hm-feat {
+  background: var(--bg2);
+  border: 1.5px solid var(--border);
+  border-radius: 14px;
+  padding: 1.1rem 0.9rem 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.45rem;
+  text-decoration: none;
+  color: inherit;
+  transition: border-color 0.18s, transform 0.18s, box-shadow 0.18s;
+  cursor: pointer;
+}
+
+.hm-feat:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+}
+
+.hm-feat-icon {
+  width: 46px; height: 46px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.18s, border-color 0.18s;
+  border: 1px solid transparent;
+}
+
+.hm-feat-title {
+  font-family: var(--sans);
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--text);
+  text-align: center;
+}
+
+.hm-feat-stat {
+  font-family: var(--mono);
+  font-size: 0.62rem;
+  color: var(--muted);
+  letter-spacing: 0.04em;
+  text-align: center;
+}
+
+/* Drug — blue */
+.hm-feat--drug .hm-feat-icon {
+  background: rgba(21,101,192,0.09);
+  color: var(--color-drug-accent);
+}
+.hm-feat--drug:hover {
+  border-color: rgba(21,101,192,0.30);
+}
+.hm-feat--drug:hover .hm-feat-icon {
+  background: rgba(21,101,192,0.15);
+}
+
+/* Disease — purple */
+.hm-feat--disease .hm-feat-icon {
+  background: rgba(106,27,154,0.09);
+  color: var(--color-disease-accent);
+}
+.hm-feat--disease:hover {
+  border-color: rgba(106,27,154,0.28);
+}
+.hm-feat--disease:hover .hm-feat-icon {
+  background: rgba(106,27,154,0.15);
+}
+
+/* Interaction — amber */
+.hm-feat--interaction .hm-feat-icon {
+  background: rgba(232,144,10,0.10);
+  color: var(--amber);
+}
+.hm-feat--interaction:hover {
+  border-color: rgba(232,144,10,0.30);
+}
+.hm-feat--interaction:hover .hm-feat-icon {
+  background: rgba(232,144,10,0.18);
+}
+
+/* Calculator — teal */
+.hm-feat--calc .hm-feat-icon {
+  background: var(--teal-dim);
+  color: var(--teal);
+}
+.hm-feat--calc:hover {
+  border-color: var(--teal-mid);
+}
+.hm-feat--calc:hover .hm-feat-icon {
+  background: rgba(10,158,136,0.18);
+}
+
+@media (max-width: 540px) {
+  .hm-hero { padding: 3rem 1.25rem 1.75rem; }
+  .hm-hero-title { font-size: clamp(2.6rem, 11vw, 3.6rem); }
+  .hm-features {
+    grid-template-columns: repeat(2, 1fr);
+    padding: 1rem 1.25rem 0.25rem;
+  }
+  .hm-feat { padding: 1rem 0.75rem; }
+  .hm-feat-icon { width: 40px; height: 40px; }
+}
+
 .gs-home-header {
   text-align: center;
   padding: 3rem 1.5rem 1.25rem;
