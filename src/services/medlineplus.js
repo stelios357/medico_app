@@ -248,10 +248,12 @@ export const medlineplus = {
     const queries = BROWSE_QUERIES_BY_SPECIALTY[key];
     const label = SPECIALTY_LABELS[key];
 
+    const allRows = await Promise.all(queries.map(q => this.search(q, signal)));
+
+    if (signal?.aborted) return [];
+
     const merged = new Map();
-    for (const q of queries) {
-      const rows = await this.search(q, signal);
-      if (signal?.aborted) break;
+    for (const rows of allRows) {
       if (isFallback(rows)) return rows;
       if (!Array.isArray(rows)) continue;
       for (const row of rows) {
