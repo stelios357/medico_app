@@ -1,4 +1,5 @@
 import { useState, useEffect, useCallback } from 'react'
+import { useLocation, useNavigate, Link } from 'react-router-dom'
 import Nav from '../components/Nav.jsx'
 import SearchBar from '../components/common/SearchBar.jsx'
 import SearchResults from '../components/common/SearchResults.jsx'
@@ -12,6 +13,8 @@ import { useRecentlyViewed } from '../hooks/useRecentlyViewed'
 import { useSaved } from '../hooks/useSaved'
 
 export default function Home() {
+  const location = useLocation()
+  const navigate = useNavigate()
   const {
     drugResults,
     diseaseResults,
@@ -41,6 +44,17 @@ export default function Home() {
     }
   }, [search, recentSearches])
 
+  useEffect(() => {
+    const q = location.state?.relatedDrugSearch
+    if (typeof q !== 'string' || q.trim().length < 2) return
+    const trimmed = q.trim()
+    const base = trimmed.split('(')[0].trim()
+    const cleanQuery = base || trimmed
+    setQuery(cleanQuery)
+    handleSearch(cleanQuery)
+    navigate('.', { replace: true, state: {} })
+  }, [location.state?.relatedDrugSearch, handleSearch, navigate])
+
   const drugList = Array.isArray(drugResults) ? drugResults : []
   const diseaseList = Array.isArray(diseaseResults) ? diseaseResults : []
   const hasDrugs = drugList.length > 0
@@ -56,6 +70,11 @@ export default function Home() {
         <header className="gs-home-header">
           <h1 className="gs-home-title">Clinical Reference</h1>
           <p className="gs-home-subtitle">Search drugs, conditions, and interactions</p>
+          <div className="gs-home-browse-row">
+            <Link to="/drugs">Browse all medications</Link>
+            <span className="gs-home-browse-sep" aria-hidden>·</span>
+            <Link to="/diseases">Browse all conditions</Link>
+          </div>
         </header>
 
         <div className="gs-search-wrap">

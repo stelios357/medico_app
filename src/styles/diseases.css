@@ -1,0 +1,334 @@
+/* ── Disease Detail Page ─────────────────────────────────────────────────── */
+.dis-page {
+  min-height: 100vh;
+  padding-top: 72px;
+  background: var(--bg);
+}
+
+.dis-disclaimer-wrap {
+  position: sticky;
+  top: 72px;
+  z-index: 50;
+  background: var(--color-disclaimer-bg);
+  border-bottom: 2px solid var(--color-disclaimer-border);
+  padding: 0.55rem 2.5rem;
+}
+
+.dis-disclaimer-text {
+  max-width: 860px;
+  margin: 0 auto;
+  font-size: 0.8rem;
+  color: #7a5c00;
+  font-family: var(--mono);
+  letter-spacing: 0.02em;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.dis-disclaimer-icon {
+  flex-shrink: 0;
+  width: 14px;
+  height: 14px;
+  color: #f9a825;
+}
+
+.dis-container {
+  max-width: 860px;
+  margin: 0 auto;
+  padding: 2rem 2.5rem 4rem;
+}
+
+/* Highlights */
+.dis-highlights {
+  margin-bottom: 1.75rem;
+}
+
+.dis-heading {
+  font-family: var(--serif);
+  font-size: clamp(1.6rem, 3.5vw, 2.2rem);
+  color: var(--text);
+  line-height: 1.15;
+  letter-spacing: -0.01em;
+  margin-bottom: 0.85rem;
+}
+
+.dis-summary {
+  font-size: 0.92rem;
+  color: var(--muted);
+  line-height: 1.55;
+  padding: 0.75rem 1rem;
+  background: var(--bg3);
+  border-radius: 8px;
+  border-left: 3px solid var(--color-disease-accent);
+  margin-bottom: 0.85rem;
+}
+
+.dis-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.18rem 0.52rem;
+  border-radius: 5px;
+  font-size: 0.7rem;
+  font-weight: 700;
+  font-family: var(--mono);
+  letter-spacing: 0.04em;
+}
+
+.dis-badge-specialty {
+  background: rgba(106, 27, 154, 0.10);
+  color: var(--color-disease-accent);
+}
+
+/* Actions */
+.dis-actions {
+  display: flex;
+  gap: 0.75rem;
+  margin-bottom: 1.75rem;
+  flex-wrap: wrap;
+}
+
+.dis-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.55rem 1.1rem;
+  border-radius: 8px;
+  border: 1.5px solid;
+  font-size: 0.875rem;
+  font-family: var(--sans);
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s, box-shadow 0.15s;
+  background: transparent;
+}
+
+.dis-btn-related {
+  border-color: var(--color-disease-accent);
+  color: var(--color-disease-accent);
+}
+
+.dis-btn-related:hover {
+  background: rgba(106, 27, 154, 0.07);
+  box-shadow: 0 1px 6px rgba(106, 27, 154, 0.12);
+}
+
+.dis-btn-save {
+  border-color: var(--color-drug-accent);
+  color: var(--color-drug-accent);
+}
+
+.dis-btn-save:hover {
+  background: rgba(21, 101, 192, 0.07);
+  box-shadow: 0 1px 6px rgba(21, 101, 192, 0.12);
+}
+
+.dis-btn-save--saved {
+  background: rgba(21, 101, 192, 0.10);
+  border-color: var(--color-drug-accent);
+  color: var(--color-drug-accent);
+}
+
+/* Accordion */
+.dis-accordion {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-bottom: 2rem;
+}
+
+.dis-accordion-item {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  overflow: hidden;
+  transition: border-color 0.15s;
+}
+
+.dis-accordion-item:hover {
+  border-color: rgba(106, 27, 154, 0.22);
+}
+
+.dis-accordion-trigger {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.9rem 1.1rem;
+  background: none;
+  border: none;
+  cursor: pointer;
+  text-align: left;
+  font-family: var(--sans);
+  color: var(--text);
+}
+
+.dis-accordion-trigger:focus-visible {
+  outline: 2px solid var(--color-disease-accent);
+  outline-offset: -2px;
+}
+
+.dis-accordion-label {
+  font-size: 0.92rem;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.dis-accordion-chevron {
+  width: 16px;
+  height: 16px;
+  color: var(--muted);
+  flex-shrink: 0;
+  transition: transform 0.2s ease;
+}
+
+.dis-accordion-chevron.open {
+  transform: rotate(180deg);
+}
+
+.dis-accordion-body {
+  padding: 0 1.1rem 1rem;
+  border-top: 1px solid var(--border);
+  font-size: 0.875rem;
+  color: var(--text);
+  line-height: 1.7;
+}
+
+.dis-accordion-para {
+  margin-top: 0.65rem;
+}
+
+.dis-accordion-para:first-child {
+  margin-top: 0.75rem;
+}
+
+/* External link */
+.dis-external-wrap {
+  margin: 0;
+  padding-top: 0.5rem;
+}
+
+.dis-external-link {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--color-disease-accent);
+  text-decoration: none;
+}
+
+.dis-external-link:hover {
+  text-decoration: underline;
+}
+
+/* Skeleton */
+.dis-skeleton {
+  max-width: 860px;
+  margin: 0 auto;
+  padding: 2rem 2.5rem;
+}
+
+.dis-skeleton-block {
+  border-radius: 8px;
+  background: linear-gradient(
+    90deg,
+    var(--subtle) 25%,
+    rgba(226, 234, 244, 0.4) 50%,
+    var(--subtle) 75%
+  );
+  background-size: 200% 100%;
+  animation: dis-shimmer 1.4s infinite;
+}
+
+.dis-skeleton-title {
+  height: 38px;
+  width: 55%;
+  margin-bottom: 0.6rem;
+  border-radius: 6px;
+}
+
+.dis-skeleton-badge {
+  height: 22px;
+  width: 28%;
+  margin-bottom: 1rem;
+}
+
+.dis-skeleton-summary {
+  height: 56px;
+  width: 100%;
+  margin-bottom: 1.5rem;
+  border-radius: 8px;
+}
+
+.dis-skeleton-actions {
+  height: 36px;
+  width: 42%;
+  margin-bottom: 1.75rem;
+}
+
+.dis-skeleton-row {
+  height: 50px;
+  width: 100%;
+  margin-bottom: 0.5rem;
+  border-radius: 10px;
+}
+
+@keyframes dis-shimmer {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+/* Error */
+.dis-error {
+  max-width: 860px;
+  margin: 0 auto;
+  padding: 3rem 2.5rem;
+  text-align: center;
+}
+
+.dis-error-title {
+  font-family: var(--serif);
+  font-size: 1.3rem;
+  color: var(--text);
+  margin-bottom: 0.5rem;
+}
+
+.dis-error-msg {
+  font-size: 0.9rem;
+  color: var(--muted);
+  margin-bottom: 1.25rem;
+}
+
+.dis-back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--color-disease-accent);
+  text-decoration: none;
+}
+
+.dis-back-link:hover {
+  text-decoration: underline;
+}
+
+@media (max-width: 768px) {
+  .dis-disclaimer-wrap {
+    padding: 0.5rem 1rem;
+  }
+  .dis-container {
+    padding: 1.25rem 1rem 3rem;
+  }
+  .dis-skeleton {
+    padding: 1.25rem 1rem;
+  }
+  .dis-error {
+    padding: 2rem 1rem;
+  }
+  .dis-heading {
+    font-size: 1.6rem;
+  }
+}

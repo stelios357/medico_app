@@ -113,7 +113,7 @@ export default function InteractionForm({ initialDrug, onResults, onLoading }) {
     const result = await checkDrugInteractions(chips)
     setIsChecking(false)
     onLoading?.(false)
-    onResults(result, chips)
+    onResults(result)
   }
 
   const hintText = chips.length === 0
