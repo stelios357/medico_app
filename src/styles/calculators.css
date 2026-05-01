@@ -611,3 +611,128 @@
     padding: 1.1rem;
   }
 }
+
+/* ── Drug Suggestions ────────────────────────────────────────────────────── */
+.cd-suggestions {
+  margin-top: 1.5rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid var(--border);
+}
+
+.cd-loading {
+  font-size: 0.8rem;
+  color: var(--muted);
+  font-family: var(--mono);
+  margin: 0.5rem 0 0;
+}
+
+.cd-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+}
+
+.cd-chip {
+  display: inline-flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  padding: 0.45rem 0.75rem;
+  background: var(--teal-dim);
+  border: 1px solid var(--teal-mid);
+  border-radius: 8px;
+  text-decoration: none;
+  color: inherit;
+  transition: background 0.15s, border-color 0.15s;
+}
+
+.cd-chip.clickable {
+  cursor: pointer;
+}
+
+.cd-chip:hover {
+  background: color-mix(in srgb, var(--teal) 18%, transparent);
+  border-color: var(--teal);
+}
+
+.cd-chip-name {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.cd-chip-sub {
+  font-size: 0.72rem;
+  color: var(--muted);
+}
+
+.cd-chip-badge {
+  font-size: 0.65rem;
+  font-family: var(--mono);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--teal);
+}
+
+/* ── Print Disclaimer ────────────────────────────────────────────────────── */
+.calc-print-disclaimer {
+  font-size: 0.72rem;
+  color: var(--muted);
+  font-family: var(--mono);
+  margin-top: 1.25rem;
+  padding-top: 0.75rem;
+  border-top: 1px solid var(--border);
+}
+
+/* ── Print ───────────────────────────────────────────────────────────────── */
+@media print {
+  nav,
+  .qc-fab,
+  .cp-back-link,
+  .cp-form,
+  .cp-calc-btn,
+  .cp-container > p {
+    display: none !important;
+  }
+
+  body {
+    background: #fff !important;
+  }
+
+  .cp-page {
+    padding-top: 0 !important;
+    background: #fff !important;
+  }
+
+  .cp-container {
+    padding: 1rem !important;
+    max-width: 100% !important;
+  }
+
+  .cp-header {
+    margin-bottom: 1rem;
+  }
+
+  .calc-print-disclaimer {
+    display: block !important;
+    color: #555 !important;
+    font-size: 0.75rem;
+  }
+
+  .cr-card {
+    box-shadow: none !important;
+    border: 1px solid #ccc !important;
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+
+  .cd-suggestions {
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+
+  .cr-references {
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+}
