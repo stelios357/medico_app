@@ -1,11 +1,11 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { lazy, Suspense } from 'react';
-import Landing from './pages/Landing.jsx';
-import Home from './pages/Home.jsx';
-import Calculator from './pages/Calculator.jsx';
 import QuickCalcPanel from './components/QuickCalc/QuickCalcPanel.jsx';
 import OnboardingGate from './components/Onboarding/OnboardingGate.jsx';
 
+const Landing             = lazy(() => import('./pages/Landing.jsx'));
+const Home                = lazy(() => import('./pages/Home.jsx'));
+const Calculator          = lazy(() => import('./pages/Calculator.jsx'));
 const Topic               = lazy(() => import('./pages/Topic.jsx'));
 const Saved               = lazy(() => import('./pages/Saved.jsx'));
 const Settings            = lazy(() => import('./pages/Settings.jsx'));
@@ -14,6 +14,8 @@ const InteractionChecker  = lazy(() => import('./pages/InteractionChecker.jsx'))
 const DiseaseDetail       = lazy(() => import('./pages/DiseaseDetail.jsx'));
 const DrugBrowse          = lazy(() => import('./pages/DrugBrowse.jsx'));
 const DiseaseBrowse       = lazy(() => import('./pages/DiseaseBrowse.jsx'));
+const Procedures          = lazy(() => import('./pages/Procedures.jsx'));
+const ProcedureDetail     = lazy(() => import('./pages/ProcedureDetail.jsx'));
 
 function PageLoader() {
   return (
@@ -28,9 +30,15 @@ export default function App() {
     <BrowserRouter>
       <OnboardingGate />
       <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/landing" element={<Landing />} />
-        <Route path="/calc" element={<Calculator />} />
+        <Route path="/" element={
+          <Suspense fallback={<PageLoader />}><Home /></Suspense>
+        } />
+        <Route path="/landing" element={
+          <Suspense fallback={<PageLoader />}><Landing /></Suspense>
+        } />
+        <Route path="/calc" element={
+          <Suspense fallback={<PageLoader />}><Calculator /></Suspense>
+        } />
         <Route path="/topic/:slug" element={
           <Suspense fallback={<PageLoader />}><Topic /></Suspense>
         } />
@@ -54,6 +62,12 @@ export default function App() {
         } />
         <Route path="/diseases" element={
           <Suspense fallback={<PageLoader />}><DiseaseBrowse /></Suspense>
+        } />
+        <Route path="/procedures" element={
+          <Suspense fallback={<PageLoader />}><Procedures /></Suspense>
+        } />
+        <Route path="/procedure/:slug" element={
+          <Suspense fallback={<PageLoader />}><ProcedureDetail /></Suspense>
         } />
       </Routes>
       <QuickCalcPanel />

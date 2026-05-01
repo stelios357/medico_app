@@ -252,9 +252,15 @@ export const medlineplus = {
 
     if (signal?.aborted) return [];
 
+    // If every single search failed, surface the first error.
+    // Partial failures (some queries fail, some succeed) are silently skipped
+    // so a single flaky request can't blank the whole browse page.
+    const firstFallback = allRows.find(r => isFallback(r));
+    if (firstFallback && allRows.every(r => isFallback(r))) return firstFallback;
+
     const merged = new Map();
     for (const rows of allRows) {
-      if (isFallback(rows)) return rows;
+      if (isFallback(rows)) continue;
       if (!Array.isArray(rows)) continue;
       for (const row of rows) {
         const mapKey = row.id != null ? String(row.id) : row.title;

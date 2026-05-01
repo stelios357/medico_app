@@ -176,6 +176,14 @@ export const openFDA = {
       this.rateLimitWarning = false;
       return payload;
     } catch (err) {
+      if (signal?.aborted) return makeFallback('openFDA', err);
+      // OpenFDA returns 404 when no labels match the filter combination.
+      // Treat as empty results rather than a hard error.
+      if (err?.message?.includes('HTTP 404')) {
+        const empty = { results: [], total: 0 };
+        cacheSet(cacheKey, empty, TTL_DRUG);
+        return empty;
+      }
       return makeFallback('openFDA', err);
     }
   },
