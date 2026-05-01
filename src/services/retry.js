@@ -62,7 +62,12 @@ export async function fetchWithRetry(url, options = {}) {
       if (!res.ok) {
         throw new Error(`HTTP ${res.status}`);
       }
-      return await res.json();
+      const text = await res.text();
+      try {
+        return JSON.parse(text);
+      } catch {
+        return text;
+      }
     } catch (err) {
       clearTimeout(timer);
       callerSignal?.removeEventListener('abort', callerListener);

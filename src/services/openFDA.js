@@ -23,6 +23,21 @@ function recordRequest() {
   requestTimestamps.push(Date.now());
 }
 
+function buildBrowseSearchQuery(drugClass, rxFilter) {
+  const clauses = []
+  const cls = (drugClass || '').trim()
+  if (cls) {
+    const safe = cls.replace(/"/g, '')
+    clauses.push(`openfda.pharm_class_epc.exact:"${safe}"`)
+  }
+  if (rxFilter === 'rx') {
+    clauses.push('openfda.product_type:"HUMAN PRESCRIPTION DRUG"')
+  } else if (rxFilter === 'otc') {
+    clauses.push('openfda.product_type:"HUMAN OTC DRUG"')
+  }
+  return clauses.join('+AND+')
+}
+
 export const openFDA = {
   rateLimitWarning: false,
 
@@ -41,7 +56,7 @@ export const openFDA = {
       return [];
     }
 
-    const url = `${OPENFDA_BASE}/drug/label.json?search=brand_name:${encodeURIComponent(query)}+generic_name:${encodeURIComponent(query)}&limit=10`;
+    const url = `${OPENFDA_BASE}/drug/label.json?search=openfda.brand_name:${encodeURIComponent(query)}+openfda.generic_name:${encodeURIComponent(query)}&limit=10`;
 
     try {
       const data = await dedupFetch(cacheKey, () => {
@@ -79,6 +94,119 @@ export const openFDA = {
       return result;
     } catch (err) {
       return makeFallback('openFDA', err);
+    }
+  },
+
+  /** Raw SPL record for interaction screening (first search hit). Not used for detail UX. */
+  async firstMatchingLabelRecord(rawQuery, signal) {
+    const query = queryNormalize(rawQuery);
+    if (!query) return null;
+
+    const cacheKey = `openfda:labelraw:${query}`;
+    const cached = cacheGet(cacheKey);
+    if (cached !== null) return cached;
+
+    if (isApproachingRateLimit()) {
+      this.rateLimitWarning = true;
+      return null;
+    }
+
+    const url = `${OPENFDA_BASE}/drug/label.json?search=openfda.brand_name:${encodeURIComponent(query)}+openfda.generic_name:${encodeURIComponent(query)}&limit=3`;
+
+    try {
+      const data = await dedupFetch(cacheKey, () => {
+        recordRequest();
+        return fetchWithRetry(url, { signal });
+      }, signal);
+
+      if (data?.error || !data?.results?.length) {
+        return null;
+      }
+
+      const rec = data.results[0];
+      cacheSet(cacheKey, rec, TTL_DRUG);
+      this.rateLimitWarning = false;
+      return rec;
+    } catch {
+      return null;
+    }
+  },
+
+  /**
+   * Paginated label browse with optional pharm class + Rx/OTC filters (OpenFDA skip/limit).
+   * @param {{ skip?: number, limit?: number, drugClass?: string, rxFilter?: 'all'|'rx'|'otc', signal?: AbortSignal }} opts
+   */
+  async browse(opts = {}) {
+    const skip = Math.max(0, opts.skip ?? 0);
+    const limit = Math.min(100, Math.max(1, opts.limit ?? 20));
+    const drugClass = (opts.drugClass || '').trim();
+    const rxFilter = opts.rxFilter || 'all';
+    const { signal } = opts;
+
+    const searchQ = buildBrowseSearchQuery(drugClass, rxFilter);
+    const cacheKey = `openfda:browse:${skip}:${limit}:${drugClass}:${rxFilter}`;
+
+    const cached = cacheGet(cacheKey);
+    if (cached !== null) return cached;
+
+    if (isApproachingRateLimit()) {
+      this.rateLimitWarning = true;
+      return makeFallback('openFDA', new Error('Rate limit'));
+    }
+
+    let url = `${OPENFDA_BASE}/drug/label.json?limit=${limit}&skip=${skip}`;
+    if (searchQ) {
+      url += `&search=${encodeURIComponent(searchQ)}`;
+    }
+
+    try {
+      const data = await dedupFetch(cacheKey, () => {
+        recordRequest();
+        return fetchWithRetry(url, { signal });
+      }, signal);
+
+      if (data?.error) {
+        return makeFallback('openFDA', new Error(data.error.message || 'Browse failed'));
+      }
+
+      const results = formatDrugList(data);
+      const total = data?.meta?.results?.total != null ? Number(data.meta.results.total) : results.length;
+      const payload = { results, total };
+      cacheSet(cacheKey, payload, TTL_DRUG);
+      this.rateLimitWarning = false;
+      return payload;
+    } catch (err) {
+      return makeFallback('openFDA', err);
+    }
+  },
+
+  /** High-count pharm_class_epc terms for filter dropdowns. */
+  async drugClassOptions(signal) {
+    const cacheKey = 'openfda:facet:pharm_class_epc';
+    const cached = cacheGet(cacheKey);
+    if (cached !== null) return cached;
+
+    if (isApproachingRateLimit()) {
+      this.rateLimitWarning = true;
+      return [];
+    }
+
+    const url = `${OPENFDA_BASE}/drug/label.json?count=openfda.pharm_class_epc.exact&limit=250`;
+
+    try {
+      const data = await dedupFetch(cacheKey, () => {
+        recordRequest();
+        return fetchWithRetry(url, { signal });
+      }, signal);
+
+      const terms = (data?.results ?? [])
+        .map(r => r.term)
+        .filter(t => typeof t === 'string' && t.trim().length > 0);
+      cacheSet(cacheKey, terms, TTL_DRUG);
+      this.rateLimitWarning = false;
+      return terms;
+    } catch {
+      return [];
     }
   },
 };

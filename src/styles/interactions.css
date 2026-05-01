@@ -1,0 +1,533 @@
+/* ── Interaction Checker — Shared Styles ────────────────────────────────── */
+
+/* ── Form ──────────────────────────────────────────────────────────────── */
+.ix-form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+}
+
+/* Chips */
+.ix-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+
+.ix-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  background: rgba(21,101,192,0.09);
+  border: 1.5px solid rgba(21,101,192,0.25);
+  border-radius: 100px;
+  padding: 0.28rem 0.5rem 0.28rem 0.8rem;
+  font-size: 0.82rem;
+  font-weight: 500;
+  color: var(--color-drug-accent);
+  font-family: var(--sans);
+}
+
+.ix-chip-name {
+  max-width: 180px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.ix-chip-remove {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  border: none;
+  background: rgba(21,101,192,0.12);
+  color: var(--color-drug-accent);
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: background 0.15s;
+  padding: 0;
+}
+
+.ix-chip-remove:hover {
+  background: rgba(21,101,192,0.22);
+}
+
+/* Input area */
+.ix-input-wrap {
+  position: relative;
+}
+
+.ix-input-icon {
+  position: absolute;
+  left: 0.85rem;
+  top: 50%;
+  transform: translateY(-50%);
+  pointer-events: none;
+  stroke: var(--muted);
+  opacity: 0.6;
+}
+
+.ix-input {
+  width: 100%;
+  background: var(--bg2);
+  border: 1.5px solid var(--border);
+  border-radius: 8px;
+  padding: 0.65rem 1rem 0.65rem 2.5rem;
+  font-size: 0.875rem;
+  font-family: var(--sans);
+  color: var(--text);
+  outline: none;
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+
+.ix-input::placeholder {
+  color: var(--muted);
+  opacity: 0.7;
+}
+
+.ix-input:focus {
+  border-color: var(--color-drug-accent);
+  box-shadow: 0 0 0 3px rgba(21,101,192,0.08);
+}
+
+/* Autocomplete dropdown */
+.ix-suggestions {
+  position: absolute;
+  top: calc(100% + 4px);
+  left: 0;
+  right: 0;
+  z-index: 200;
+  background: var(--bg2);
+  border: 1.5px solid var(--border);
+  border-radius: 8px;
+  box-shadow: 0 8px 28px rgba(0,0,0,0.11);
+  list-style: none;
+  overflow: hidden;
+  max-height: 260px;
+  overflow-y: auto;
+}
+
+.ix-suggestion-item {
+  padding: 0.65rem 1rem;
+  font-size: 0.875rem;
+  font-family: var(--sans);
+  color: var(--text);
+  cursor: pointer;
+  border-bottom: 1px solid var(--border);
+  transition: background 0.1s;
+}
+
+.ix-suggestion-item:last-child {
+  border-bottom: none;
+}
+
+.ix-suggestion-item:hover,
+.ix-suggestion-item--active {
+  background: rgba(21,101,192,0.07);
+  color: var(--color-drug-accent);
+}
+
+/* Status messages */
+.ix-resolving {
+  font-size: 0.8rem;
+  color: var(--muted);
+  font-family: var(--mono);
+  letter-spacing: 0.03em;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.ix-resolving::before {
+  content: '';
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  border: 2px solid var(--muted);
+  border-top-color: var(--color-drug-accent);
+  border-radius: 50%;
+  animation: ix-spin 0.7s linear infinite;
+  flex-shrink: 0;
+}
+
+.ix-resolve-error {
+  font-size: 0.8rem;
+  color: var(--color-severity-major);
+  padding: 0.4rem 0.75rem;
+  background: rgba(211,47,47,0.06);
+  border: 1px solid rgba(211,47,47,0.18);
+  border-radius: 6px;
+}
+
+.ix-hint {
+  font-size: 0.78rem;
+  color: var(--muted);
+  font-family: var(--mono);
+  letter-spacing: 0.02em;
+}
+
+/* Submit button */
+.ix-submit {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  align-self: flex-start;
+  padding: 0.6rem 1.35rem;
+  border-radius: 8px;
+  border: none;
+  background: var(--color-severity-major);
+  color: #fff;
+  font-size: 0.875rem;
+  font-family: var(--sans);
+  font-weight: 600;
+  cursor: pointer;
+  transition: opacity 0.15s, transform 0.12s;
+}
+
+.ix-submit:hover:not(:disabled) {
+  opacity: 0.88;
+  transform: translateY(-1px);
+}
+
+.ix-submit:disabled {
+  opacity: 0.42;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.ix-submit-spinner {
+  display: inline-block;
+  width: 12px;
+  height: 12px;
+  border: 2px solid rgba(255,255,255,0.4);
+  border-top-color: #fff;
+  border-radius: 50%;
+  animation: ix-spin 0.7s linear infinite;
+}
+
+/* Checking state (between form and results) */
+.ix-checking {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.85rem 1rem;
+  font-size: 0.82rem;
+  font-family: var(--mono);
+  color: var(--muted);
+  letter-spacing: 0.03em;
+  background: var(--bg3);
+  border-radius: 8px;
+}
+
+.ix-checking-spinner {
+  display: inline-block;
+  width: 14px;
+  height: 14px;
+  border: 2px solid var(--subtle);
+  border-top-color: var(--color-drug-accent);
+  border-radius: 50%;
+  animation: ix-spin 0.7s linear infinite;
+  flex-shrink: 0;
+}
+
+@keyframes ix-spin {
+  to { transform: rotate(360deg); }
+}
+
+/* ── Results ───────────────────────────────────────────────────────────── */
+.ix-results {
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+  margin-top: 0.25rem;
+}
+
+.ix-results-count {
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  color: var(--muted);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.ix-table-wrap {
+  overflow-x: auto;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+}
+
+.ix-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.83rem;
+  font-family: var(--sans);
+}
+
+.ix-table thead tr {
+  background: var(--bg3);
+}
+
+.ix-table th {
+  padding: 0.7rem 1rem;
+  text-align: left;
+  font-size: 0.7rem;
+  font-weight: 600;
+  font-family: var(--mono);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
+  white-space: nowrap;
+  border-bottom: 1.5px solid var(--border);
+}
+
+.ix-table td {
+  padding: 0.8rem 1rem;
+  border-bottom: 1px solid var(--border);
+  vertical-align: top;
+  color: var(--text);
+  line-height: 1.5;
+}
+
+.ix-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.ix-table tbody tr:hover {
+  background: rgba(21,101,192,0.03);
+}
+
+/* Drug pair cell */
+.ix-cell-pair {
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.ix-drug-a { color: var(--color-drug-accent); }
+.ix-drug-b { color: var(--color-drug-accent); }
+
+.ix-pair-sep {
+  display: inline-block;
+  margin: 0 0.35rem;
+  color: var(--muted);
+  font-weight: 400;
+}
+
+/* Severity badges */
+.ix-severity-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.2rem 0.55rem;
+  border-radius: 5px;
+  font-size: 0.7rem;
+  font-weight: 700;
+  font-family: var(--mono);
+  letter-spacing: 0.05em;
+  white-space: nowrap;
+  text-transform: capitalize;
+}
+
+.ix-severity-badge--major {
+  background: rgba(211,47,47,0.10);
+  color: var(--color-severity-major);
+  border: 1px solid rgba(211,47,47,0.22);
+}
+
+.ix-severity-badge--moderate {
+  background: rgba(245,124,0,0.10);
+  color: var(--color-severity-moderate);
+  border: 1px solid rgba(245,124,0,0.22);
+}
+
+.ix-severity-badge--minor {
+  background: rgba(56,142,60,0.10);
+  color: var(--color-severity-minor);
+  border: 1px solid rgba(56,142,60,0.22);
+}
+
+.ix-severity-badge--unknown {
+  background: rgba(0,0,0,0.05);
+  color: var(--muted);
+  border: 1px solid var(--border);
+}
+
+/* Interpretation */
+.ix-cell-interpretation {
+  font-size: 0.82rem;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+/* Description */
+.ix-cell-description {
+  color: var(--muted);
+  font-size: 0.8rem;
+  line-height: 1.55;
+  max-width: 320px;
+}
+
+/* No results / error states */
+.ix-no-results {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 2rem 1.25rem;
+  text-align: center;
+  background: var(--bg3);
+  border-radius: 10px;
+  border: 1px solid var(--border);
+}
+
+.ix-no-results svg {
+  stroke: var(--color-severity-minor);
+  margin-bottom: 0.25rem;
+}
+
+.ix-no-results p {
+  font-size: 0.88rem;
+  font-weight: 500;
+  color: var(--text);
+}
+
+.ix-no-results-caveat {
+  font-size: 0.78rem !important;
+  font-weight: 400 !important;
+  color: var(--muted) !important;
+}
+
+.ix-results-error {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.85rem 1rem;
+  background: rgba(211,47,47,0.06);
+  border: 1px solid rgba(211,47,47,0.18);
+  border-radius: 8px;
+  font-size: 0.85rem;
+  color: var(--color-severity-major);
+}
+
+.ix-results-disclaimer {
+  font-family: var(--mono);
+  font-size: 0.7rem;
+  color: var(--muted);
+  letter-spacing: 0.02em;
+  text-align: right;
+}
+
+/* ── Inline Panel (inside DrugDetail) ──────────────────────────────────── */
+.ix-panel {
+  background: var(--bg2);
+  border: 1.5px solid rgba(21,101,192,0.18);
+  border-radius: 12px;
+  margin-bottom: 1.75rem;
+  overflow: hidden;
+}
+
+.ix-panel-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.85rem 1.1rem;
+  background: var(--bg3);
+  border-bottom: 1px solid var(--border);
+}
+
+.ix-panel-title-row {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--color-drug-accent);
+}
+
+.ix-panel-title {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--text);
+  font-family: var(--sans);
+}
+
+.ix-panel-close {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 6px;
+  border: 1px solid var(--border);
+  background: transparent;
+  color: var(--muted);
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+  flex-shrink: 0;
+}
+
+.ix-panel-close:hover {
+  background: var(--subtle);
+  color: var(--text);
+}
+
+.ix-panel-body {
+  padding: 1.1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+/* ── Standalone Page ────────────────────────────────────────────────────── */
+.ix-page {
+  min-height: 100vh;
+  padding-top: 72px;
+  background: var(--bg);
+}
+
+.ix-page-inner {
+  max-width: 860px;
+  margin: 0 auto;
+  padding: 2rem 2.5rem 4rem;
+}
+
+.ix-page-header {
+  margin-bottom: 2rem;
+}
+
+.ix-page-title {
+  font-family: var(--serif);
+  font-size: clamp(1.6rem, 3.5vw, 2.2rem);
+  color: var(--text);
+  line-height: 1.15;
+  letter-spacing: -0.01em;
+  margin-bottom: 0.5rem;
+}
+
+.ix-page-sub {
+  font-size: 0.92rem;
+  color: var(--muted);
+  line-height: 1.6;
+  max-width: 560px;
+}
+
+.ix-page-card {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+/* ── Responsive ─────────────────────────────────────────────────────────── */
+@media (max-width: 768px) {
+  .ix-page-inner { padding: 1.25rem 1rem 3rem; }
+  .ix-page-card { padding: 1rem; }
+  .ix-table th { padding: 0.55rem 0.75rem; }
+  .ix-table td { padding: 0.65rem 0.75rem; }
+  .ix-cell-pair { white-space: normal; }
+  .ix-cell-description { max-width: 200px; }
+  .ix-panel-body { padding: 0.85rem; }
+}
