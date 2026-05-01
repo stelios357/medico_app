@@ -12,6 +12,7 @@ export default {
       id: 'eye',
       label: 'Eye Opening',
       type: 'select',
+      required: true,
       options: [
         { value: 1, label: 'E1 — None' },
         { value: 2, label: 'E2 — To pain' },
@@ -23,6 +24,7 @@ export default {
       id: 'verbal',
       label: 'Verbal Response',
       type: 'select',
+      required: true,
       options: [
         { value: 1, label: 'V1 — None' },
         { value: 2, label: 'V2 — Incomprehensible sounds' },
@@ -35,6 +37,7 @@ export default {
       id: 'motor',
       label: 'Motor Response',
       type: 'select',
+      required: true,
       options: [
         { value: 1, label: 'M1 — None' },
         { value: 2, label: 'M2 — Extension (decerebrate)' },

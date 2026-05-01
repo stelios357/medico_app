@@ -17,9 +17,14 @@ function specialtyLabel(raw) {
 function initialInputValues(config) {
   const values = {};
   for (const input of config.inputs) {
-    if (input.type === 'checkbox') values[input.id] = false;
-    else if (input.type === 'select') values[input.id] = '';
-    else values[input.id] = '';
+    if (input.type === 'checkbox') {
+      values[input.id] = false;
+    } else if (input.type === 'select') {
+      // honour explicit defaults (e.g. creatinineUnit defaults to 0 = mg/dL)
+      values[input.id] = input.default !== undefined ? String(input.default) : '';
+    } else {
+      values[input.id] = '';
+    }
   }
   return values;
 }
@@ -40,14 +45,36 @@ export default function ClinicalCalculator() {
     setResult(null);
   }, []);
 
+  // Per-field range validation (number inputs only)
+  const validationErrors = useMemo(() => {
+    if (!config) return {};
+    const errors = {};
+    for (const input of config.inputs) {
+      if (input.type !== 'number') continue;
+      const raw = inputValues[input.id];
+      if (raw === '' || raw === null || raw === undefined) continue;
+      const n = Number(raw);
+      if (!isFinite(n)) {
+        errors[input.id] = 'Invalid number';
+        continue;
+      }
+      if (input.min !== undefined && n < input.min)
+        errors[input.id] = `Min: ${input.min}`;
+      else if (input.max !== undefined && n > input.max)
+        errors[input.id] = `Max: ${input.max}`;
+    }
+    return errors;
+  }, [config, inputValues]);
+
   const isCalculateReady = useMemo(() => {
     if (!config) return false;
+    if (Object.keys(validationErrors).length > 0) return false;
     return config.inputs.every(input => {
       const val = inputValues[input.id];
       if (input.type === 'checkbox') return true;
       return val !== '' && val !== null && val !== undefined;
     });
-  }, [config, inputValues]);
+  }, [config, inputValues, validationErrors]);
 
   function handleCalculate() {
     const computed = runCalculator(config, inputValues);
@@ -109,6 +136,7 @@ export default function ClinicalCalculator() {
                 input={input}
                 value={inputValues[input.id]}
                 onChange={handleInputChange}
+                error={validationErrors[input.id]}
               />
             ))}
           </div>

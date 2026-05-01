@@ -4,7 +4,7 @@
  *   select  → <select> with options
  *   checkbox → <input type="checkbox">
  */
-export default function CalcInput({ input, value, onChange }) {
+export default function CalcInput({ input, value, onChange, error }) {
   const { id, label, type, unit, min, max, options } = input;
 
   function handleChange(e) {
@@ -36,7 +36,7 @@ export default function CalcInput({ input, value, onChange }) {
         <label className="ci-label" htmlFor={`ci-${id}`}>{label}</label>
         <select
           id={`ci-${id}`}
-          className="ci-select"
+          className={`ci-select${error ? ' ci-input--error' : ''}`}
           value={value ?? ''}
           onChange={handleChange}
         >
@@ -45,6 +45,7 @@ export default function CalcInput({ input, value, onChange }) {
             <option key={opt.value} value={opt.value}>{opt.label}</option>
           ))}
         </select>
+        {error && <span className="ci-error">{error}</span>}
       </div>
     );
   }
@@ -59,7 +60,7 @@ export default function CalcInput({ input, value, onChange }) {
       <input
         id={`ci-${id}`}
         type="number"
-        className="ci-input"
+        className={`ci-input${error ? ' ci-input--error' : ''}`}
         value={value ?? ''}
         min={min}
         max={max}
@@ -67,6 +68,7 @@ export default function CalcInput({ input, value, onChange }) {
         placeholder="—"
         onChange={handleChange}
       />
+      {error && <span className="ci-error">{error}</span>}
     </div>
   );
 }

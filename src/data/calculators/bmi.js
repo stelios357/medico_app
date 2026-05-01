@@ -8,8 +8,8 @@ export default {
     'NHLBI. Clinical guidelines on identification, evaluation, and treatment of overweight and obesity in adults. 1998.',
   ],
   inputs: [
-    { id: 'weight', label: 'Weight', type: 'number', unit: 'kg', min: 1, max: 300 },
-    { id: 'height', label: 'Height', type: 'number', unit: 'cm', min: 50, max: 250 },
+    { id: 'weight', label: 'Weight', type: 'number', unit: 'kg', min: 20, max: 300, required: true },
+    { id: 'height', label: 'Height', type: 'number', unit: 'cm', min: 50, max: 250, required: true },
   ],
   calculate({ weight, height }) {
     const hm = height / 100;

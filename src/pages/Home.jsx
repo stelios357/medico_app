@@ -7,6 +7,7 @@ import SearchRefinements from '../components/common/SearchRefinements.jsx'
 import RecentSearches from '../components/common/RecentSearches.jsx'
 import RecentlyViewed from '../components/common/RecentlyViewed.jsx'
 import SavedItems from '../components/common/SavedItems.jsx'
+import CalcStrip from '../components/common/CalcStrip.jsx'
 import { useGlobalSearch } from '../hooks/useGlobalSearch'
 import { useRecentSearches } from '../hooks/useRecentSearches'
 import { useRecentlyViewed } from '../hooks/useRecentlyViewed'
@@ -88,6 +89,8 @@ export default function Home() {
             <p className="gs-rate-warning">Data may be slightly delayed</p>
           )}
         </div>
+
+        <CalcStrip />
 
         {showHabitLoop && (
           <div className="hl-section">

@@ -7,8 +7,8 @@ export default {
     'Magder S. The meaning of blood pressure. Crit Care. 2018;22(1):257.',
   ],
   inputs: [
-    { id: 'systolic', label: 'Systolic BP', type: 'number', unit: 'mmHg', min: 40, max: 300 },
-    { id: 'diastolic', label: 'Diastolic BP', type: 'number', unit: 'mmHg', min: 20, max: 200 },
+    { id: 'systolic',  label: 'Systolic BP',  type: 'number', unit: 'mmHg', min: 40, max: 300, required: true },
+    { id: 'diastolic', label: 'Diastolic BP', type: 'number', unit: 'mmHg', min: 20, max: 200, required: true },
   ],
   calculate({ systolic, diastolic }) {
     if (diastolic >= systolic) return null;
