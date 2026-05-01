@@ -1,3 +1,9 @@
 {
-  "rewrites": [{ "source": "/(.*)", "destination": "/index.html" }]
+  "rewrites": [
+    {
+      "source": "/api/medlineplus-wsearch",
+      "destination": "https://wsearch.nlm.nih.gov/ws/query"
+    },
+    { "source": "/(.*)", "destination": "/index.html" }
+  ]
 }
